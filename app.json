@@ -37,7 +37,8 @@
         "expo-font",
         {
           "fonts": [
-            "./assets/fonts/Inter-Black.otf"
+            "./assets/fonts/Bellota-Regular.ttf",
+            "./assets/fonts/BellotaText-Regular.ttf"
           ]
         }
       ]

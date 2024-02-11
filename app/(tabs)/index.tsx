@@ -1,13 +1,10 @@
 import { StyleSheet } from 'react-native';
-
-import { Text, View } from '@/components/Themed';
+import { Text, View } from 'tamagui';
 
 export default function TabOneScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>User Library</Text>
-      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" /> */}
-      {/* <EditScreenInfo path="app/(tabs)/index.tsx" /> */}
+    <View f={1} alignItems='center' justifyContent='center' backgroundColor="$accent">
+      <Text fontSize="$2" color="$white">User Library</Text>
     </View>
   );
 }
