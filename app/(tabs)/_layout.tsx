@@ -78,7 +78,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="online-library"
         options={{
           title: 'Online Library',
           tabBarIcon: ({ color }) => <TabBarIcon name="globe-outline" color={color} />,

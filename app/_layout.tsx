@@ -1,11 +1,12 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { TamaguiProvider } from 'tamagui'
 import '@tamagui/core/reset.css'
+import { useFonts, Bellota_300Light, Bellota_400Regular, Bellota_700Bold } from '@expo-google-fonts/bellota';
+import { BellotaText_300Light, BellotaText_400Regular, BellotaText_700Bold } from '@expo-google-fonts/bellota-text';
 
 import { config } from '@/tamagui.config'
 import { useColorScheme } from '@/components/useColorScheme';
@@ -25,8 +26,12 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    Bellota: require('../assets/fonts/Bellota-Regular.ttf'),
-    BellotaText: require('../assets/fonts/BellotaText-Regular.ttf'),
+    BellotaText_300Light,
+    BellotaText_400Regular,
+    BellotaText_700Bold,
+    Bellota_300Light,
+    Bellota_400Regular,
+    Bellota_700Bold,
     ...Ionicons.font,
   });
 

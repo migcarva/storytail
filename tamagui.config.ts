@@ -7,7 +7,7 @@ const sizes = {
   '0.75': 12,
   '0.875': 14,
   1: 16,
-  'true': 16,
+  true: 16,
   2: 20,
   3: 24,
   4: 32,
@@ -20,6 +20,7 @@ const weights = {
   1: 300,
   2: 400,
   3: 700,
+  true: 400,
 }
 
 const letterSpacings = {
@@ -31,31 +32,31 @@ const letterSpacings = {
 }
 
 const BellotaFont = createFont({
-  family: 'Bellota, Helvetica, Arial, sans-serif',
+  family: 'Bellota_400Regular',
   size: sizes,
   lineHeight: sizes,
   weight: weights,
   letterSpacing: letterSpacings,
   // (native only) swaps out fonts by face/style
-  // face: {
-  //   300: { normal: 'InterLight', italic: 'InterItalic' },
-  //   400: { normal: 'InterBold' },
-  //   700: { normal: 'InterBold' },
-  // },
+  face: {
+    300: { normal: 'BellotaLight' },
+    400: { normal: 'BellotaRegular' },
+    700: { normal: 'BellotaBold' },
+  },
 })
 
 const BellotaTextFont = createFont({
-  family: 'Bellota Text, Helvetica, Arial, sans-serif',
+  family: 'BellotaText_400Regular',
   size: sizes,
   lineHeight: sizes,
   weight: weights,
   letterSpacing: letterSpacings,
   // (native only) swaps out fonts by face/style
-  // face: {
-  //   300: { normal: 'InterLight', italic: 'InterItalic' },
-  //   400: { normal: 'InterBold' },
-  //   700: { normal: 'InterBold' },
-  // },
+  face: {
+    300: { normal: 'BellotaTextLight' },
+    400: { normal: 'BellotaTextRegular' },
+    700: { normal: 'BellotaTextBold' },
+  },
 })
 
 export const tokens = createTokens({

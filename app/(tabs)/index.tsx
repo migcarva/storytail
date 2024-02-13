@@ -1,22 +1,10 @@
-import { StyleSheet } from 'react-native';
 import { Text, View } from 'tamagui';
 
-export default function TabOneScreen() {
+export default function UserLibraryScreen() {
   return (
     <View f={1} alignItems='center' justifyContent='center' backgroundColor="$accent">
-      <Text fontSize="$2" color="$white">User Library</Text>
+      <Text fontSize="$2" color="$white" fontFamily="$heading">User Library</Text>
+      <Text style={{ fontFamily: 'Bellota_700Bold', fontSize: 40 }}>Inter Black</Text>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});
