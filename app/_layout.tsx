@@ -70,7 +70,18 @@ function RootLayoutNav() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="settings" options={{ presentation: 'modal' }} />
+          <Stack.Screen
+            name="Settings"
+            options={{ presentation: 'modal', headerTransparent: true }}
+          />
+          <Stack.Screen
+            name="Search"
+            options={{ presentation: 'modal', headerTransparent: true }}
+          />
+          <Stack.Screen
+            name="Notifications"
+            options={{ presentation: 'modal', headerTransparent: true }}
+          />
         </Stack>
       </ThemeProvider>
     </TamaguiProvider>

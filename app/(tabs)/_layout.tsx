@@ -39,7 +39,7 @@ export default function TabLayout() {
           title: 'Your library',
           tabBarIcon: ({ color }) => <TabBarIcon name="home-outline" color={color} />,
           headerLeft: () => (
-            <Link href="/search" asChild>
+            <Link href="/Search" asChild>
               <Pressable>
                 {({ pressed }) => (
                   <Ionicons
@@ -61,7 +61,7 @@ export default function TabLayout() {
                 backgroundColor: 'transparent',
                 marginTop: 16,
               }}>
-              <Link href="/notifications" asChild>
+              <Link href="/Notifications" asChild>
                 <Pressable>
                   {({ pressed }) => (
                     <Ionicons
@@ -73,7 +73,7 @@ export default function TabLayout() {
                   )}
                 </Pressable>
               </Link>
-              <Link href="/settings" asChild>
+              <Link href="/Settings" asChild>
                 <Pressable>
                   {({ pressed }) => (
                     <Ionicons

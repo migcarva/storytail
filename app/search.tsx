@@ -4,7 +4,7 @@ import { Text, View } from 'tamagui';
 
 export default function SearchScreen() {
   return (
-    <View f={1} alignItems="center" justifyContent="center" backgroundColor="$accent">
+    <View f={1} alignItems="center" justifyContent="center" backgroundColor="$background">
       <Text fontSize="$2" color="$white" fontFamily="$body">
         Search
       </Text>
