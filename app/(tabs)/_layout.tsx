@@ -38,7 +38,7 @@ return (
       name="online-library"
       options={{
         title: 'Online Library',
-        tabBarIcon: ({ color }) => <TabBarIcon name="globe-outline" color={color} />,
+        tabBarIcon: ({ color }) => <TabBarIcon name="earth-outline" color={color} />,
         headerLeft: () => <AppHeaderLeft />,
         headerRight: () => <AppHeaderRight />,
       }}
