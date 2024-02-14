@@ -1,19 +1,16 @@
-import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { Link, Tabs } from 'expo-router';
+import React from 'react';
 import { Pressable } from 'react-native';
 
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
 import { View } from '@/components/Themed';
+import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import { useColorScheme } from '@/components/useColorScheme';
+import Colors from '@/constants/Colors';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof Ionicons>['name'];
-  color: string;
-}) {
-  return <Ionicons style={{ marginBottom: -3 }} size={28} {...props} />
+function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
+  return <Ionicons style={{ marginBottom: -3 }} size={28} {...props} />;
 }
 
 export default function TabLayout() {
@@ -47,7 +44,7 @@ export default function TabLayout() {
             </Link>
           ),
           headerRight: () => (
-            <View style={{display: 'flex', flexDirection: "row", marginRight: 16}}>
+            <View style={{ display: 'flex', flexDirection: 'row', marginRight: 16 }}>
               <Link href="/notifications" asChild>
                 <Pressable>
                   {({ pressed }) => (
@@ -74,7 +71,6 @@ export default function TabLayout() {
               </Link>
             </View>
           ),
-          
         }}
       />
       <Tabs.Screen

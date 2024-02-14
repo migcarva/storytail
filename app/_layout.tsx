@@ -1,15 +1,24 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
+import {
+  useFonts,
+  Bellota_300Light,
+  Bellota_400Regular,
+  Bellota_700Bold,
+} from '@expo-google-fonts/bellota';
+import {
+  BellotaText_300Light,
+  BellotaText_400Regular,
+  BellotaText_700Bold,
+} from '@expo-google-fonts/bellota-text';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { TamaguiProvider } from 'tamagui'
-import '@tamagui/core/reset.css'
-import { useFonts, Bellota_300Light, Bellota_400Regular, Bellota_700Bold } from '@expo-google-fonts/bellota';
-import { BellotaText_300Light, BellotaText_400Regular, BellotaText_700Bold } from '@expo-google-fonts/bellota-text';
+import { TamaguiProvider } from 'tamagui';
+import '@tamagui/core/reset.css';
 
-import { config } from '@/tamagui.config'
 import { useColorScheme } from '@/components/useColorScheme';
+import { config } from '@/tamagui.config';
 
 export {
   // Catch any errors thrown by the Layout component.
