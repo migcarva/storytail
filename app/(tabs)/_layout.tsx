@@ -4,9 +4,9 @@ import React from 'react';
 import { Pressable } from 'react-native';
 import { getTokens } from '@tamagui/core';
 
-import { View } from '@/components/Themed';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-import { useColorScheme } from '@/components/useColorScheme';
+import { View } from 'tamagui';
+import { useClientOnlyValue } from '@/hooks/useClientOnlyValue';
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
