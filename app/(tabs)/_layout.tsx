@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Link, Tabs } from 'expo-router';
 import React from 'react';
 import { Pressable } from 'react-native';
+import { getTokens } from '@tamagui/core';
 
 import { View } from '@/components/Themed';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
@@ -19,10 +20,18 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: getTokens().color.white.val,
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
+        headerTransparent: true,
+        headerShadowVisible: false, // removes the "border" on the header
+        tabBarStyle: {
+          backgroundColor: getTokens().color.accent.val,
+          borderBlockColor: 'transparent',
+        },
+        tabBarShowLabel: false,
+        headerTitle: '',
       }}>
       <Tabs.Screen
         name="index"
@@ -34,24 +43,31 @@ export default function TabLayout() {
               <Pressable>
                 {({ pressed }) => (
                   <Ionicons
-                    name="search"
-                    size={24}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginLeft: 16, opacity: pressed ? 0.5 : 1 }}
+                    name="search-outline"
+                    size={32}
+                    color={getTokens().color.white.val}
+                    style={{ marginLeft: 32, marginTop: 16, opacity: pressed ? 0.5 : 1 }}
                   />
                 )}
               </Pressable>
             </Link>
           ),
           headerRight: () => (
-            <View style={{ display: 'flex', flexDirection: 'row', marginRight: 16 }}>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                marginRight: 32,
+                backgroundColor: 'transparent',
+                marginTop: 16,
+              }}>
               <Link href="/notifications" asChild>
                 <Pressable>
                   {({ pressed }) => (
                     <Ionicons
-                      name="notifications"
-                      size={24}
-                      color={Colors[colorScheme ?? 'light'].text}
+                      name="notifications-outline"
+                      size={32}
+                      color={getTokens().color.white.val}
                       style={{ opacity: pressed ? 0.5 : 1 }}
                     />
                   )}
@@ -61,9 +77,9 @@ export default function TabLayout() {
                 <Pressable>
                   {({ pressed }) => (
                     <Ionicons
-                      name="menu"
-                      size={24}
-                      color={Colors[colorScheme ?? 'light'].text}
+                      name="menu-outline"
+                      size={32}
+                      color={getTokens().color.white.val}
                       style={{ marginLeft: 16, opacity: pressed ? 0.5 : 1 }}
                     />
                   )}
