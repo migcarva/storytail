@@ -5,7 +5,7 @@ import { Text, View } from 'tamagui';
 export default function SettingsScreen() {
   return (
     <View f={1} alignItems="center" justifyContent="center" backgroundColor="$background">
-      <Text fontSize="$2" color="$white">
+      <Text fontSize="$2" color="$accent">
         Settings
       </Text>
 

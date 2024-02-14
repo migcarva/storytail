@@ -1,8 +1,8 @@
+import { Ionicons } from '@expo/vector-icons';
+import { getTokens } from '@tamagui/core';
+import { Link } from 'expo-router';
 import React from 'react';
 import { Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
-import { getTokens } from '@tamagui/core';
 
 export function AppHeaderLeft() {
   return (

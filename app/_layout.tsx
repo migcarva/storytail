@@ -10,6 +10,7 @@ import {
   BellotaText_400Regular,
   BellotaText_700Bold,
 } from '@expo-google-fonts/bellota-text';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -65,23 +66,23 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
+  const modalOptions: NativeStackNavigationOptions = {
+    presentation: 'modal',
+    headerTransparent: true,
+    headerTitleStyle: {
+      fontFamily: 'BellotaText_700Bold',
+      fontSize: 20,
+    },
+  };
+
   return (
     <TamaguiProvider config={config} defaultTheme={colorScheme as any}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="Settings"
-            options={{ presentation: 'modal', headerTransparent: true }}
-          />
-          <Stack.Screen
-            name="Search"
-            options={{ presentation: 'modal', headerTransparent: true }}
-          />
-          <Stack.Screen
-            name="Notifications"
-            options={{ presentation: 'modal', headerTransparent: true }}
-          />
+          <Stack.Screen name="Settings" options={modalOptions} />
+          <Stack.Screen name="Search" options={modalOptions} />
+          <Stack.Screen name="Notifications" options={modalOptions} />
         </Stack>
       </ThemeProvider>
     </TamaguiProvider>
