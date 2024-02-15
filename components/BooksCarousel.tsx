@@ -26,17 +26,19 @@ export default function BooksCarousel({ books }: BooksCarouselProps) {
       },
     },
     vertical: false,
-    width: PAGE_WIDTH * 0.5,
+    width: PAGE_WIDTH * 0.5, // change this value to change the dimension of each item on the carouse;
     height: PAGE_HEIGHT * 0.6,
     autoPlay: false,
     loop: false,
   } as const;
 
+  // adds one last "book" to the array
+  // the last books allows for new story creation
   const booksAndNew = [
     ...books,
     {
       id: 0,
-      title: 'create a new story',
+      title: books.length === 0 ? 'create your first story' : 'create a new story',
       stars: 0,
       ageGroup: '',
       background: 'white',
@@ -96,29 +98,21 @@ const Card: React.FC<{
 
   return (
     <Animated.View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
-      <Animated.View
-        style={[
-          {
-            alignSelf: 'center',
-            justifyContent: 'center',
-            alignItems: 'center',
-            elevation: 16,
-          },
-          cardStyle,
-        ]}>
-        <FrontFacingBook
-          id={book.id}
-          title={book.title}
-          stars={book.stars}
-          ageGroup={book.ageGroup}
-          background={book.background}
-        />
-      </Animated.View>
+      style={[
+        {
+          alignSelf: 'center',
+          elevation: 16,
+          paddingTop: 32,
+        },
+        cardStyle,
+      ]}>
+      <FrontFacingBook
+        id={book.id}
+        title={book.title}
+        stars={book.stars}
+        ageGroup={book.ageGroup}
+        background={book.background}
+      />
     </Animated.View>
   );
 };

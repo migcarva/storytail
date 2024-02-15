@@ -79,18 +79,22 @@ const userStories = [
 export default function UserLibraryScreen() {
   return (
     <View f={1} alignItems="center" justifyContent="center" backgroundColor="$accent">
-      <Text fontSize="$3" color="$white" fontFamily="$heading" fontWeight={'700'} marginBottom={32}>
+      <Text
+        fontSize="$3"
+        color="$white"
+        fontFamily="$heading"
+        fontWeight={'700'}
+        marginTop={96}
+        marginBottom={48}>
         your library
       </Text>
-      <View overflow="scroll">
-        <View
-          alignItems="center"
-          justifyContent="center"
-          backgroundColor="$accent"
-          flexDirection="row"
-          gap="$1">
-          <BooksCarousel books={userStories} />
-        </View>
+      <View
+        alignItems="center"
+        justifyContent="center"
+        backgroundColor="$accent"
+        flexDirection="row"
+        gap="$1">
+        <BooksCarousel books={userStories} />
       </View>
     </View>
   );
