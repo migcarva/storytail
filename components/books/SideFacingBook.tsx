@@ -1,9 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import { getTokens } from '@tamagui/core';
-import { BookProps } from '@/types';
+import { Book } from '@/types';
 import { Text, View } from 'tamagui';
 
-export default function SideFacingBook({ title, stars, ageGroup, background }: BookProps) {
+export default function SideFacingBook({ title, stars, ageGroup, background }: Book) {
   const tokens = getTokens();
   // Ensure 'background' is a key of the 'color' object
   const bgColor = tokens.color[background as keyof typeof tokens.color].val;

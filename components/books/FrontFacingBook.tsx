@@ -1,8 +1,8 @@
-import { BookProps } from '@/types';
+import { Book } from '@/types';
 
 import { Text, View } from 'tamagui';
 
-export default function FrontFacingBook({ title, stars, ageGroup, background }: BookProps) {
+export default function FrontFacingBook({ title, stars, ageGroup, background }: Book) {
   return (
     <View position="relative">
       <View

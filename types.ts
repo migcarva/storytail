@@ -1,4 +1,5 @@
-export interface BookProps {
+export interface Book {
+  id: number;
   title: string;
   stars: number;
   ageGroup: string;
