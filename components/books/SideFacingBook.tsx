@@ -71,10 +71,14 @@ export function AgeGroup({ ageGroup }: AgeGroupProps) {
       alignItems="center"
       flexWrap="nowrap"
       flexDirection="column">
-      <Ionicons name="book-outline" size={8} color={getTokens().color.black.val} style={{}} />
-      <Text fontSize="$0.625" color="$black" fontFamily="$body" fontWeight={'400'}>
-        {ageGroup}
-      </Text>
+      {ageGroup && (
+        <>
+          <Ionicons name="book-outline" size={8} color={getTokens().color.black.val} style={{}} />
+          <Text fontSize="$0.625" color="$black" fontFamily="$body" fontWeight={'400'}>
+            {ageGroup}
+          </Text>
+        </>
+      )}
     </View>
   );
 }

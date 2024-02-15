@@ -1,6 +1,4 @@
 import BooksCarousel from '@/components/BooksCarousel';
-import CreateNewStoryBook from '@/components/books/CreateNewStoryBook';
-import SideFacingBook from '@/components/books/SideFacingBook';
 import { AgeGroups } from '@/constants/AgeGroups';
 import { Book } from '@/types';
 import { Text, View } from 'tamagui';
@@ -81,7 +79,7 @@ const userStories = [
 export default function UserLibraryScreen() {
   return (
     <View f={1} alignItems="center" justifyContent="center" backgroundColor="$accent">
-      <Text fontSize="$3" color="$white" fontFamily="$heading" fontWeight={'700'} marginBottom={96}>
+      <Text fontSize="$3" color="$white" fontFamily="$heading" fontWeight={'700'} marginBottom={32}>
         your library
       </Text>
       <View overflow="scroll">
@@ -91,16 +89,6 @@ export default function UserLibraryScreen() {
           backgroundColor="$accent"
           flexDirection="row"
           gap="$1">
-          {/* {userStories.map((story) => (
-            <SideFacingBook
-              key={story.id}
-              stars={story.stars}
-              ageGroup={story.ageGroup}
-              title={story.title}
-              background={story.backgroundColor}
-            />
-          ))} */}
-          {/* <CreateNewStoryBook isFirst={userStories.length === 0} /> */}
           <BooksCarousel books={userStories} />
         </View>
       </View>
