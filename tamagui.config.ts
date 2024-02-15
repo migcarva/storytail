@@ -32,7 +32,7 @@ const letterSpacings = {
 }
 
 const BellotaFont = createFont({
-  family: 'Bellota',
+  family: 'Bellota_400Regular',
   size: sizes,
   lineHeight: sizes,
   weight: weights,
@@ -46,7 +46,7 @@ const BellotaFont = createFont({
 });
 
 const BellotaTextFont = createFont({
-  family: 'BellotaText',
+  family: 'BellotaText_400Regular',
   size: sizes,
   lineHeight: sizes,
   weight: weights,
