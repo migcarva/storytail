@@ -32,32 +32,32 @@ const letterSpacings = {
 }
 
 const BellotaFont = createFont({
-  family: 'Bellota_400Regular',
+  family: 'Bellota',
   size: sizes,
   lineHeight: sizes,
   weight: weights,
   letterSpacing: letterSpacings,
   // (native only) swaps out fonts by face/style
   face: {
-    300: { normal: 'BellotaLight' },
-    400: { normal: 'BellotaRegular' },
-    700: { normal: 'BellotaBold' },
+    300: { normal: 'Bellota_300Light' },
+    400: { normal: 'Bellota_400Regular' },
+    700: { normal: 'Bellota_700Bold' },
   },
-})
+});
 
 const BellotaTextFont = createFont({
-  family: 'BellotaText_400Regular',
+  family: 'BellotaText',
   size: sizes,
   lineHeight: sizes,
   weight: weights,
   letterSpacing: letterSpacings,
   // (native only) swaps out fonts by face/style
   face: {
-    300: { normal: 'BellotaTextLight' },
-    400: { normal: 'BellotaTextRegular' },
-    700: { normal: 'BellotaTextBold' },
+    300: { normal: 'BellotaText_300Light' },
+    400: { normal: 'BellotaText_400Regular' },
+    700: { normal: 'BellotaText_700Bold' },
   },
-})
+});
 
 export const tokens = createTokens({
   size: sizes,
@@ -76,11 +76,10 @@ export const tokens = createTokens({
     lightgrey: '#C1BCBC',
     black: '#221413',
   },
-})
+});
 
 export const config = createTamagui({
   ...configBase,
-
   fonts: {
     heading: BellotaFont,
     body: BellotaTextFont,
@@ -92,9 +91,9 @@ export const config = createTamagui({
     f: 'flex',
     m: 'margin',
     w: 'width',
-    h: 'height'
+    h: 'height',
   } as const,
-})
+});
 
 export default config
 
