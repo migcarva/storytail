@@ -22,7 +22,7 @@ export default function CreateNewStoryBook({ isFirst }: CreateNewStoryBookProps)
         width={214}
         height={316}
         shadowColor="$black"
-        shadowOpacity={0.25}
+        shadowOpacity={0.42}
         shadowRadius={16}
         shadowOffset={{
           width: 16,
