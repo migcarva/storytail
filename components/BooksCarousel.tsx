@@ -14,9 +14,22 @@ const PAGE_HEIGHT = Dimensions.get('window').height;
 
 export default function BooksCarousel({ books }: BooksCarouselProps) {
   const baseOptions = {
+    style: {
+      width: PAGE_WIDTH,
+      display: 'flex',
+      justifyContent: 'center',
+    },
+    withAnimation: {
+      type: 'spring',
+      config: {
+        damping: 16,
+      },
+    },
     vertical: false,
-    width: PAGE_WIDTH,
-    height: PAGE_HEIGHT / 1.5,
+    width: PAGE_WIDTH * 0.5,
+    height: PAGE_HEIGHT * 0.6,
+    autoPlay: false,
+    loop: false,
   } as const;
 
   const booksAndNew = [
@@ -33,19 +46,6 @@ export default function BooksCarousel({ books }: BooksCarouselProps) {
   return (
     <Carousel
       {...baseOptions}
-      style={{
-        width: PAGE_WIDTH,
-        display: 'flex',
-        justifyContent: 'center',
-      }}
-      loop={false}
-      autoPlay={false}
-      withAnimation={{
-        type: 'spring',
-        config: {
-          damping: 13,
-        },
-      }}
       defaultIndex={booksAndNew.length - 1}
       data={booksAndNew}
       renderItem={({ index, animationValue, item }) => (
@@ -71,18 +71,18 @@ const Card: React.FC<{
       Extrapolation.CLAMP,
     );
 
-    const translateX = interpolate(animationValue.value, [-1, -0.2, 0, 1], [0, WIDTH * 0.3, 0, 0]);
+    const translateX = interpolate(animationValue.value, [-1, -0.2, 0, 1], [0, WIDTH * 0, 0, 0]);
 
     const transform = {
       transform: [
         { scale },
         { translateX },
-        { perspective: 200 },
+        { perspective: 500 },
         {
           rotateY: `${interpolate(
             animationValue.value,
             [-1, 0, 0.4, 1],
-            [30, 0, -25, -25],
+            [60, 0, -30, -60],
             Extrapolation.CLAMP,
           )}deg`,
         },
