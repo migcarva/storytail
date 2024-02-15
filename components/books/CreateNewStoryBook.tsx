@@ -6,7 +6,7 @@ interface CreateNewStoryBookProps {
 
 export default function CreateNewStoryBook({ isFirst }: CreateNewStoryBookProps) {
   const displayText = isFirst ? 'create your first story' : 'create a new story';
-
+  const bookHeight = 316;
   return (
     <View position="relative">
       <View
@@ -15,12 +15,12 @@ export default function CreateNewStoryBook({ isFirst }: CreateNewStoryBookProps)
         backgroundColor="$background"
         px="$4"
         py="$5"
-        borderTopLeftRadius="$3"
-        borderBottomLeftRadius="$3"
-        borderTopRightRadius="$4"
-        borderBottomRightRadius="$4"
+        borderTopLeftRadius={2}
+        borderBottomLeftRadius={2}
+        borderTopRightRadius="$3"
+        borderBottomRightRadius="$3"
         width={214}
-        height={316}
+        height={bookHeight}
         shadowColor="$black"
         shadowOpacity={0.32}
         shadowRadius={8}
@@ -37,15 +37,14 @@ export default function CreateNewStoryBook({ isFirst }: CreateNewStoryBookProps)
           {displayText}
         </Text>
       </View>
+      <View backgroundColor="$grey" position="absolute" width={4} height={bookHeight} left={2} />
       <View
-        backgroundColor="$grey"
+        backgroundColor="$lightgrey"
         position="absolute"
         width={4}
-        height={316}
-        borderTopLeftRadius="$3"
-        borderBottomLeftRadius="$3"
+        height={bookHeight}
+        left={4}
       />
-      <View backgroundColor="$lightgrey" position="absolute" width={8} height={316} left={4} />
     </View>
   );
 }
