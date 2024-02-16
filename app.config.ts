@@ -5,6 +5,7 @@ import { ClientEnv, Env } from './env';
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: Env.NAME,
+  scheme: Env.NAME,
   description: `${Env.NAME} Mobile App`,
   owner: Env.EXPO_ACCOUNT_OWNER,
   slug: Env.NAME,
