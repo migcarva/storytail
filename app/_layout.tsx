@@ -10,13 +10,14 @@ import {
   BellotaText_400Regular,
   BellotaText_700Bold,
 } from '@expo-google-fonts/bellota-text';
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
+import { Slot, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { TamaguiProvider } from 'tamagui';
 import '@tamagui/core/reset.css';
+import Constants from 'expo-constants';
+import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
+import * as SecureStore from 'expo-secure-store';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { config } from '@/tamagui.config';
@@ -34,7 +35,27 @@ export const unstable_settings = {
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+const CLERK_PUBLISHABLE_KEY = Constants.expoConfig!.extra!.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+const tokenCache = {
+  async getToken(key: string) {
+    try {
+      return SecureStore.getItemAsync(key);
+    } catch (err) {
+      return null;
+    }
+  },
+  async saveToken(key: string, value: string) {
+    try {
+      return SecureStore.setItemAsync(key, value);
+    } catch (err) {
+      return;
+    }
+  },
+};
+
+const RootLayout = () => {
+  const colorScheme = useColorScheme();
   const [loaded, error] = useFonts({
     BellotaText_300Light,
     BellotaText_400Regular,
@@ -60,31 +81,34 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
-}
-
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
-  const modalOptions: NativeStackNavigationOptions = {
-    presentation: 'modal',
-    headerTransparent: true,
-    headerTitleStyle: {
-      fontFamily: 'BellotaText_700Bold',
-      fontSize: 20,
-    },
-  };
-
   return (
     <TamaguiProvider config={config} defaultTheme={colorScheme as any}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="Settings" options={modalOptions} />
-          <Stack.Screen name="Search" options={modalOptions} />
-          <Stack.Screen name="Notifications" options={modalOptions} />
-        </Stack>
-      </ThemeProvider>
+      <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
+        <InitialLayout />
+      </ClerkProvider>
     </TamaguiProvider>
   );
-}
+};
+
+const InitialLayout = () => {
+  const { isLoaded, isSignedIn } = useAuth();
+  const router = useRouter();
+  const segments = useSegments();
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    console.log('user changed: ', isSignedIn);
+
+    const inAuthGroup = segments[0] === '(auth)';
+    if (isSignedIn && !inAuthGroup) {
+      router.replace('/home');
+    } else if (!isSignedIn) {
+      router.replace('/signin');
+    }
+  }, [isSignedIn]);
+
+  return <Slot />;
+};
+
+export default RootLayout;
