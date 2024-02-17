@@ -6,7 +6,7 @@ import { Pressable } from 'react-native';
 
 const SearchUserLibrary: React.FC = () => {
   return (
-    <Link href="/search" asChild>
+    <Link href="/search-user-library" asChild>
       <Pressable>
         {({ pressed }) => (
           <Ionicons

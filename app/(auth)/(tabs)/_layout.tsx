@@ -3,12 +3,19 @@ import { getTokens } from '@tamagui/core';
 import { Tabs } from 'expo-router';
 
 import NotificationsAndSettings from '@/components/NotificationsAndSettings';
-import SearchUserLibrary from '@/components/SearchUserLibrary';
+import SearchOnlineLibraryButton from '@/components/SearchOnlineLibraryButton';
+import SearchUserLibraryButton from '@/components/SearchUserLibraryButton';
 import TabBarIcon from '@/components/TabBarIcon';
 import { useClientOnlyValue } from '@/hooks/useClientOnlyValue';
+import useIsOnlinePages from '@/hooks/useIsOnlinePages';
 
 const TabsPage: React.FC = () => {
   const { isSignedIn } = useAuth();
+  const inOnline = useIsOnlinePages();
+
+  const tabBarBg = inOnline ? getTokens().color.background.val : getTokens().color.accent.val;
+  const activeTabTint = inOnline ? getTokens().color.black.val : getTokens().color.white.val;
+  const inactiveTabTin = inOnline ? getTokens().color.black.val : getTokens().color.white.val;
 
   const options = {
     // Disable the static render of the header on web
@@ -18,13 +25,16 @@ const TabsPage: React.FC = () => {
     headerShadowVisible: false, // removes the "border" on the header
     headerTitle: '',
     tabBarStyle: {
-      backgroundColor: getTokens().color.accent.val,
+      backgroundColor: tabBarBg,
       borderBlockColor: 'transparent',
     },
     tabBarShowLabel: false,
-    tabBarActiveTintColor: getTokens().color.white.val,
-    tabBarInactiveTintColor: getTokens().color.lightgrey.val,
+    tabBarActiveTintColor: activeTabTint,
+    tabBarInactiveTintColor: inactiveTabTin,
   };
+
+  const bookIconName = inOnline ? 'book-outline' : 'book';
+  const earthIconName = inOnline ? 'earth' : 'earth-outline';
 
   return (
     <Tabs screenOptions={options}>
@@ -32,8 +42,8 @@ const TabsPage: React.FC = () => {
         name="user-library"
         options={{
           title: 'Your library',
-          tabBarIcon: ({ color }) => <TabBarIcon name="book-outline" color={color} />,
-          headerLeft: () => <SearchUserLibrary />,
+          tabBarIcon: ({ color }) => <TabBarIcon name={bookIconName} color={color} />,
+          headerLeft: () => <SearchUserLibraryButton />,
           headerRight: () => <NotificationsAndSettings />,
         }}
         redirect={!isSignedIn}
@@ -42,7 +52,8 @@ const TabsPage: React.FC = () => {
         name="online-library"
         options={{
           title: 'Online Library',
-          tabBarIcon: ({ color }) => <TabBarIcon name="earth-outline" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name={earthIconName} color={color} />,
+          headerLeft: () => <SearchOnlineLibraryButton />,
           headerRight: () => <NotificationsAndSettings />,
         }}
         redirect={!isSignedIn}
