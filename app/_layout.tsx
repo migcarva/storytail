@@ -1,3 +1,4 @@
+import { ClerkProvider, useAuth, SignedIn, SignedOut } from '@clerk/clerk-expo';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {
   useFonts,
@@ -10,14 +11,14 @@ import {
   BellotaText_400Regular,
   BellotaText_700Bold,
 } from '@expo-google-fonts/bellota-text';
+import Constants from 'expo-constants';
 import { Slot, useRouter, useSegments } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { Text } from 'react-native';
 import { TamaguiProvider } from 'tamagui';
 import '@tamagui/core/reset.css';
-import Constants from 'expo-constants';
-import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
-import * as SecureStore from 'expo-secure-store';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { config } from '@/tamagui.config';
@@ -48,9 +49,7 @@ const tokenCache = {
   async saveToken(key: string, value: string) {
     try {
       return SecureStore.setItemAsync(key, value);
-    } catch (err) {
-      return;
-    }
+    } catch (err) {}
   },
 };
 
@@ -85,6 +84,12 @@ const RootLayout = () => {
     <TamaguiProvider config={config} defaultTheme={colorScheme as any}>
       <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
         <InitialLayout />
+        <SignedIn>
+          <Text>You are Signed in</Text>
+        </SignedIn>
+        <SignedOut>
+          <Text>You are Signed out</Text>
+        </SignedOut>
       </ClerkProvider>
     </TamaguiProvider>
   );

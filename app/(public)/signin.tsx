@@ -1,7 +1,7 @@
 import { useSignIn } from '@clerk/clerk-expo';
 import { Link } from 'expo-router';
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Button, Pressable, Text, Alert } from 'react-native';
+import { View, StyleSheet, TextInput, Button, Pressable, Text } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 const SignIn = () => {
@@ -55,8 +55,9 @@ const SignIn = () => {
       <Button
         onPress={onSignInPress}
         title="Login"
-        color={'#513175'}
-        disabled={!emailAddress && !password}></Button>
+        color="#513175"
+        disabled={!emailAddress && !password}
+      />
 
       <Link href="/reset" asChild>
         <Pressable style={styles.button}>

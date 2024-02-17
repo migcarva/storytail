@@ -1,8 +1,8 @@
-import { Button, TextInput, View, StyleSheet } from 'react-native';
 import { useSignUp } from '@clerk/clerk-expo';
-import Spinner from 'react-native-loading-spinner-overlay';
-import { useState } from 'react';
 import { Stack } from 'expo-router';
+import { useState } from 'react';
+import { Button, TextInput, View, StyleSheet } from 'react-native';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -101,7 +101,7 @@ const SignUp = () => {
             style={styles.inputField}
           />
 
-          <Button onPress={onSignUpPress} title="Sign up" color={'#513175'}></Button>
+          <Button onPress={onSignUpPress} title="Sign up" color="#513175" />
         </>
       )}
 
@@ -115,7 +115,7 @@ const SignUp = () => {
               onChangeText={setCode}
             />
           </View>
-          <Button onPress={onPressVerify} title="Verify Email" color={'#513175'}></Button>
+          <Button onPress={onPressVerify} title="Verify Email" color="#513175" />
         </>
       )}
     </View>

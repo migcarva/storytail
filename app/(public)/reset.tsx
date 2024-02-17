@@ -1,7 +1,7 @@
-import { View, StyleSheet, TextInput, Button } from 'react-native';
-import React, { useState } from 'react';
-import { Stack } from 'expo-router';
 import { useSignIn } from '@clerk/clerk-expo';
+import { Stack } from 'expo-router';
+import React, { useState } from 'react';
+import { View, StyleSheet, TextInput, Button } from 'react-native';
 
 const PwReset = () => {
   const [emailAddress, setEmailAddress] = useState('');
@@ -57,7 +57,7 @@ const PwReset = () => {
             style={styles.inputField}
           />
 
-          <Button onPress={onRequestReset} title="Send Reset Email" color={'#6c47ff'}></Button>
+          <Button onPress={onRequestReset} title="Send Reset Email" color="#6c47ff" />
         </>
       )}
 
@@ -78,7 +78,7 @@ const PwReset = () => {
               style={styles.inputField}
             />
           </View>
-          <Button onPress={onReset} title="Set new Password" color={'#6c47ff'}></Button>
+          <Button onPress={onReset} title="Set new Password" color="#6c47ff" />
         </>
       )}
     </View>
