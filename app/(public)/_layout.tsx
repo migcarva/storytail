@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import React from 'react';
 
-const PublicLayout = () => {
+const PublicLayout: React.FC = () => {
   return (
     <Stack
       screenOptions={{

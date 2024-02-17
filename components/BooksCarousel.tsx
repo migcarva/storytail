@@ -1,18 +1,17 @@
-import Carousel from 'react-native-reanimated-carousel';
-import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import { Dimensions } from 'react-native';
-import { Book } from '@/types';
-import { withAnchorPoint } from '@/utils/anchor-points';
-import FrontFacingBook from '@/components/books/FrontFacingBook';
+import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import Carousel from 'react-native-reanimated-carousel';
 
-interface BooksCarouselProps {
-  books: Book[];
-}
+import FrontFacingBook from '@/components/books/FrontFacingBook';
+import type { Book } from '@/types';
+import { withAnchorPoint } from '@/utils/anchor-points';
 
 const PAGE_WIDTH = Dimensions.get('window').width;
 const PAGE_HEIGHT = Dimensions.get('window').height;
 
-export default function BooksCarousel({ books }: BooksCarouselProps) {
+const BooksCarousel: React.FC<{
+  books: Book[];
+}> = ({ books }) => {
   const baseOptions = {
     style: {
       width: PAGE_WIDTH,
@@ -55,7 +54,9 @@ export default function BooksCarousel({ books }: BooksCarouselProps) {
       )}
     />
   );
-}
+};
+
+export default BooksCarousel;
 
 const Card: React.FC<{
   index: number;

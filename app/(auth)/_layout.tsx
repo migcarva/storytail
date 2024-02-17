@@ -1,46 +1,26 @@
 import { useAuth } from '@clerk/clerk-expo';
-import { Ionicons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { Stack } from 'expo-router';
 
-export const LogoutButton = () => {
-  const { signOut } = useAuth();
+const TabsPage: React.FC = () => {
+  const { isSignedIn } = useAuth();
 
-  const doLogout = () => {
-    signOut();
+  const modalOptions: NativeStackNavigationOptions = {
+    presentation: 'modal',
+    headerTransparent: true,
+    headerTitleStyle: {
+      fontFamily: 'BellotaText_700Bold',
+      fontSize: 20,
+    },
   };
 
   return (
-    <Pressable onPress={doLogout} style={{ marginRight: 10 }}>
-      <Ionicons name="log-out-outline" size={24} color="#fff" />
-    </Pressable>
-  );
-};
-
-const TabsPage = () => {
-  const { isSignedIn } = useAuth();
-
-  return (
-    <Tabs
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: '#513175',
-        },
-        headerTintColor: '#fff',
-      }}>
-      <Tabs.Screen
-        name="home"
-        options={{
-          headerTitle: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home-outline" size={size} color={color} />
-          ),
-          tabBarLabel: 'Home',
-          headerRight: () => <LogoutButton />,
-        }}
-        redirect={!isSignedIn}
-      />
-    </Tabs>
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} redirect={!isSignedIn} />
+      <Stack.Screen name="search" options={modalOptions} redirect={!isSignedIn} />
+      <Stack.Screen name="notifications" options={modalOptions} redirect={!isSignedIn} />
+      <Stack.Screen name="settings" options={modalOptions} redirect={!isSignedIn} />
+    </Stack>
   );
 };
 

@@ -1,10 +1,8 @@
 import { Text, View } from 'tamagui';
 
-interface CreateNewStoryBookProps {
+const CreateNewStoryBook: React.FC<{
   isFirst: boolean;
-}
-
-export default function CreateNewStoryBook({ isFirst }: CreateNewStoryBookProps) {
+}> = ({ isFirst }) => {
   const displayText = isFirst ? 'create your first story' : 'create a new story';
   const bookHeight = 316;
   return (
@@ -33,7 +31,7 @@ export default function CreateNewStoryBook({ isFirst }: CreateNewStoryBookProps)
           color="$black"
           fontFamily="$heading"
           textAlign="center"
-          fontWeight={'700'}>
+          fontWeight="700">
           {displayText}
         </Text>
       </View>
@@ -47,4 +45,6 @@ export default function CreateNewStoryBook({ isFirst }: CreateNewStoryBookProps)
       />
     </View>
   );
-}
+};
+
+export default CreateNewStoryBook;

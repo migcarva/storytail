@@ -3,7 +3,7 @@ import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Button } from 'react-native';
 
-const PwReset = () => {
+const PwReset: React.FC = () => {
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');

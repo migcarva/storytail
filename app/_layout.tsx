@@ -16,7 +16,6 @@ import { Slot, useRouter, useSegments } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { Text } from 'react-native';
 import { TamaguiProvider } from 'tamagui';
 import '@tamagui/core/reset.css';
 
@@ -43,17 +42,20 @@ const tokenCache = {
     try {
       return SecureStore.getItemAsync(key);
     } catch (err) {
+      console.error('Error getting the Token', err);
       return null;
     }
   },
   async saveToken(key: string, value: string) {
     try {
       return SecureStore.setItemAsync(key, value);
-    } catch (err) {}
+    } catch (err) {
+      console.error('Error saving the Token', err);
+    }
   },
 };
 
-const RootLayout = () => {
+const RootLayout: React.FC = () => {
   const colorScheme = useColorScheme();
   const [loaded, error] = useFonts({
     BellotaText_300Light,
@@ -89,7 +91,7 @@ const RootLayout = () => {
   );
 };
 
-const InitialLayout = () => {
+const InitialLayout: React.FC = () => {
   const { isLoaded, isSignedIn } = useAuth();
   const router = useRouter();
   const segments = useSegments();
@@ -101,7 +103,7 @@ const InitialLayout = () => {
 
     const inAuthGroup = segments[0] === '(auth)';
     if (isSignedIn && !inAuthGroup) {
-      router.replace('/home');
+      router.replace('/user-library');
     } else if (!isSignedIn) {
       router.replace('/signin');
     }

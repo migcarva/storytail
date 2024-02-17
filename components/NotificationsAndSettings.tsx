@@ -1,10 +1,10 @@
+import { Ionicons } from '@expo/vector-icons';
+import { getTokens } from '@tamagui/core';
+import { Link } from 'expo-router';
 import React from 'react';
 import { Pressable, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
-import { getTokens } from '@tamagui/core';
 
-export function AppHeaderRight() {
+const NotificationsAndSettings: React.FC = () => {
   return (
     <View
       style={{
@@ -14,7 +14,7 @@ export function AppHeaderRight() {
         backgroundColor: 'transparent',
         marginTop: 16,
       }}>
-      <Link href="/Notifications" asChild>
+      <Link href="/notifications" asChild>
         <Pressable>
           {({ pressed }) => (
             <Ionicons
@@ -26,7 +26,7 @@ export function AppHeaderRight() {
           )}
         </Pressable>
       </Link>
-      <Link href="/Settings" asChild>
+      <Link href="/settings" asChild>
         <Pressable>
           {({ pressed }) => (
             <Ionicons
@@ -40,4 +40,6 @@ export function AppHeaderRight() {
       </Link>
     </View>
   );
-}
+};
+
+export default NotificationsAndSettings;

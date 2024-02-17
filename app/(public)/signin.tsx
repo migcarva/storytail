@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Button, Pressable, Text } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
 
-const SignIn = () => {
+const SignIn: React.FC = () => {
   const { signIn, setActive, isLoaded } = useSignIn();
 
   const [emailAddress, setEmailAddress] = useState('');

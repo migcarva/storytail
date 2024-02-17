@@ -4,9 +4,9 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { Pressable } from 'react-native';
 
-export function AppHeaderLeft() {
+const SearchUserLibrary: React.FC = () => {
   return (
-    <Link href="/Search" asChild>
+    <Link href="/search" asChild>
       <Pressable>
         {({ pressed }) => (
           <Ionicons
@@ -19,4 +19,6 @@ export function AppHeaderLeft() {
       </Pressable>
     </Link>
   );
-}
+};
+
+export default SearchUserLibrary;
