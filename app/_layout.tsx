@@ -1,4 +1,4 @@
-import { ClerkProvider, useAuth, SignedIn, SignedOut } from '@clerk/clerk-expo';
+import { ClerkProvider, useAuth } from '@clerk/clerk-expo';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {
   useFonts,
@@ -84,12 +84,6 @@ const RootLayout = () => {
     <TamaguiProvider config={config} defaultTheme={colorScheme as any}>
       <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY} tokenCache={tokenCache}>
         <InitialLayout />
-        <SignedIn>
-          <Text>You are Signed in</Text>
-        </SignedIn>
-        <SignedOut>
-          <Text>You are Signed out</Text>
-        </SignedOut>
       </ClerkProvider>
     </TamaguiProvider>
   );
