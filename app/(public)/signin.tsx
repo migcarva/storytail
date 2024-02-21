@@ -1,33 +1,107 @@
-import { useSignIn } from '@clerk/clerk-expo';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import Constants from 'expo-constants';
 import { Link } from 'expo-router';
-import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Button, Pressable, Text } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Pressable } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
+import { Text, View, Button } from 'tamagui';
+
+import { Env } from '@/env';
+import { useSupabase } from '@/src/lib/supabase/SupabaseContext';
+import { SecureStoreAdapter } from '@/src/lib/supabase/secureStoreAdaptar';
+import { isIphone } from '@/src/utils/deviceInfo';
 
 const SignIn: React.FC = () => {
-  const { signIn, setActive, isLoaded } = useSignIn();
-
-  const [emailAddress, setEmailAddress] = useState('');
-  const [password, setPassword] = useState('');
+  const { getAppleOAuthUrl, getGoogleOAuthUrl, setOAuthSession } = useSupabase();
   const [loading, setLoading] = useState(false);
 
-  const onSignInPress = async () => {
-    if (!isLoaded) {
-      return;
-    }
+  useEffect(() => {
+    WebBrowser.warmUpAsync();
 
+    return () => {
+      WebBrowser.coolDownAsync();
+    };
+  }, []);
+
+  const extractParamsFromUrl = (url: string) => {
+    const params = new URLSearchParams(url.split('#')[1]);
+    const data = {
+      access_token: params.get('access_token'),
+      expires_in: parseInt(params.get('expires_in') || '0', 10),
+      refresh_token: params.get('refresh_token'),
+      token_type: params.get('token_type'),
+      provider_token: params.get('provider_token'),
+    };
+
+    return data;
+  };
+
+  const onSignInWithGoogle = async () => {
     setLoading(true);
 
     try {
-      const completeSignIn = await signIn.create({
-        identifier: emailAddress,
-        password,
-      });
+      const url = await getGoogleOAuthUrl();
+      if (!url) return;
 
-      // This indicates the user is signed in
-      await setActive({ session: completeSignIn.createdSessionId });
-    } catch (err: any) {
-      alert(err.errors[0].message);
+      const result = await WebBrowser.openAuthSessionAsync(
+        url,
+        `${Constants.expoConfig!.extra!.BUNDLE_ID ?? Env.BUNDLE_ID}://home/`,
+        {
+          showInRecents: true,
+        },
+      );
+
+      if (result.type === 'success') {
+        const data = extractParamsFromUrl(result.url);
+
+        if (!data.access_token || !data.refresh_token) return;
+
+        setOAuthSession({
+          access_token: data.access_token,
+          refresh_token: data.refresh_token,
+        });
+
+        // You can optionally store Google's access token if you need it later
+        SecureStoreAdapter.setItem('google-access-token', JSON.stringify(data.provider_token));
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onSignInWithApple = async () => {
+    setLoading(true);
+
+    try {
+      const url = await getAppleOAuthUrl();
+      if (!url) return;
+
+      const result = await WebBrowser.openAuthSessionAsync(
+        url,
+        `${Constants.expoConfig!.extra!.BUNDLE_ID ?? Env.BUNDLE_ID}://home/`,
+        {
+          showInRecents: true,
+        },
+      );
+
+      if (result.type === 'success') {
+        const data = extractParamsFromUrl(result.url);
+
+        if (!data.access_token || !data.refresh_token) return;
+
+        setOAuthSession({
+          access_token: data.access_token,
+          refresh_token: data.refresh_token,
+        });
+
+        // You can optionally store Apple access token if you need it later
+        SecureStoreAdapter.setItem('apple-access-token', JSON.stringify(data.provider_token));
+      }
+    } catch (error) {
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -37,27 +111,23 @@ const SignIn: React.FC = () => {
     <View style={styles.container}>
       <Spinner visible={loading} />
 
-      <TextInput
-        autoCapitalize="none"
-        placeholder="email@example.com"
-        value={emailAddress}
-        onChangeText={setEmailAddress}
-        style={styles.inputField}
-      />
-      <TextInput
-        placeholder="password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={styles.inputField}
-      />
-
       <Button
-        onPress={onSignInPress}
-        title="Login"
-        color="#513175"
-        disabled={!emailAddress && !password}
-      />
+        onPress={onSignInWithGoogle}
+        disabled={loading}
+        style={{ marginBottom: 16, width: '100%' }}>
+        <Ionicons name="logo-google" size={20} />
+        <Text>{loading ? 'Loading...' : 'Sign in with Google'}</Text>
+      </Button>
+
+      {isIphone && (
+        <Button
+          onPress={onSignInWithApple}
+          disabled={loading}
+          style={{ marginBottom: 16, width: '100%' }}>
+          <Ionicons name="logo-apple" size={20} />
+          <Text>{loading ? 'Loading...' : 'Sign in with Google'}</Text>
+        </Button>
+      )}
 
       <Link href="/reset" asChild>
         <Pressable style={styles.button}>

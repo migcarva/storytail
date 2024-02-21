@@ -1,7 +1,2 @@
-export interface Book {
-  id: number;
-  title: string;
-  stars: number;
-  ageGroup: string;
-  background: string;
-}
+export * from '@/src/types/user';
+export * from '@/src/types/book';
