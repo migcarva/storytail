@@ -2,12 +2,12 @@ import { useAuth } from '@clerk/clerk-expo';
 import { getTokens } from '@tamagui/core';
 import { Tabs } from 'expo-router';
 
-import NotificationsAndSettings from '@/components/NotificationsAndSettings';
-import SearchOnlineLibraryButton from '@/components/SearchOnlineLibraryButton';
-import SearchUserLibraryButton from '@/components/SearchUserLibraryButton';
-import TabBarIcon from '@/components/TabBarIcon';
-import { useClientOnlyValue } from '@/hooks/useClientOnlyValue';
-import useIsOnlinePages from '@/hooks/useIsOnlinePages';
+import NotificationsAndSettings from '@/src/components/NotificationsAndSettings';
+import SearchOnlineLibraryButton from '@/src/components/SearchOnlineLibraryButton';
+import SearchUserLibraryButton from '@/src/components/SearchUserLibraryButton';
+import TabBarIcon from '@/src/components/TabBarIcon';
+import { useClientOnlyValue } from '@/src/hooks/useClientOnlyValue';
+import useIsOnlinePages from '@/src/hooks/useIsOnlinePages';
 
 const TabsPage: React.FC = () => {
   const { isSignedIn } = useAuth();

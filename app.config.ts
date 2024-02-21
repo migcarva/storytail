@@ -11,10 +11,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   slug: Env.NAME,
   version: Env.VERSION.toString(),
   orientation: 'portrait',
-  icon: './assets/images/icon.png',
+  icon: './src/assets/images/icon.png',
   userInterfaceStyle: 'automatic',
   splash: {
-    image: './assets/images/splash.png',
+    image: './src/assets/images/splash.png',
     resizeMode: 'cover',
     backgroundColor: '#F9F8F8',
   },
@@ -28,7 +28,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     adaptiveIcon: {
-      foregroundImage: './assets/images/adaptive-icon.png',
+      foregroundImage: './src/assets/images/adaptive-icon.png',
       backgroundColor: '#F9F8F8',
     },
     package: Env.PACKAGE,
@@ -36,7 +36,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   web: {
     bundler: 'metro',
     output: 'static',
-    favicon: './assets/images/favicon.png',
+    favicon: './src/assets/images/favicon.png',
   },
   plugins: ['expo-router'],
   extra: {
