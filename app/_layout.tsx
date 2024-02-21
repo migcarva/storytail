@@ -19,7 +19,7 @@ import { useEffect } from 'react';
 import { TamaguiProvider } from 'tamagui';
 import '@tamagui/core/reset.css';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { useColorScheme } from '@/src/hooks/useColorScheme';
 import { config } from '@/tamagui.config';
 
 export {

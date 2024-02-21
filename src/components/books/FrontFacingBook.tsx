@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Text, View, getTokens } from 'tamagui';
 
-import { Book } from '@/types';
+import { Book } from '@/src/types';
 
 const FrontFacingBook: React.FC<Book> = ({ title, stars, ageGroup, background }) => {
   const tokens = getTokens();

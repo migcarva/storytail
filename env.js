@@ -12,11 +12,13 @@
  * we use dotenv to load the correct variables from the .env file based on the APP_ENV variable (default is development)
  * APP_ENV is passed as an inline variable while executing the command, for example: APP_ENV=staging pnpm build:android
  */
+const path = require('path');
 const z = require('zod');
 
 const packageJSON = require('./package.json');
-const path = require('path');
+
 const APP_ENV = process.env.APP_ENV ?? 'development';
+// eslint-disable-next-line no-undef
 const envPath = path.resolve(__dirname, `.env.${APP_ENV}`);
 
 require('dotenv').config({
@@ -31,9 +33,10 @@ require('dotenv').config({
  * for example: if the APP_ENV is staging, the bundle id will be com.obytes.staging
  */
 
-const BUNDLE_ID = 'xyz.miguelcarvalho'; // ios bundle id
-const PACKAGE = 'xyz.miguelcarvalho'; // android package name
 const NAME = 'Storytail'; // app name
+const PACKAGE = 'app.storytail'; // android package name
+const BUNDLE_ID = 'app.storytail'; // ios bundle id
+const BUILD_VERSION = 1;
 const EXPO_ACCOUNT_OWNER = 'miguelcarva'; // expo account owner
 const EAS_PROJECT_ID = '481ec3df-e352-408a-86b7-db3e299d20ba'; // eas project id
 
@@ -72,16 +75,16 @@ const client = z.object({
   BUNDLE_ID: z.string(),
   PACKAGE: z.string(),
   VERSION: z.string(),
-
-  // ADD YOUR CLIENT ENV VARS HERE
+  BUILD_VERSION: z.number(),
   API_URL: z.string(),
   EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
+  EXPO_PUBLIC_SUPABASE_PROJECT_URL: z.string(),
+  EXPO_PUBLIC_SUPABASE_PUBLIC_KEY: z.string(),
 });
 
 const buildTime = z.object({
   EXPO_ACCOUNT_OWNER: z.string(),
   EAS_PROJECT_ID: z.string(),
-  // ADD YOUR BUILD TIME ENV VARS HERE
 });
 
 /**
@@ -89,14 +92,15 @@ const buildTime = z.object({
  */
 const _clientEnv = {
   APP_ENV,
-  NAME: NAME,
+  NAME,
   BUNDLE_ID: withEnvSuffix(BUNDLE_ID),
   PACKAGE: withEnvSuffix(PACKAGE),
   VERSION: packageJSON.version,
-
-  // ADD YOUR ENV VARS HERE TOO
+  BUILD_VERSION,
   API_URL: process.env.API_URL,
   EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY,
+  EXPO_PUBLIC_SUPABASE_PROJECT_URL: process.env.EXPO_PUBLIC_SUPABASE_PROJECT_URL,
+  EXPO_PUBLIC_SUPABASE_PUBLIC_KEY: process.env.EXPO_PUBLIC_SUPABASE_PUBLIC_KEY,
 };
 
 /**
@@ -105,8 +109,9 @@ const _clientEnv = {
 const _buildTimeEnv = {
   EXPO_ACCOUNT_OWNER,
   EAS_PROJECT_ID,
-  // ADD YOUR ENV VARS HERE TOO
   EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY,
+  EXPO_PUBLIC_SUPABASE_PROJECT_URL: process.env.EXPO_PUBLIC_SUPABASE_PROJECT_URL,
+  EXPO_PUBLIC_SUPABASE_PUBLIC_KEY: process.env.EXPO_PUBLIC_SUPABASE_PUBLIC_KEY,
 };
 
 /**

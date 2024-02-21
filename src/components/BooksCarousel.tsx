@@ -2,9 +2,9 @@ import { Dimensions } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
 
-import FrontFacingBook from '@/components/books/FrontFacingBook';
-import type { Book } from '@/types';
-import { withAnchorPoint } from '@/utils/anchor-points';
+import FrontFacingBook from '@/src/components/books/FrontFacingBook';
+import type { Book } from '@/src/types';
+import { withAnchorPoint } from '@/src/utils/anchor-points';
 
 const PAGE_WIDTH = Dimensions.get('window').width;
 const PAGE_HEIGHT = Dimensions.get('window').height;

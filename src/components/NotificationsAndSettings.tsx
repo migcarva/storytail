@@ -4,7 +4,7 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 
-import useIsOnlinePages from '@/hooks/useIsOnlinePages';
+import useIsOnlinePages from '@/src/hooks/useIsOnlinePages';
 
 const NotificationsAndSettings: React.FC = () => {
   const inOnline = useIsOnlinePages();

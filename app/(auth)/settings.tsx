@@ -2,7 +2,7 @@ import { useUser } from '@clerk/clerk-expo';
 import React from 'react';
 import { Text, View } from 'tamagui';
 
-import SignoutButton from '@/components/SignoutButton';
+import SignoutButton from '@/src/components/SignoutButton';
 
 const Settings: React.FC = () => {
   const { user } = useUser();

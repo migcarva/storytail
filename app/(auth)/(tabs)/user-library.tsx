@@ -1,8 +1,8 @@
 import { Text, View } from 'tamagui';
 
-import BooksCarousel from '@/components/BooksCarousel';
-import { AgeGroups } from '@/constants/AgeGroups';
-import { Book } from '@/types';
+import BooksCarousel from '@/src/components/BooksCarousel';
+import { AgeGroups } from '@/src/constants/AgeGroups';
+import { Book } from '@/src/types';
 
 const userStories = [
   {
