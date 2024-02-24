@@ -1,4 +1,3 @@
-import { useAuth } from '@clerk/clerk-expo';
 import { getTokens } from '@tamagui/core';
 import { Tabs } from 'expo-router';
 
@@ -10,7 +9,8 @@ import { useClientOnlyValue } from '@/src/hooks/useClientOnlyValue';
 import useIsOnlinePages from '@/src/hooks/useIsOnlinePages';
 
 const TabsPage: React.FC = () => {
-  const { isSignedIn } = useAuth();
+  // const { isSignedIn } = useAuth();
+  const isSignedIn = true;
   const inOnline = useIsOnlinePages();
 
   const tabBarBg = inOnline ? getTokens().color.background.val : getTokens().color.accent.val;

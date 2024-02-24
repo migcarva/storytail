@@ -1,9 +1,8 @@
-import { useAuth } from '@clerk/clerk-expo';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Stack } from 'expo-router';
 
 const TabsPage: React.FC = () => {
-  const { isSignedIn } = useAuth();
+  const isSignedIn = true;
 
   const modalOptions: NativeStackNavigationOptions = {
     presentation: 'modal',

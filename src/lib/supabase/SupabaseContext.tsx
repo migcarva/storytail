@@ -4,7 +4,6 @@ import { jwtDecode } from 'jwt-decode';
 import type { JwtPayload } from 'jwt-decode';
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { Env } from '@/env';
 import { supabase } from '@/src/lib/supabase';
 import { createUser, getUserByEmail } from '@/src/queries/users';
 import type * as types from '@/src/types';
@@ -98,7 +97,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     const result = await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: `${Constants.expoConfig!.extra!.BUNDLE_ID ?? Env.BUNDLE_ID}://home/`,
+        redirectTo: `${Constants.expoConfig!.extra!.BUNDLE_ID}://home/`,
         scopes: 'full_name email',
       },
     });
@@ -110,7 +109,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     const result = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${Constants.expoConfig!.extra!.BUNDLE_ID ?? Env.BUNDLE_ID}://home/`,
+        redirectTo: `${Constants.expoConfig!.extra!.BUNDLE_ID}://home/`,
       },
     });
 
