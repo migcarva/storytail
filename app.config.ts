@@ -12,7 +12,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   version: Env.VERSION.toString(),
   orientation: 'portrait',
   icon: './src/assets/images/icon.png',
-  userInterfaceStyle: 'automatic',
+  userInterfaceStyle: 'light',
   splash: {
     image: './src/assets/images/splash.png',
     resizeMode: 'cover',

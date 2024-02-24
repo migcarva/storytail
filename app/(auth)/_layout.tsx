@@ -16,10 +16,26 @@ const TabsPage: React.FC = () => {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} redirect={!isSignedIn} />
-      <Stack.Screen name="search-online-library" options={modalOptions} redirect={!isSignedIn} />
-      <Stack.Screen name="search-user-library" options={modalOptions} redirect={!isSignedIn} />
-      <Stack.Screen name="notifications" options={modalOptions} redirect={!isSignedIn} />
-      <Stack.Screen name="settings" options={modalOptions} redirect={!isSignedIn} />
+      <Stack.Screen
+        name="search-online-library"
+        options={{ ...modalOptions, headerTitle: 'Search' }}
+        redirect={!isSignedIn}
+      />
+      <Stack.Screen
+        name="search-user-library"
+        options={{ ...modalOptions, headerTitle: 'Search' }}
+        redirect={!isSignedIn}
+      />
+      <Stack.Screen
+        name="notifications"
+        options={{ ...modalOptions, headerTitle: 'Notifications' }}
+        redirect={!isSignedIn}
+      />
+      <Stack.Screen
+        name="settings"
+        options={{ ...modalOptions, headerTitle: 'Settings' }}
+        redirect={!isSignedIn}
+      />
     </Stack>
   );
 };

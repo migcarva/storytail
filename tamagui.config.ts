@@ -74,6 +74,7 @@ export const tokens = createTokens({
     background: '#F9F8F8',
     grey: '#4E4E4E',
     lightgrey: '#C1BCBC',
+    input: 'D9D9D9',
     black: '#221413',
   },
 });
