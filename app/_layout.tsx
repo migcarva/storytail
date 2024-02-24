@@ -19,6 +19,8 @@ import '@tamagui/core/reset.css';
 import { useColorScheme } from '@/src/hooks/useColorScheme';
 import { SupabaseProvider, useSupabase } from '@/src/lib/supabase/SupabaseContext';
 import { config } from '@/tamagui.config';
+import '../src/styles/global.css';
+
 
 export {
   // Catch any errors thrown by the Layout component.
