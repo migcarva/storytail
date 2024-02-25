@@ -1,11 +1,9 @@
-import { Text, View } from 'tamagui';
+import { Text, View } from 'react-native';
 
 const OnlineLibraryScreen: React.FC = () => {
   return (
-    <View f={1} alignItems="center" justifyContent="center" backgroundColor="$background">
-      <Text fontSize="$2" color="$black">
-        Online Library
-      </Text>
+    <View className="flex flex-1 items-center justify-center bg-background">
+      <Text className="text-xl text-black">Online Library</Text>
     </View>
   );
 };

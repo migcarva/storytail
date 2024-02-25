@@ -1,10 +1,9 @@
-import { ActivityIndicator } from 'react-native';
-import { View } from 'tamagui';
+import { ActivityIndicator, View } from 'react-native';
 
 const StartPage: React.FC = () => {
   return (
-    <View f={1} alignItems="center" justifyContent="center" backgroundColor="$background">
-      <ActivityIndicator size="large" color="#0000ff" />
+    <View className="flex flex-1 items-center justify-center bg-background">
+      <ActivityIndicator size="large" color="#513175" />
     </View>
   );
 };

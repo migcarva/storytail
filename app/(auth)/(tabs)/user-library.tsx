@@ -1,4 +1,4 @@
-import { Text, View } from 'tamagui';
+import { Text, View } from 'react-native';
 
 import BooksCarousel from '@/src/components/BooksCarousel';
 import { AgeGroups } from '@/src/constants/AgeGroups';
@@ -10,91 +10,78 @@ const userStories = [
     title: 'The little frog in the pond',
     ageGroup: AgeGroups[1],
     stars: 4,
-    background: 'extraordinary',
+    background: 'orange',
   },
   {
     id: 2,
     title: 'Adventures of the sleepy koala',
     ageGroup: AgeGroups[2],
     stars: 5,
-    background: 'complementary',
+    background: 'pink',
   },
   {
     id: 3,
     title: 'Mystery of the missing acorns',
     ageGroup: AgeGroups[1],
     stars: 3,
-    background: 'primary',
+    background: 'blue',
   },
   {
     id: 4,
     title: 'The curious kitten',
     ageGroup: AgeGroups[2],
     stars: 4,
-    background: 'secondary',
+    background: 'yellow',
   },
   {
     id: 5,
     title: "Journey to the rainbow's end",
     ageGroup: AgeGroups[3],
     stars: 5,
-    background: 'complementary',
+    background: 'pink',
   },
   {
     id: 6,
     title: 'The brave little toaster',
     ageGroup: AgeGroups[1],
     stars: 4,
-    background: 'extraordinary',
+    background: 'orange',
   },
   {
     id: 7,
     title: "The wizard's apprentice",
     ageGroup: AgeGroups[3],
     stars: 5,
-    background: 'secondary',
+    background: 'yellow',
   },
   {
     id: 8,
     title: 'Underwater escapades',
     ageGroup: AgeGroups[2],
     stars: 4,
-    background: 'complementary',
+    background: 'pink',
   },
   {
     id: 9,
     title: 'The lost dinosaur',
     ageGroup: AgeGroups[1],
     stars: 3,
-    background: 'primary',
+    background: 'blue',
   },
   {
     id: 10,
     title: 'The night sky explorer',
     ageGroup: AgeGroups[3],
     stars: 5,
-    background: 'extraordinary',
+    background: 'orange',
   },
 ] as Book[];
 
 const UserLibraryScreen: React.FC = () => {
   return (
-    <View f={1} alignItems="center" justifyContent="center" backgroundColor="$accent">
-      <Text
-        fontSize="$3"
-        color="$white"
-        fontFamily="$heading"
-        fontWeight="700"
-        marginTop={96}
-        marginBottom={48}>
-        your library
-      </Text>
-      <View
-        alignItems="center"
-        justifyContent="center"
-        backgroundColor="$accent"
-        flexDirection="row"
-        gap="$1">
+    <View className="flex flex-1 items-center justify-center bg-purple">
+      <Text className="text-white mt-6 mb-3 text-1.5 font-headingbold">your library</Text>
+      <View className="flex flex-row gap-1 items-center justify-center bg-purple">
         <BooksCarousel books={userStories} />
       </View>
     </View>

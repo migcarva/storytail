@@ -3,14 +3,8 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "env.js"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", "env.js", "tailwind.config.js", "metro.config.js"]
 }

@@ -3,9 +3,8 @@ import Constants from 'expo-constants';
 import { Link } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import React, { useEffect, useState } from 'react';
-import { Pressable, Platform } from 'react-native';
+import { Pressable, Platform, Text, View } from 'react-native';
 import Spinner from 'react-native-loading-spinner-overlay';
-import { Text, View, Button } from 'tamagui';
 
 import { useSupabase } from '@/src/lib/supabase/SupabaseContext';
 import { SecureStoreAdapter } from '@/src/lib/supabase/secureStoreAdapter';
@@ -111,25 +110,19 @@ const SignIn: React.FC = () => {
   };
 
   return (
-    <View flex={1} justifyContent="center">
+    <View className="flex-1 justify-center">
       <Spinner visible={loading} />
 
-      <Button size="$1" onPress={onSignInWithGoogle} disabled={loading} marginBottom="$1">
+      <Pressable onPress={onSignInWithGoogle} disabled={loading} className="mb-1">
         <Ionicons name="logo-google" size={16} />
-        <Text fontSize="$2">{loading ? 'Loading...' : 'Sign in with Google'}</Text>
-      </Button>
+        <Text className="text-1.125">{loading ? 'Loading...' : 'Sign in with Google'}</Text>
+      </Pressable>
 
       {isIphone && (
-        <Button
-          size="$1"
-          onPress={onSignInWithApple}
-          disabled={loading}
-          // paddingBottom="$1"
-          // style={{ marginBottom: 16, width: '100%' }}
-        >
+        <Pressable onPress={onSignInWithApple} disabled={loading}>
           <Ionicons name="logo-apple" size={16} />
-          <Text fontSize="$2">{loading ? 'Loading...' : 'Sign in with Apple'}</Text>
-        </Button>
+          <Text className="text-1.125">{loading ? 'Loading...' : 'Sign in with Apple'}</Text>
+        </Pressable>
       )}
 
       <Link href="/reset" asChild>

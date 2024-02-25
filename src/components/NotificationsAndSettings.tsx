@@ -1,5 +1,4 @@
 import { Ionicons } from '@expo/vector-icons';
-import { getTokens } from '@tamagui/core';
 import { Link } from 'expo-router';
 import React from 'react';
 import { Pressable, View } from 'react-native';
@@ -7,8 +6,7 @@ import { Pressable, View } from 'react-native';
 import useIsOnlinePages from '@/src/hooks/useIsOnlinePages';
 
 const NotificationsAndSettings: React.FC = () => {
-  const inOnline = useIsOnlinePages();
-  const iconColor = inOnline ? getTokens().color.black.val : getTokens().color.white.val;
+  const isOnline = useIsOnlinePages();
 
   return (
     <View
@@ -25,7 +23,7 @@ const NotificationsAndSettings: React.FC = () => {
             <Ionicons
               name="notifications-outline"
               size={28}
-              color={iconColor}
+              className={`${isOnline ? 'text-black' : 'text-white'}`}
               style={{ opacity: pressed ? 0.5 : 1 }}
             />
           )}
@@ -37,7 +35,7 @@ const NotificationsAndSettings: React.FC = () => {
             <Ionicons
               name="menu-outline"
               size={28}
-              color={iconColor}
+              className={`${isOnline ? 'text-black' : 'text-white'}`}
               style={{ marginLeft: 16, opacity: pressed ? 0.5 : 1 }}
             />
           )}

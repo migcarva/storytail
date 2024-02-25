@@ -12,6 +12,7 @@ import {
 } from '@expo-google-fonts/bellota-text';
 import { Slot, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+// import { verifyInstallation } from 'nativewind';
 import { useEffect } from 'react';
 import { TamaguiProvider } from 'tamagui';
 import '@tamagui/core/reset.css';
@@ -20,7 +21,6 @@ import { useColorScheme } from '@/src/hooks/useColorScheme';
 import { SupabaseProvider, useSupabase } from '@/src/lib/supabase/SupabaseContext';
 import { config } from '@/tamagui.config';
 import '../src/styles/global.css';
-
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -46,6 +46,8 @@ const RootLayout: React.FC = () => {
     Bellota_700Bold,
     ...Ionicons.font,
   });
+
+  // verifyInstallation();
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {

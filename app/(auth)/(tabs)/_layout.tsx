@@ -1,4 +1,3 @@
-import { getTokens } from '@tamagui/core';
 import { Tabs } from 'expo-router';
 
 import NotificationsAndSettings from '@/src/components/NotificationsAndSettings';
@@ -7,15 +6,16 @@ import SearchUserLibraryButton from '@/src/components/SearchUserLibraryButton';
 import TabBarIcon from '@/src/components/TabBarIcon';
 import { useClientOnlyValue } from '@/src/hooks/useClientOnlyValue';
 import useIsOnlinePages from '@/src/hooks/useIsOnlinePages';
+import colors from '@/src/utils/colors';
 
 const TabsPage: React.FC = () => {
   // const { isSignedIn } = useAuth();
   const isSignedIn = true;
-  const inOnline = useIsOnlinePages();
+  const isOnline = useIsOnlinePages();
 
-  const tabBarBg = inOnline ? getTokens().color.background.val : getTokens().color.accent.val;
-  const activeTabTint = inOnline ? getTokens().color.black.val : getTokens().color.white.val;
-  const inactiveTabTin = inOnline ? getTokens().color.black.val : getTokens().color.white.val;
+  const tabBarBg = isOnline ? colors.background : colors.purple;
+  const activeTabTint = isOnline ? colors.background : colors.white;
+  const inactiveTabTin = isOnline ? colors.background : colors.white;
 
   const options = {
     // Disable the static render of the header on web
@@ -33,8 +33,8 @@ const TabsPage: React.FC = () => {
     tabBarInactiveTintColor: inactiveTabTin,
   };
 
-  const bookIconName = inOnline ? 'book-outline' : 'book';
-  const earthIconName = inOnline ? 'earth' : 'earth-outline';
+  const bookIconName = isOnline ? 'book-outline' : 'book';
+  const earthIconName = isOnline ? 'earth' : 'earth-outline';
 
   return (
     <Tabs screenOptions={options}>
