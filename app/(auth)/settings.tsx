@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import SignoutButton from '@/src/components/SignoutButton';
+import SignoutButton from '@/src/components/navs/SignoutButton';
 
 const Settings: React.FC = () => {
   // const { user } = useUser();

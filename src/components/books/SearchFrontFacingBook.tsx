@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 
 import { Book } from '@/src/types';
 
-const FrontFacingBook: React.FC<Book> = ({ title, stars, ageGroup, background }) => {
+const SearchFrontFacingBook: React.FC<Book> = ({ title, stars, ageGroup, background }) => {
   const bgStyles = {
     yellow: 'bg-yellow',
     orange: 'bg-orange',
@@ -14,14 +14,14 @@ const FrontFacingBook: React.FC<Book> = ({ title, stars, ageGroup, background })
   return (
     <View className="relative">
       <View
-        className={`w-[214px] h-[316px] items-center justify-center bg-background px-2 py-2.5 rounded-tr-0.5 rounded-br-0.5 ${bgStyles[background as keyof typeof bgStyles]}`}
+        className={`w-[148px] h-[218px] items-center justify-center bg-background px-2 py-2.5 rounded-tr-0.5 rounded-br-0.5 ${bgStyles[background as keyof typeof bgStyles]}`}
         style={{
           shadowColor: 'black',
           shadowOpacity: 0.32,
           shadowRadius: 8,
           shadowOffset: {
-            width: 16,
-            height: 64,
+            width: 8,
+            height: 8,
           },
         }}>
         <View className="absolute top-0.5">
@@ -32,13 +32,13 @@ const FrontFacingBook: React.FC<Book> = ({ title, stars, ageGroup, background })
           <Rating stars={stars} />
         </View>
       </View>
-      <View className="bg-lightgrey absolute w-0.625 h-[316px] l-0.25" />
-      <View className="bg-grey absolute w-0.25 h-[316px]" />
+      <View className="bg-lightgrey absolute w-0.625 h-[218px] l-0.25" />
+      <View className="bg-grey absolute w-0.25 h-[218px]" />
     </View>
   );
 };
 
-export default FrontFacingBook;
+export default SearchFrontFacingBook;
 
 const Title: React.FC<{
   title: string;
@@ -47,7 +47,7 @@ const Title: React.FC<{
     <Text
       textBreakStrategy="highQuality"
       lineBreakStrategyIOS="standard"
-      className="text-1.5 text-black font-headingbold text-center break-normal ">
+      className="text-1.25 text-black font-headingbold text-center break-normal ">
       {title}
     </Text>
   );
@@ -60,8 +60,8 @@ const AgeGroup: React.FC<{
 
   return (
     <View className="flex justify-center items-center flex-nowrap flex-col">
-      <Ionicons name="book-outline" size={16} className="text-black" style={{}} />
-      <Text className="text-1 text-black font-body">{ageGroup}</Text>
+      <Ionicons name="book-outline" size={12} className="text-black" style={{}} />
+      <Text className="text-0.75 text-black font-body">{ageGroup}</Text>
     </View>
   );
 };
@@ -74,7 +74,7 @@ const Rating: React.FC<{
   return (
     <View className="flex justify-center items-center flex-nowrap flex-row">
       {Array.from({ length: stars }, (_, index) => (
-        <Ionicons key={index} name="star-outline" size={16} className="text-black" style={{}} />
+        <Ionicons key={index} name="star-outline" size={12} className="text-black" style={{}} />
       ))}
     </View>
   );

@@ -1,9 +1,9 @@
 import { Tabs } from 'expo-router';
 
-import NotificationsAndSettings from '@/src/components/NotificationsAndSettings';
-import SearchOnlineLibraryButton from '@/src/components/SearchOnlineLibraryButton';
-import SearchUserLibraryButton from '@/src/components/SearchUserLibraryButton';
-import TabBarIcon from '@/src/components/TabBarIcon';
+import NotificationsAndSettings from '@/src/components/navs/NotificationsAndSettings';
+import SearchOnlineLibraryButton from '@/src/components/navs/SearchOnlineLibraryButton';
+import SearchUserLibraryButton from '@/src/components/navs/SearchUserLibraryButton';
+import TabBarIcon from '@/src/components/navs/TabBarIcon';
 import { useClientOnlyValue } from '@/src/hooks/useClientOnlyValue';
 import useIsOnlinePages from '@/src/hooks/useIsOnlinePages';
 import colors from '@/src/utils/colors';
