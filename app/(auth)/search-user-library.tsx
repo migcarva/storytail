@@ -19,7 +19,7 @@ export default SearchUserLibrary;
 const SearchInput: React.FC = () => {
   const [number, onChangeNumber] = useState('');
   return (
-    <View>
+    <View className="flex">
       <Ionicons name="search-outline" size={24} />
       <TextInput
         onChangeText={onChangeNumber}

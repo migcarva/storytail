@@ -14,8 +14,8 @@ const TabsPage: React.FC = () => {
   const isOnline = useIsOnlinePages();
 
   const tabBarBg = isOnline ? colors.background : colors.purple;
-  const activeTabTint = isOnline ? colors.background : colors.white;
-  const inactiveTabTin = isOnline ? colors.background : colors.white;
+  const activeTabTint = isOnline ? colors.black : colors.white;
+  const inactiveTabTin = isOnline ? colors.black : colors.white;
 
   const options = {
     // Disable the static render of the header on web

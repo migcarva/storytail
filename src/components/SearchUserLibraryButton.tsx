@@ -3,6 +3,8 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { Pressable } from 'react-native';
 
+import colors from '@/src/utils/colors';
+
 const SearchUserLibrary: React.FC = () => {
   return (
     <Link href="/search-user-library" asChild>
@@ -11,7 +13,7 @@ const SearchUserLibrary: React.FC = () => {
           <Ionicons
             name="search-outline"
             size={28}
-            className="text-black"
+            color={colors.white}
             style={{ marginLeft: 32, marginTop: 16, opacity: pressed ? 0.5 : 1 }}
           />
         )}

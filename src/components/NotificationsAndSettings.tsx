@@ -4,6 +4,7 @@ import React from 'react';
 import { Pressable, View } from 'react-native';
 
 import useIsOnlinePages from '@/src/hooks/useIsOnlinePages';
+import colors from '@/src/utils/colors';
 
 const NotificationsAndSettings: React.FC = () => {
   const isOnline = useIsOnlinePages();
@@ -23,7 +24,7 @@ const NotificationsAndSettings: React.FC = () => {
             <Ionicons
               name="notifications-outline"
               size={28}
-              className={`${isOnline ? 'text-black' : 'text-white'}`}
+              color={isOnline ? colors.black : colors.white}
               style={{ opacity: pressed ? 0.5 : 1 }}
             />
           )}
@@ -35,7 +36,7 @@ const NotificationsAndSettings: React.FC = () => {
             <Ionicons
               name="menu-outline"
               size={28}
-              className={`${isOnline ? 'text-black' : 'text-white'}`}
+              color={isOnline ? colors.black : colors.white}
               style={{ marginLeft: 16, opacity: pressed ? 0.5 : 1 }}
             />
           )}
