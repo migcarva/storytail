@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+/* @layer base {
   :root {
     --color-white: 0deg 0% 100%;
     --color-lightgrey: 0deg 4% 75%;
@@ -16,4 +16,4 @@
     --color-background: 0deg 8% 97%;
     --color-input: 0deg 0% 85%;
   }
-}
+} */
