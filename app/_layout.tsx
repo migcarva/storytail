@@ -14,12 +14,9 @@ import { Slot, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 // import { verifyInstallation } from 'nativewind';
 import { useEffect } from 'react';
-import { TamaguiProvider } from 'tamagui';
-import '@tamagui/core/reset.css';
 
 import { useColorScheme } from '@/src/hooks/useColorScheme';
 import { SupabaseProvider, useSupabase } from '@/src/lib/supabase/SupabaseContext';
-import { config } from '@/tamagui.config';
 import '../src/styles/global.css';
 
 export {
@@ -65,11 +62,9 @@ const RootLayout: React.FC = () => {
   }
 
   return (
-    <TamaguiProvider config={config} defaultTheme={colorScheme as any}>
-      <SupabaseProvider>
-        <InitialLayout />
-      </SupabaseProvider>
-    </TamaguiProvider>
+    <SupabaseProvider>
+      <InitialLayout />
+    </SupabaseProvider>
   );
 };
 
