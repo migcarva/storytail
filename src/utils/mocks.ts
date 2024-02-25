@@ -73,3 +73,94 @@ export const userStories = [
     background: 'orange',
   },
 ] as Book[];
+
+export const userNotifications = {
+  stories: [
+    {
+      id: 1,
+      type: 'new-story',
+      title: 'Cleaning the ocean with my friends',
+      author: 'John Connor',
+      seen: false,
+    },
+    {
+      id: 2,
+      type: 'new-story',
+      title: 'Once upon a time in my bedroom',
+      author: 'Sarah Griffin',
+      seen: false,
+    },
+    {
+      id: 3,
+      type: 'new-reads',
+      title: 'Vincent and the baby dragon',
+      seen: false,
+      ammount: 24,
+    },
+    {
+      id: 4,
+      type: 'new-story',
+      title: 'My amazing spaceship',
+      author: 'Michael Splitz',
+      seen: false,
+    },
+    {
+      id: 5,
+      type: 'new-reads',
+      title: 'The little frog in the pound',
+      seen: false,
+      ammount: 42,
+    },
+    {
+      id: 6,
+      type: 'book-shipped',
+      title: 'Vincent goes to the moon',
+      seen: false,
+      date: '2 days ago',
+    },
+    {
+      id: 7,
+      type: 'new-story',
+      title: 'Amazing intro to soup making',
+      author: 'Agatha Davis',
+      seen: true,
+    },
+    {
+      id: 8,
+      type: 'new-story',
+      title: 'How to make friends',
+      author: 'John John Florence',
+      seen: true,
+    },
+    {
+      id: 9,
+      type: 'new-reads',
+      title: 'The little frog in the pound',
+      seen: true,
+      ammount: 12,
+    },
+  ],
+  comments: [
+    {
+      id: 1,
+      type: 'new-comment',
+      title: 'Vincent and the baby dragon',
+      seen: false,
+      ammount: 24,
+    },
+    {
+      id: 2,
+      type: 'new-comment',
+      title: 'The little frog in the pound',
+      seen: false,
+      ammount: 42,
+    },
+    {
+      id: 1,
+      type: 'new-reply',
+      title: 'Once upon a time in my bedroom',
+      author: 'Sarah Griffin',
+      seen: true,
+    },
+  ],
+};

@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 
 import SearchFrontFacingBook from '@/src/components/books/SearchFrontFacingBook';
