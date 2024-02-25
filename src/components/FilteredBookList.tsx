@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 
 import SearchFrontFacingBook from '@/src/components/books/SearchFrontFacingBook';
@@ -8,6 +8,39 @@ import { userStories } from '@/src/utils/mocks';
 const FilteredBookList: React.FC = () => {
   const [group, setSelectedGroup] = useState(0);
   const [starsAsc, setStarsAsc] = useState(true);
+  const [filteredStories, setFilteredStories] = useState(userStories);
+
+  // useEffect(() => {
+  //   if (group === 1) {
+  //     const allStories = [...filteredStories];
+  //     const sortedStories = allStories.sort((a, b) => {
+  //       if (a.ageGroup === '1-4') return -1;
+  //       if (b.ageGroup === '1-4') return 1;
+  //       return a.title.localeCompare(b.title);
+  //     });
+  //     setFilteredStories(sortedStories);
+  //   }
+
+  //   if (group === 2) {
+  //     const allStories = [...filteredStories];
+  //     const sortedStories = allStories.sort((a, b) => {
+  //       if (a.ageGroup === '5-8') return -1;
+  //       if (b.ageGroup === '5-8') return 1;
+  //       return a.title.localeCompare(b.title);
+  //     });
+  //     setFilteredStories(sortedStories);
+  //   }
+
+  //   if (group === 3) {
+  //     const allStories = [...filteredStories];
+  //     const sortedStories = allStories.sort((a, b) => {
+  //       if (a.ageGroup === '9-12') return -1;
+  //       if (b.ageGroup === '9-12') return 1;
+  //       return a.title.localeCompare(b.title);
+  //     });
+  //     setFilteredStories(sortedStories);
+  //   }
+  // }, [group, filteredStories]);
 
   return (
     <View className="w-full pb-0.25 mb-1.5">
@@ -51,20 +84,29 @@ const FilteredBookList: React.FC = () => {
         </View>
       </View>
       <SafeAreaView>
-        <ScrollView className="pt-3 mb-4">
-          <View className="flex flex-row flex-wrap gap-3 justify-center">
-            {userStories.map((book) => (
-              <SearchFrontFacingBook
-                id={book.id}
-                title={book.title}
-                stars={book.stars}
-                ageGroup={book.ageGroup}
-                background={book.background}
-              />
-            ))}
-            <View className="h-8" />
+        {userStories.length > 0 && (
+          <ScrollView className="pt-3 mb-4">
+            <View className="flex flex-row flex-wrap gap-2.5 justify-center">
+              {userStories.map((book) => (
+                <SearchFrontFacingBook
+                  id={book.id}
+                  title={book.title}
+                  stars={book.stars}
+                  ageGroup={book.ageGroup}
+                  background={book.background}
+                  key={book.id}
+                />
+              ))}
+              <View className="h-8" />
+            </View>
+          </ScrollView>
+        )}
+        {filteredStories.length === 0 && (
+          <View className="h-10 flex justify-center items-center">
+            <Text className="text-2 font-bodybold">No stories to show</Text>
+            <Text className="text-1.25 font-body">Create a new story!</Text>
           </View>
-        </ScrollView>
+        )}
       </SafeAreaView>
     </View>
   );
