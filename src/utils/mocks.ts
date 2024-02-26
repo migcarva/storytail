@@ -164,3 +164,22 @@ export const userNotifications = {
     },
   ],
 };
+
+export const book = {
+  title: 'The Wild Adventures of Sarah and the Fox',
+  summary: 'Sarah adventures into the wild with her beloved fox friend',
+  created_at: 1715904000,
+  stars: 0,
+  reads: 0,
+  self_reads: 0,
+  chapters: [
+    {
+      text: 'Once upon a time, in a cozy little village nestled between green hills, lived a curious little girl named Sarah. She had a special friend, a fluffy fox named Fizzy.',
+      image: '',
+    },
+    {
+      text: 'One sunny morning, Sarah felt the urge to explore beyond the hills that cradled her home. "Let’s go on a big adventure today, Fizzy!" she exclaimed, her eyes sparkling with excitement.',
+      image: '',
+    },
+  ],
+};
