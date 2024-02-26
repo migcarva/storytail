@@ -22,6 +22,7 @@ module.exports = {
       spacing: {
         0.125: '0.125rem',
         0.25: '0.25rem',
+        0.375: '0.375rem',
         0.5: '0.5rem',
         0.625: '0.625rem',
         0.75: '0.75rem',
@@ -46,6 +47,9 @@ module.exports = {
       borderRadius: ({ theme }) => ({
         ...theme('spacing'),
       }),
+      rotate: {
+        8: '8deg',
+      },
     },
   },
   plugins: [

@@ -12,7 +12,7 @@ const SearchInput: React.FC = () => {
           onChangeText={onQueryChange}
           value={query}
           placeholder="useless placeholder"
-          keyboardType="numeric"
+          keyboardType="default"
           className="flex-1 px-0.5"
         />
         <Ionicons name="close-outline" size={32} />

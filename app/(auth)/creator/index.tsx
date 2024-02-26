@@ -50,7 +50,7 @@ const ReadButton: React.FC<{
 }> = ({ firstRead }) => {
   const text = firstRead ? 'start reading' : 'read again';
   return (
-    <Link href="/book-reader/intro" asChild>
+    <Link href="/reader/intro" asChild>
       <Pressable>
         {({ pressed }) => (
           <View

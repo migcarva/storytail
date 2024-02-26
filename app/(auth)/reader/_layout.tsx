@@ -1,7 +1,7 @@
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Stack } from 'expo-router';
 
-const BookReader: React.FC = () => {
+const StoryReader: React.FC = () => {
   const isSignedIn = true;
 
   const modalOptions: NativeStackNavigationOptions = {
@@ -28,4 +28,4 @@ const BookReader: React.FC = () => {
   );
 };
 
-export default BookReader;
+export default StoryReader;

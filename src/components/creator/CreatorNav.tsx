@@ -4,35 +4,31 @@ import { View, Pressable } from 'react-native';
 
 import colors from '@/src/utils/colors';
 
-const ReaderNav: React.FC<{
-  chapter: number;
+const CreatorNav: React.FC<{
+  step: number;
   isLast?: boolean;
-}> = ({ chapter, isLast = false }) => {
+}> = ({ step, isLast = false }) => {
   return (
-    <View className="flex flex-row justify-between w-full">
-      <View className="flex">{chapter > -1 && <CloseButton />}</View>
+    <View className="flex flex-row justify-end w-full">
       <View className="flex flex-row gap-2">
-        {chapter > -1 && <PrevButton chapter={chapter - 1} />}
-        {!isLast && <NextButton chapter={chapter + 1} />}
-        {isLast && <NextButton chapter="the-end" />}
+        {step > 1 && <PrevButton step={step - 1} />}
+        <NextButton step={step + 1} />
       </View>
     </View>
   );
 };
 
-export default ReaderNav;
+export default CreatorNav;
 
-export const CloseButton: React.FC<{
-  isNav?: boolean;
-}> = ({ isNav = true }) => {
+export const CloseButton: React.FC = () => {
   return (
-    <Link href="/reader" asChild>
+    <Link href="/creator" asChild>
       <Pressable>
         {({ pressed }) => (
           <Ionicons
             name="close"
             color={colors.white}
-            size={isNav ? 48 : 32}
+            size={32}
             style={{ opacity: pressed ? 0.5 : 1 }}
           />
         )}
@@ -42,10 +38,10 @@ export const CloseButton: React.FC<{
 };
 
 const NextButton: React.FC<{
-  chapter: number | string;
-}> = ({ chapter }) => {
+  step: number | string;
+}> = ({ step }) => {
   return (
-    <Link href={`/reader/${chapter}`} asChild>
+    <Link href={`/creator/${step}`} asChild>
       <Pressable>
         {({ pressed }) => (
           <Ionicons
@@ -61,10 +57,10 @@ const NextButton: React.FC<{
 };
 
 const PrevButton: React.FC<{
-  chapter: number;
-}> = ({ chapter }) => {
+  step: number;
+}> = ({ step }) => {
   return (
-    <Link href={`/reader/${chapter < 0 ? 'intro' : chapter}`} asChild>
+    <Link href={`/creator/${step < 0 ? 'intro' : step}`} asChild>
       <Pressable>
         {({ pressed }) => (
           <Ionicons

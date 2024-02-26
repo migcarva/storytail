@@ -115,7 +115,7 @@ const Card: React.FC<{
         ageGroup={book.ageGroup}
         background={book.background}
       />
-      <Link href="book-reader" className="my-2">
+      <Link href="reader" className="my-2">
         <Pressable>
           {({ pressed }) => <Text className="text-1 text-center text-white">Read</Text>}
         </Pressable>

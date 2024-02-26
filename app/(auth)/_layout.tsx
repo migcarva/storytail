@@ -16,7 +16,8 @@ const TabsPage: React.FC = () => {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} redirect={!isSignedIn} />
-      <Stack.Screen name="book-reader" options={{ headerShown: false }} redirect={!isSignedIn} />
+      <Stack.Screen name="reader" options={{ headerShown: false }} redirect={!isSignedIn} />
+      <Stack.Screen name="creator" options={{ headerShown: false }} redirect={!isSignedIn} />
       <Stack.Screen
         name="search-online-library"
         options={{ ...modalOptions, headerTitle: 'Search' }}

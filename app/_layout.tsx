@@ -82,7 +82,7 @@ const InitialLayout: React.FC = () => {
     // }
 
     // router.replace('/user-library');
-    router.replace('/book-reader');
+    router.replace('/creator/1');
   }, [loggedIn]);
 
   return <Slot />;
