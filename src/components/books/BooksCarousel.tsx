@@ -1,4 +1,5 @@
-import { Dimensions } from 'react-native';
+import { Link } from 'expo-router';
+import { Dimensions, Pressable, Text } from 'react-native';
 import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
 
@@ -114,6 +115,11 @@ const Card: React.FC<{
         ageGroup={book.ageGroup}
         background={book.background}
       />
+      <Link href="book-reader" className="my-2">
+        <Pressable>
+          {({ pressed }) => <Text className="text-1 text-center text-white">Read</Text>}
+        </Pressable>
+      </Link>
     </Animated.View>
   );
 };
