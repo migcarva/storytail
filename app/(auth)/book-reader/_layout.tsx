@@ -16,7 +16,9 @@ const BookReader: React.FC = () => {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} redirect={!isSignedIn} />
-      <Stack.Screen name="reader" options={{ headerShown: false }} redirect={!isSignedIn} />
+      <Stack.Screen name="intro" options={{ headerShown: false }} redirect={!isSignedIn} />
+      <Stack.Screen name="the-end" options={{ headerShown: false }} redirect={!isSignedIn} />
+      <Stack.Screen name="[chapter]" options={{ headerShown: false }} redirect={!isSignedIn} />
       <Stack.Screen
         name="edit-details"
         options={{ ...modalOptions, headerTitle: 'Details' }}

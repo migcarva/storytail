@@ -174,12 +174,20 @@ export const book = {
   self_reads: 0,
   chapters: [
     {
-      text: 'Once upon a time, in a cozy little village nestled between green hills, lived a curious little girl named Sarah. She had a special friend, a fluffy fox named Fizzy.',
-      image: '',
+      text: 'Em uma pequena vila, vivia uma menina chamada Tina. Tina adorava passear no parque perto de sua casa. Um dia, enquanto caminhava, ela viu um lindo pássaro azul. O pássaro cantava uma música doce que enchia o ar de alegria.',
+      image: '@/src/assets/images/book/ch1.webp',
     },
     {
-      text: 'One sunny morning, Sarah felt the urge to explore beyond the hills that cradled her home. "Let’s go on a big adventure today, Fizzy!" she exclaimed, her eyes sparkling with excitement.',
-      image: '',
+      text: 'Tina sorriu e seguiu o pássaro até um grande poço. Lá, ela viu o pássaro beber água fresca. O pássaro então olhou para Tina e começou a dançar. Tina riu e começou a dançar também.',
+      image: '@/src/assets/images/book/ch2.webp',
+    },
+    {
+      text: 'De repente, o pássaro azul voou para cima, girando no ar. Tina olhou para cima, admirada. O pássaro desceu, pousou na mão de Tina e cantou uma bela canção. Tina sentiu uma alegria imensa.',
+      image: '@/src/assets/images/book/ch3.webp',
+    },
+    {
+      text: 'E assim, a floresta não só teve o seu rio de volta, mas também aprendeu uma lição valiosa sobre amizade, colaboração e respeito pelas diferenças.',
+      image: '@/src/assets/images/book/ch1.webp',
     },
   ],
 };

@@ -10,8 +10,9 @@ const Intro: React.FC = () => {
   const { title, summary, created_at, self_reads, reads, stars } = book;
   return (
     <View className="flex px-2 pt-6 h-full relative">
-      <View className="flex mb-4">
+      <View className="flex mb-4 flex-row justify-between ">
         <Ionicons name="close" size={32} />
+        {self_reads > 0 && <Ionicons name="share-social-outline" size={32} />}
       </View>
       <Text className="text-2.5 font-heading w-[300px]">{title}</Text>
       <Text className="text-1 text-grey font-body w-[300px]">
@@ -49,7 +50,7 @@ const ReadButton: React.FC<{
 }> = ({ firstRead }) => {
   const text = firstRead ? 'start reading' : 'read again';
   return (
-    <Link href="/reader" asChild>
+    <Link href="/book-reader/intro" asChild>
       <Pressable>
         {({ pressed }) => (
           <View
