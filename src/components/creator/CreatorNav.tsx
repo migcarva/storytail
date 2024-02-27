@@ -24,7 +24,7 @@ export const CloseButton: React.FC<{
   isDark?: boolean;
 }> = ({ isDark = false }) => {
   return (
-    <Link href="/creator" asChild>
+    <Link href="/user-library" asChild>
       <Pressable>
         {({ pressed }) => (
           <Ionicons

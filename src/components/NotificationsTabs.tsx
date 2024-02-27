@@ -46,7 +46,7 @@ export default NotificationsTabs;
 const StoriesTabView: React.FC<{ notifications: any[] }> = ({ notifications }) => {
   return (
     <View className="flex py-2">
-      {notifications.map(({ type, title, author, ammount, date, seen }) => {
+      {notifications.map(({ type, title, author, ammount, date, seen }, index) => {
         let icon, notification;
         switch (type) {
           case 'new-story':
@@ -63,7 +63,9 @@ const StoriesTabView: React.FC<{ notifications: any[] }> = ({ notifications }) =
             break;
         }
         return (
-          <View className={`flex flex-row pb-1.25 gap-1 ${seen ? 'opacity-50' : ''}`}>
+          <View
+            key={`${title}-${index}`}
+            className={`flex flex-row pb-1.25 gap-1 ${seen ? 'opacity-50' : ''}`}>
             {icon}
             <View className="flex gap-0.125">
               <Text className="text-1.25 text-black font-heading tracking-wider">{title}</Text>
@@ -79,7 +81,7 @@ const StoriesTabView: React.FC<{ notifications: any[] }> = ({ notifications }) =
 const CommentsTabView: React.FC<{ notifications: any[] }> = ({ notifications }) => {
   return (
     <View className="flex py-2">
-      {notifications.map(({ type, title, author, ammount, date, seen }) => {
+      {notifications.map(({ type, title, author, ammount, seen }, index) => {
         let icon, notification;
         switch (type) {
           case 'new-comment':
@@ -92,7 +94,9 @@ const CommentsTabView: React.FC<{ notifications: any[] }> = ({ notifications }) 
             break;
         }
         return (
-          <View className={`flex flex-row pb-1 gap-1 ${seen ? 'opacity-50' : ''}`}>
+          <View
+            key={`${title}-${index}`}
+            className={`flex flex-row pb-1 gap-1 ${seen ? 'opacity-50' : ''}`}>
             {icon}
             <View className="flex gap-0.125">
               <Text className="text-1.25 text-black font-headingbold tracking-wider">{title}</Text>

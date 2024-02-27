@@ -1,5 +1,5 @@
-import { Link } from 'expo-router';
-import { Dimensions, Pressable, Text } from 'react-native';
+import { Link, useFocusEffect, useRouter } from 'expo-router';
+import { Dimensions, Pressable } from 'react-native';
 import Animated, {
   Extrapolation,
   SharedValue,
@@ -12,32 +12,33 @@ import FrontFacingBook from '@/src/components/books/FrontFacingBook';
 import type { Book } from '@/src/types';
 import { withAnchorPoint } from '@/src/utils/anchor-points';
 import colors from '@/src/utils/colors';
+import { useState } from 'react';
 
 const PAGE_WIDTH = Dimensions.get('window').width;
 const PAGE_HEIGHT = Dimensions.get('window').height;
 
+const baseOptions = {
+  style: {
+    width: PAGE_WIDTH,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  withAnimation: {
+    type: 'spring',
+    config: {
+      damping: 16,
+    },
+  },
+  vertical: false,
+  width: PAGE_WIDTH * 0.5, // change this value to change the dimension of each item on the carouse;
+  height: PAGE_HEIGHT * 0.6,
+  autoPlay: false,
+  loop: false,
+} as const;
+
 const BooksCarousel: React.FC<{
   books: Book[];
 }> = ({ books }) => {
-  const baseOptions = {
-    style: {
-      width: PAGE_WIDTH,
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    withAnimation: {
-      type: 'spring',
-      config: {
-        damping: 16,
-      },
-    },
-    vertical: false,
-    width: PAGE_WIDTH * 0.5, // change this value to change the dimension of each item on the carouse;
-    height: PAGE_HEIGHT * 0.6,
-    autoPlay: false,
-    loop: false,
-  } as const;
-
   // adds one last "book" to the array
   // the last books allows for new story creation
   const booksAndNew = [
@@ -50,14 +51,32 @@ const BooksCarousel: React.FC<{
       background: colors.white,
     },
   ];
+  const [activeItem, setActiveItem] = useState<number>(booksAndNew.length - 1);
+  const router = useRouter();
+
+  const handlePress = (index: number) => {
+    setActiveItem(index); // todo use a persisted store!
+    if (index === booksAndNew.length - 1) {
+      router.replace('/creator/1');
+    } else {
+      router.replace('/reader');
+    }
+  };
 
   return (
     <Carousel
       {...baseOptions}
-      defaultIndex={booksAndNew.length - 1}
+      defaultIndex={activeItem}
       data={booksAndNew}
       renderItem={({ index, animationValue, item }) => (
-        <Card animationValue={animationValue} key={index} index={index} book={item} />
+        <Link
+          href={index === booksAndNew.length - 1 ? '/creator/1' : '/reader'}
+          asChild
+          className="my-2">
+          <Pressable onPress={() => handlePress(index)}>
+            <Card animationValue={animationValue} key={index} index={index} book={item} />
+          </Pressable>
+        </Link>
       )}
     />
   );
@@ -74,12 +93,7 @@ const Card: React.FC<{
   const HEIGHT = PAGE_HEIGHT / 1.5;
 
   const cardStyle = useAnimatedStyle(() => {
-    const scale = interpolate(
-      animationValue.value,
-      [-0.1, 0, 1],
-      [0.95, 1, 1],
-      Extrapolation.CLAMP,
-    );
+    const scale = interpolate(animationValue.value, [-0.1, 0, 1], [1, 1, 1], Extrapolation.CLAMP);
 
     const translateX = interpolate(animationValue.value, [-1, -0.2, 0, 1], [0, WIDTH * 0, 0, 0]);
 
@@ -121,11 +135,6 @@ const Card: React.FC<{
         ageGroup={book.ageGroup}
         background={book.background}
       />
-      <Link href="reader" className="my-2">
-        <Pressable>
-          {({ pressed }) => <Text className="text-1 text-center text-white">Read</Text>}
-        </Pressable>
-      </Link>
     </Animated.View>
   );
 };

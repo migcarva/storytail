@@ -3,6 +3,7 @@ import { Link } from 'expo-router';
 import { ReactNode } from 'react';
 import { View, Text, Pressable } from 'react-native';
 
+import { CloseButton } from '@/src/components/reader/ReaderNav';
 import colors from '@/src/utils/colors';
 import { book } from '@/src/utils/mocks';
 
@@ -11,7 +12,7 @@ const Intro: React.FC = () => {
   return (
     <View className="flex px-2 pt-6 h-full relative">
       <View className="flex mb-4 flex-row justify-between ">
-        <Ionicons name="close" size={32} />
+        <CloseButton isDark isNav={false} />
         {self_reads > 0 && <Ionicons name="share-social-outline" size={32} />}
       </View>
       <Text className="text-2.5 font-heading w-[300px]">{title}</Text>

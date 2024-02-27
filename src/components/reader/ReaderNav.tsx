@@ -24,14 +24,15 @@ export default ReaderNav;
 
 export const CloseButton: React.FC<{
   isNav?: boolean;
-}> = ({ isNav = true }) => {
+  isDark?: boolean;
+}> = ({ isNav = true, isDark = false }) => {
   return (
     <Link href="/user-library" asChild>
       <Pressable>
         {({ pressed }) => (
           <Ionicons
             name="close"
-            color={colors.white}
+            color={isDark ? colors.black : colors.white}
             size={isNav ? 48 : 32}
             style={{ opacity: pressed ? 0.5 : 1 }}
           />
