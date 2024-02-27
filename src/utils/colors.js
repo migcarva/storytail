@@ -12,7 +12,7 @@ module.exports = {
   orange: '#FD8545',
   background: '#F9F8F8',
   input: '#D9D9D9',
-  page0: '#FAFAFA',
+  page0: '#F5F5F5',
   page1: '#F5F5F5',
   page2: '#EBEBEB',
   page3: '#E0E0E0',

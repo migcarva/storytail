@@ -1,6 +1,11 @@
 import { Link } from 'expo-router';
 import { Dimensions, Pressable, Text } from 'react-native';
-import Animated, { Extrapolation, interpolate, useAnimatedStyle } from 'react-native-reanimated';
+import Animated, {
+  Extrapolation,
+  SharedValue,
+  interpolate,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
 
 import FrontFacingBook from '@/src/components/books/FrontFacingBook';
@@ -61,7 +66,7 @@ export default BooksCarousel;
 
 const Card: React.FC<{
   index: number;
-  animationValue: Animated.SharedValue<number>;
+  animationValue: SharedValue<number>;
   book: Book;
 }> = ({ index, animationValue, book }) => {
   const WIDTH = PAGE_WIDTH / 1.5;

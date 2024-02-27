@@ -6,13 +6,13 @@ import colors from '@/src/utils/colors';
 
 const CreatorNav: React.FC<{
   step: number;
-  isLast?: boolean;
-}> = ({ step, isLast = false }) => {
+  isDisabled?: boolean;
+}> = ({ step, isDisabled }) => {
   return (
     <View className="flex flex-row justify-end w-full">
       <View className="flex flex-row gap-2">
         {step > 1 && <PrevButton step={step - 1} />}
-        <NextButton step={step + 1} />
+        <NextButton step={step + 1} disabled={!!isDisabled} />
       </View>
     </View>
   );
@@ -20,14 +20,16 @@ const CreatorNav: React.FC<{
 
 export default CreatorNav;
 
-export const CloseButton: React.FC = () => {
+export const CloseButton: React.FC<{
+  isDark?: boolean;
+}> = ({ isDark = false }) => {
   return (
     <Link href="/creator" asChild>
       <Pressable>
         {({ pressed }) => (
           <Ionicons
             name="close"
-            color={colors.white}
+            color={isDark ? colors.black : colors.white}
             size={32}
             style={{ opacity: pressed ? 0.5 : 1 }}
           />
@@ -38,11 +40,12 @@ export const CloseButton: React.FC = () => {
 };
 
 const NextButton: React.FC<{
-  step: number | string;
-}> = ({ step }) => {
+  step: number;
+  disabled: boolean;
+}> = ({ step, disabled }) => {
   return (
     <Link href={`/creator/${step}`} asChild>
-      <Pressable>
+      <Pressable disabled={disabled}>
         {({ pressed }) => (
           <Ionicons
             name="chevron-forward-outline"

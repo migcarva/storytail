@@ -1,21 +1,38 @@
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 
-import { CloseButton } from '@/src/components/reader/ReaderNav';
 import colors from '@/src/utils/colors';
 
 const FinalResult: React.FC = () => {
+  const [done, setDone] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setDone(true);
+    }, 3000);
+  }, []);
+
+  useEffect(() => {
+    if (done) {
+      setTimeout(() => {
+        router.replace('/reader');
+      }, 2000);
+    }
+  }, [done]);
+
   return (
-    <View className="flex px-2 pt-6 h-full relative bg-purple">
-      <View className="flex mb-4 flex-row justify-between ">
-        <CloseButton isNav={false} />
+    <View className="flex h-full bg-white  justify-center items-center">
+      <View className="flex items-center pb-4">
+        <Ionicons name="color-palette-outline" color={colors.black} size={64} />
       </View>
-      <Text className="text-2.5 text-white font-heading w-[300px]">The end!</Text>
-      <View className="flex">
-        <Text className="text-1.25 text-white font-heading w-[300px]">rate this story</Text>
-        {[...Array(5).keys()].map((s) => (
-          <Ionicons name="close" color={colors.white} size={32} key={s} />
-        ))}
+      <View className="flex items-center">
+        <Text className="text-2.5 text-center text-black font-headingbold w-[300px]">
+          Get ready!
+        </Text>
+        <Text className="text-2.5 text-center text-black font-heading w-[300px]">
+          we're painting your amazing story
+        </Text>
       </View>
     </View>
   );

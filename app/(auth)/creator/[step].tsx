@@ -1,114 +1,163 @@
-import { useLocalSearchParams } from 'expo-router';
-import { Dispatch, ReactNode, SetStateAction, useState } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { router, useLocalSearchParams } from 'expo-router';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { View, Text } from 'react-native';
 
+import { Book } from '@/src/components/creator/CreatorBook';
 import CreatorNav, { CloseButton } from '@/src/components/creator/CreatorNav';
+import StepPage from '@/src/components/creator/StepPage';
+import colors from '@/src/utils/colors';
 
-type StepProps = {
-  value: string | undefined;
-  cb: Dispatch<SetStateAction<string>> | undefined;
+type SelectOption = {
+  value: string;
+  text: string;
+};
+
+type InputConfig = {
+  placeholder?: string;
+};
+
+interface OptionTypes {
+  input: InputConfig;
+  select: SelectOption[];
+  multiselect: SelectOption[];
+}
+
+type StepProps<T, K extends keyof OptionTypes> = {
+  setter: Dispatch<SetStateAction<T>>;
+  value: T;
+  question: string;
+  type: K;
+  options?: OptionTypes[K];
 };
 
 const CreationStep: React.FC = () => {
   const { step } = useLocalSearchParams();
   const [to, setTo] = useState('');
+  const [ageGroup, setAgeGroup] = useState('');
+  const [prompt, setPrompt] = useState('');
+  const [purpose, setPurpose] = useState('surprise');
 
-  const stepNumber = Number(step);
-  let stepProps: StepProps = {
-    value: undefined,
-    cb: undefined,
+  const [done, setDone] = useState(false);
+
+  const getStepProps = (step: number) => {
+    let stepProps: StepProps<string, keyof OptionTypes>;
+    switch (step) {
+      case 1:
+        stepProps = {
+          value: to,
+          setter: setTo,
+          type: 'input',
+          question: 'This story is dedicated to',
+          options: {
+            placeholder: "your kid's name",
+          },
+        };
+        break;
+      case 2:
+        stepProps = {
+          value: ageGroup,
+          setter: setAgeGroup,
+          type: 'select',
+          question: "what's the target age group?",
+          options: [
+            { value: '1-4', text: '1-4 years old' },
+            { value: '5-8', text: '5-8 years old' },
+            { value: '9-12', text: '9-12 years old' },
+          ],
+        };
+        break;
+      case 3:
+        stepProps = {
+          value: prompt,
+          setter: setPrompt,
+          type: 'input',
+          question: "what's this story about?",
+          options: {
+            placeholder: 'be criative',
+          },
+        };
+        break;
+      case 4:
+        stepProps = {
+          value: purpose,
+          setter: setPurpose,
+          type: 'select',
+          question: "what's the purpose of the story?",
+          options: [
+            { value: 'surprise', text: 'surprise me' },
+            { value: 'creativity', text: 'inspire criativity' },
+            { value: 'empathy', text: 'foster empathy' },
+            { value: 'curiosity', text: 'stimulate curiosity' },
+            { value: 'lesson', text: 'teach a lesson' },
+            { value: 'confidence', text: 'boost confidence' },
+          ],
+        };
+        break;
+    }
+
+    return stepProps!;
   };
 
-  switch (stepNumber) {
-    case 1:
-      stepProps = {
-        value: to,
-        cb: setTo,
-      };
-      break;
+  const stepNumber = Number(step);
+  const stepProps = getStepProps(stepNumber);
+
+  useEffect(() => {
+    if (stepNumber === 5) {
+      setTimeout(() => {
+        setDone(true);
+      }, 3000);
+    }
+  }, [stepNumber]);
+
+  useEffect(() => {
+    if (done) {
+      setTimeout(() => {
+        router.replace('/creator/main-character');
+      }, 2000);
+    }
+  }, [done]);
+
+  if (stepNumber === 5) {
+    return (
+      <View className="flex px-2 pt-6 h-full relative bg-purple">
+        <View className="flex mb-6 flex-row justify-between " />
+        <Book className="-rotate-8 mt-3">
+          <View className="flex justify-center items-center gap-4">
+            <Ionicons
+              name={done ? 'checkmark-done-outline' : 'finger-print-outline'}
+              color={colors.black}
+              size={64}
+            />
+            <Text className="text-2 font-headingbold text-center pb-0.5 px-4">
+              We're generating your amazing story
+            </Text>
+          </View>
+        </Book>
+      </View>
+    );
   }
 
-  if (stepProps.value === undefined || stepProps.cb === undefined) return null;
+  if (!stepProps) return null;
 
   return (
     <View className="flex h-full relative bg-purple px-2 pt-6">
       <CloseButton />
       <View className="flex flex-row">
-        <StepPage step={stepNumber} props={stepProps} />
+        <StepPage
+          type={stepProps.type}
+          value={stepProps.value}
+          setter={stepProps.setter}
+          question={stepProps.question}
+          options={stepProps.options}
+        />
       </View>
       <View className="flex justify-end items-end bottom-4 absolute left-2">
         {/* -1 because is the intro page. chapter 0 is the first entry */}
-        <CreatorNav step={stepNumber} />
+        <CreatorNav step={stepNumber} isDisabled={!stepProps.value} />
       </View>
     </View>
   );
 };
 
 export default CreationStep;
-
-const StepPage: React.FC<{
-  step: number;
-  props: StepProps;
-}> = ({ step, props }) => {
-  let question;
-  switch (step) {
-    case 1:
-      question = 'This story is dedicated to';
-      break;
-  }
-  return (
-    <Book className="-rotate-8 mt-3">
-      <View className="bg-white h-[512px] pt-10 flex items-center rounded-tr-0.5 rounded-br-0.5">
-        <Text className="text-2 font-headinglight w-[256px] text-center text-grey pb-1">
-          {question}
-        </Text>
-        <View className="flex">
-          <TextInput
-            onChangeText={(v: string) => props.cb!(v)}
-            keyboardType="default"
-            placeholder="your kid's name"
-            value={props.value}
-            className="border-b border-solid border-black text-center p-1 text-2 font-headingbold w-[256px]"
-          />
-        </View>
-      </View>
-    </Book>
-  );
-};
-
-const Book: React.FC<{ children: ReactNode; className: string }> = ({ children, className }) => {
-  return (
-    <View className={`relative ${className}`}>
-      <BookShadows />
-      <View className="bg-white w-[336px] h-[512px] flex items-center rounded-tr-0.5 rounded-br-0.5 right-0.5">
-        {children}
-      </View>
-    </View>
-  );
-};
-
-const BookShadows: React.FC = () => {
-  return (
-    <>
-      {/* right rounded shadows */}
-      <View className="absolute bg-page4 w-[336px] h-[512px] rounded-tr-0.5 rounded-br-0.5 z-0" />
-      <View className="absolute bg-page3 w-[336px] h-[512px] rounded-tr-0.5 rounded-br-0.5 z-0 right-0.125" />
-      <View className="absolute bg-page2 w-[336px] h-[512px] rounded-tr-0.5 rounded-br-0.5 z-0 right-0.25" />
-      <View className="absolute bg-page1 w-[336px] h-[512px] rounded-tr-0.5 rounded-br-0.5 z-0 right-0.375" />
-      {/* right middle shadows */}
-      <View className="absolute bg-page0 w-[32px] h-[512px] -left-0 z-10" />
-      <View className="absolute bg-page1 w-[16px] h-[512px] -left-0 z-10" />
-      <View className="absolute bg-page2 w-[8px] h-[512px] -left-0 z-10" />
-      <View className="absolute bg-page3 w-[4px] h-[512px] -left-0 z-10" />
-      <View className="absolute bg-page4 w-[2px] h-[512px] -left-0 z-10" />
-      {/* right rounded shadows */}
-      <View className="absolute bg-white w-[336px] h-[512px] -translate-x-[336px] z-0" />
-      {/* left middle shadows */}
-      <View className="absolute bg-page0 w-[32px] h-[512px] -translate-x-[28px] z-10" />
-      <View className="absolute bg-page1 w-[16px] h-[512px] -translate-x-[12px] z-10" />
-      <View className="absolute bg-page2 w-[8px] h-[512px] -translate-x-[6px] z-10" />
-      <View className="absolute bg-page3 w-[4px] h-[512px] -translate-x-[2px] z-10" />
-      <View className="absolute bg-page4 w-[2px] h-[512px] -translate-x-0 z-10" />
-    </>
-  );
-};

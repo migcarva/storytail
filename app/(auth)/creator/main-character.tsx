@@ -1,19 +1,45 @@
-import { View, Text } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { Link } from 'expo-router';
+import { View, Text, Pressable } from 'react-native';
 
-import ReaderNav, { CloseButton } from '@/src/components/reader/ReaderNav';
-import { book } from '@/src/utils/mocks';
+import CharactersCarousel from '@/src/components/creator/CharactersCarousel';
+import { CloseButton } from '@/src/components/creator/CreatorNav';
+import colors from '@/src/utils/colors';
+
+import '@/src/assets/images/character.png';
 
 const MainCharacterSelection: React.FC = () => {
-  const { title } = book;
   return (
-    <View className="flex px-2 pt-6 h-full relative bg-purple">
+    <View className="flex px-2 pt-6 h-full relative bg-white">
       <View className="flex mb-4 flex-row justify-between ">
-        <CloseButton isNav={false} />
+        <CloseButton isDark />
       </View>
-      <Text className="text-2.5 text-white font-heading w-[300px]">{title}</Text>
-      <View className="flex justify-end items-end bottom-4 absolute left-2">
-        {/* -1 because is the intro page. chapter 0 is the first entry */}
-        <ReaderNav chapter={-1} />
+      <View className="flex w-full items-center pb-1">
+        <Text className="text-2.5 text-black text-center font-heading w-[300px]">
+          Pick the main character
+        </Text>
+      </View>
+      <View className="flex pb-1 relative -translate-x-2">
+        <CharactersCarousel charactersUrl={['111', '111', '1111']} />
+      </View>
+      <View className="flex w-full items-center">
+        <Text className="text-1.25 text-black text-center font-heading w-[300px]">
+          we'll use the selection style to illustrate the story
+        </Text>
+      </View>
+      <View className="flex justify-end items-end bottom-4 absolute right-2">
+        <Link href="/creator/result" asChild>
+          <Pressable>
+            {({ pressed }) => (
+              <Ionicons
+                name="chevron-forward-outline"
+                color={colors.black}
+                size={48}
+                style={{ opacity: pressed ? 0.5 : 1 }}
+              />
+            )}
+          </Pressable>
+        </Link>
       </View>
     </View>
   );
