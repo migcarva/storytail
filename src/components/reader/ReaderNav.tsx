@@ -26,7 +26,7 @@ export const CloseButton: React.FC<{
   isNav?: boolean;
 }> = ({ isNav = true }) => {
   return (
-    <Link href="/reader" asChild>
+    <Link href="/user-library" asChild>
       <Pressable>
         {({ pressed }) => (
           <Ionicons
