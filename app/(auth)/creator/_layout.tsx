@@ -7,6 +7,7 @@ const StoryCreator: React.FC = () => {
     <Stack>
       <Stack.Screen name="[step]" options={{ headerShown: false }} redirect={!isSignedIn} />
       <Stack.Screen name="main-character" options={{ headerShown: false }} redirect={!isSignedIn} />
+      <Stack.Screen name="generating" options={{ headerShown: false }} redirect={!isSignedIn} />
       <Stack.Screen name="result" options={{ headerShown: false }} redirect={!isSignedIn} />
     </Stack>
   );

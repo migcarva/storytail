@@ -28,7 +28,7 @@ const MainCharacterSelection: React.FC = () => {
         </Text>
       </View>
       <View className="flex justify-end items-end bottom-4 absolute right-2">
-        <Link href="/creator/result" asChild>
+        <Link href="/creator/generating" asChild>
           <Pressable>
             {({ pressed }) => (
               <Ionicons

@@ -11,6 +11,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import FrontFacingBook from '@/src/components/books/FrontFacingBook';
 import type { Book } from '@/src/types';
 import { withAnchorPoint } from '@/src/utils/anchor-points';
+import colors from '@/src/utils/colors';
 
 const PAGE_WIDTH = Dimensions.get('window').width;
 const PAGE_HEIGHT = Dimensions.get('window').height;
@@ -46,7 +47,7 @@ const BooksCarousel: React.FC<{
       title: books.length === 0 ? 'create your first story' : 'create a new story',
       stars: 0,
       ageGroup: '',
-      background: 'white',
+      background: colors.white,
     },
   ];
 
