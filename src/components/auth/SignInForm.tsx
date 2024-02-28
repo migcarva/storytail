@@ -30,8 +30,7 @@ export default function SignInForm() {
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
-      const resp = await signInWithPassword(data.email, data.password);
-      console.log(resp);
+      await signInWithPassword(data.email, data.password);
 
       form.reset();
     } catch (error: Error | any) {

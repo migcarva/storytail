@@ -3,6 +3,7 @@ import { useRouter, useSegments } from 'expo-router';
 import { createContext, useEffect, useState } from 'react';
 
 import { supabase } from '@/src/lib/supabase';
+import { Alert } from 'react-native';
 
 export const SupabaseContext = createContext<{
   user: User | null;
@@ -33,14 +34,17 @@ export const SupabaseProvider: React.FC<{
   const router = useRouter();
 
   const signUp = async (email: string, password: string) => {
-    const { error, data } = await supabase.auth.signUp({
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
       email,
       password,
     });
     if (error) {
       throw error;
     }
-    return data;
+    if (!session) Alert.alert('Please check your inbox for email verification!');
   };
 
   const signInWithPassword = async (email: string, password: string) => {

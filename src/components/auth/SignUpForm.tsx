@@ -41,7 +41,6 @@ export default function SignUpForm() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       await signUp(data.email, data.password);
-
       form.reset();
     } catch (error: Error | any) {
       console.log(error.message);
