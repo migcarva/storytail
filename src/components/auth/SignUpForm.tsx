@@ -25,8 +25,8 @@ const formSchema = z
     path: ['confirmPassword'],
   });
 
-export default function SignUp() {
-  const { signInWithPassword } = useSupabase();
+export default function SignUpForm() {
+  const { signUp } = useSupabase();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -34,12 +34,13 @@ export default function SignUp() {
     defaultValues: {
       email: '',
       password: '',
+      confirmPassword: '',
     },
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
-      await signInWithPassword(data.email, data.password);
+      await signUp(data.email, data.password);
 
       form.reset();
     } catch (error: Error | any) {
@@ -49,15 +50,15 @@ export default function SignUp() {
 
   return (
     <>
-      <View className="flex-1 py-4 px-2">
+      <View className="flex-1 py-4">
         <Form {...form}>
-          <View className="gap-2">
+          <View className="gap-1.5">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormInput
-                  label="Email"
+                  // label="Email"
                   placeholder="Email"
                   autoCapitalize="none"
                   autoComplete="email"
@@ -72,8 +73,22 @@ export default function SignUp() {
               name="password"
               render={({ field }) => (
                 <FormInput
-                  label="Password"
+                  // label="Password"
                   placeholder="Password"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry
+                  {...field}
+                />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormInput
+                  // label="Confirm Password"
+                  placeholder="Confirm password"
                   autoCapitalize="none"
                   autoCorrect={false}
                   secureTextEntry
@@ -83,18 +98,20 @@ export default function SignUp() {
             />
           </View>
         </Form>
-        <View className="py-3">
+        <View className="pt-3 pb-2.5">
           <Button size="default" variant="default" onPress={form.handleSubmit(onSubmit)}>
             {form.formState.isSubmitting ? <ActivityIndicator size="small" /> : 'Sign in'}
           </Button>
         </View>
-        <Text
-          className="font-body text-1 text-purple text-center "
-          onPress={() => {
-            router.navigate('/signup');
-          }}>
-          Don't have an account? <Text className="text-1.25">Sign up</Text>
-        </Text>
+        <View className="flex flex-row justify-center gap-x-1">
+          <Text
+            className="font-body text-1 text-black text-center"
+            onPress={() => {
+              router.navigate('/');
+            }}>
+            Already have an account? <Text className="text-bodybold">Sign in</Text>
+          </Text>
+        </View>
       </View>
     </>
   );

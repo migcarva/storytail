@@ -1,7 +1,16 @@
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Stack } from 'expo-router';
 import React from 'react';
 
+import colors from '@/src/utils/colors';
+
 const PublicLayout: React.FC = () => {
+  const options: NativeStackNavigationOptions = {
+    headerTitle: '',
+    headerTransparent: true,
+    headerTintColor: colors.purple,
+  };
+
   return (
     <Stack
       screenOptions={{
@@ -12,21 +21,27 @@ const PublicLayout: React.FC = () => {
         headerBackTitle: 'Back',
       }}>
       <Stack.Screen
-        name="signin"
+        name="index"
         options={{
-          headerTitle: 'Sign In',
+          headerShown: false,
         }}
       />
       <Stack.Screen
         name="signup"
         options={{
-          headerTitle: 'Sign Up',
+          ...options,
+          headerStyle: {
+            backgroundColor: colors.yellow,
+          },
         }}
       />
       <Stack.Screen
-        name="index"
+        name="reset"
         options={{
-          headerShown: false,
+          ...options,
+          headerStyle: {
+            backgroundColor: colors.orange,
+          },
         }}
       />
     </Stack>

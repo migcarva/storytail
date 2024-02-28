@@ -11,6 +11,7 @@ export const SupabaseContext = createContext<{
   signUp: (email: string, password: string) => Promise<void>;
   signInWithPassword: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
 }>({
   user: null,
   session: null,
@@ -18,6 +19,7 @@ export const SupabaseContext = createContext<{
   signUp: async () => {},
   signInWithPassword: async () => {},
   signOut: async () => {},
+  resetPassword: async () => {},
 });
 
 export const SupabaseProvider: React.FC<{
@@ -31,7 +33,18 @@ export const SupabaseProvider: React.FC<{
   const router = useRouter();
 
   const signUp = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signUp({
+    const { error, data } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    if (error) {
+      throw error;
+    }
+    return data;
+  };
+
+  const signInWithPassword = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -40,11 +53,8 @@ export const SupabaseProvider: React.FC<{
     }
   };
 
-  const signInWithPassword = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+  const resetPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email);
     if (error) {
       throw error;
     }
@@ -87,6 +97,7 @@ export const SupabaseProvider: React.FC<{
         signUp,
         signInWithPassword,
         signOut,
+        resetPassword,
       }}>
       {children}
     </SupabaseContext.Provider>
