@@ -14,19 +14,19 @@ const PublicLayout: React.FC = () => {
       <Stack.Screen
         name="signin"
         options={{
-          headerTitle: 'Storytail Sign In',
+          headerTitle: 'Sign In',
         }}
       />
       <Stack.Screen
         name="signup"
         options={{
-          headerTitle: 'Storytail Sign Up',
+          headerTitle: 'Sign Up',
         }}
       />
       <Stack.Screen
-        name="reset"
+        name="index"
         options={{
-          headerTitle: 'Storytail Reset Password',
+          headerShown: false,
         }}
       />
     </Stack>

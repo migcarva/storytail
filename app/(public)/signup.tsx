@@ -1,146 +1,128 @@
-import { useSignUp } from '@clerk/clerk-expo';
-import { Stack } from 'expo-router';
-import { useState } from 'react';
-import { Button, TextInput, View, StyleSheet } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'expo-router';
+import { useForm } from 'react-hook-form';
+import { ActivityIndicator, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as z from 'zod';
 
-const SignUp: React.FC = () => {
-  const { isLoaded, signUp, setActive } = useSignUp();
+import { Button, Form, FormField, FormInput } from '@/src/components/ui';
+import { useSupabase } from '@/src/hooks/useSupabase';
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [emailAddress, setEmailAddress] = useState('');
-  const [password, setPassword] = useState('');
-  const [pendingVerification, setPendingVerification] = useState(false);
-  const [code, setCode] = useState('');
-  const [loading, setLoading] = useState(false);
+const formSchema = z
+  .object({
+    email: z.string().email('Please enter a valid email address.'),
+    password: z
+      .string()
+      .min(8, 'Please enter at least 8 characters.')
+      .max(64, 'Please enter fewer than 64 characters.')
+      .regex(/^(?=.*[a-z])/, 'Your password must have at least one lowercase letter.')
+      .regex(/^(?=.*[A-Z])/, 'Your password must have at least one uppercase letter.')
+      .regex(/^(?=.*[0-9])/, 'Your password must have at least one number.')
+      .regex(/^(?=.*[!@#$%^&*])/, 'Your password must have at least one special character.'),
+    confirmPassword: z.string().min(8, 'Please enter at least 8 characters.'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Your passwords do not match.',
+    path: ['confirmPassword'],
+  });
 
-  // Create the user and send the verification email
-  const onSignUpPress = async () => {
-    if (!isLoaded) {
-      return;
-    }
-    setLoading(true);
+export default function SignUp() {
+  const { signUp } = useSupabase();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
 
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+  });
+
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
-      // Create the user on Clerk
-      await signUp.create({
-        firstName,
-        lastName,
-        emailAddress,
-        password,
-      });
+      await signUp(data.email, data.password);
 
-      // Send verification Email
-      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
-
-      // change the UI to verify the email address
-      setPendingVerification(true);
-    } catch (err: any) {
-      alert(err.errors[0].message);
-    } finally {
-      setLoading(false);
+      form.reset();
+    } catch (error: Error | any) {
+      console.log(error.message);
     }
-  };
-
-  // Verify the email address
-  const onPressVerify = async () => {
-    if (!isLoaded) {
-      return;
-    }
-    setLoading(true);
-
-    try {
-      const completeSignUp = await signUp.attemptEmailAddressVerification({
-        code,
-      });
-
-      console.log('createdSessionId', await completeSignUp);
-
-      await setActive({ session: completeSignUp.createdSessionId });
-    } catch (err: any) {
-      alert(err.errors[0].message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }
 
   return (
-    <View style={styles.container}>
-      <Stack.Screen options={{ headerBackVisible: !pendingVerification }} />
-      <Spinner visible={loading} />
-
-      {!pendingVerification && (
-        <>
-          <TextInput
-            autoCapitalize="none"
-            value={firstName}
-            placeholder="First Name..."
-            onChangeText={setFirstName}
-            style={styles.inputField}
-          />
-          <TextInput
-            autoCapitalize="none"
-            value={lastName}
-            placeholder="Last Name..."
-            onChangeText={setLastName}
-            style={styles.inputField}
-          />
-          <TextInput
-            autoCapitalize="none"
-            placeholder="simon@galaxies.dev"
-            value={emailAddress}
-            onChangeText={setEmailAddress}
-            style={styles.inputField}
-          />
-          <TextInput
-            placeholder="password"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            style={styles.inputField}
-          />
-
-          <Button onPress={onSignUpPress} title="Sign up" color="#513175" />
-        </>
-      )}
-
-      {pendingVerification && (
-        <>
-          <View>
-            <TextInput
-              value={code}
-              placeholder="Code..."
-              style={styles.inputField}
-              onChangeText={setCode}
+    <View
+      className="flex-1 bg-background p-2"
+      // HACK: This is a workaround for the SafeAreaView className prop not working
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+      }}>
+      <View className="flex-1">
+        <Text className="text-3 font-bodybold tracking-tight lg:text-5xl self-start pb-1">
+          Sign Up
+        </Text>
+        <Text className="text-1.25 font-body self-start mb-5">to continue to Storytail</Text>
+        <Form {...form}>
+          <View className="gap-2">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormInput
+                  label="Email"
+                  placeholder="Email"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  autoCorrect={false}
+                  keyboardType="email-address"
+                  {...field}
+                />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormInput
+                  label="Password"
+                  placeholder="Password"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry
+                  {...field}
+                />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormInput
+                  label="Confirm Password"
+                  placeholder="Confirm password"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry
+                  {...field}
+                />
+              )}
             />
           </View>
-          <Button onPress={onPressVerify} title="Verify Email" color="#513175" />
-        </>
-      )}
+        </Form>
+      </View>
+      <View className="bottom-2">
+        <Button size="default" variant="default" onPress={form.handleSubmit(onSubmit)}>
+          {form.formState.isSubmitting ? <ActivityIndicator size="small" /> : 'Sign up'}
+        </Button>
+        <Text
+          className="font-body text-1 text-black text-center"
+          onPress={() => {
+            router.replace('/signin');
+          }}>
+          Already have an account? <Text className="text-1.25">Sign in</Text>
+        </Text>
+      </View>
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-  },
-  inputField: {
-    marginVertical: 4,
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#513175',
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: '#fff',
-  },
-  button: {
-    margin: 8,
-    alignItems: 'center',
-  },
-});
-
-export default SignUp;
+}

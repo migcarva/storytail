@@ -1,143 +1,103 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import Constants from 'expo-constants';
-import { Link } from 'expo-router';
-import * as WebBrowser from 'expo-web-browser';
-import React, { useEffect, useState } from 'react';
-import { Pressable, Platform, Text, View } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'expo-router';
+import { useForm } from 'react-hook-form';
+import { ActivityIndicator, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import * as z from 'zod';
 
-import { useSupabase } from '@/src/lib/supabase/SupabaseContext';
-import { SecureStoreAdapter } from '@/src/lib/supabase/secureStoreAdapter';
-import { isIphone } from '@/src/utils/deviceInfo';
+import { Button, Form, FormField, FormInput } from '@/src/components/ui';
+import { useSupabase } from '@/src/hooks/useSupabase';
 
-const SignIn: React.FC = () => {
-  const { getAppleOAuthUrl, getGoogleOAuthUrl, setOAuthSession } = useSupabase();
-  const [loading, setLoading] = useState(false);
+const formSchema = z.object({
+  email: z.string().email('Please enter a valid email address.'),
+  password: z
+    .string()
+    .min(8, 'Please enter at least 8 characters.')
+    .max(64, 'Please enter fewer than 64 characters.'),
+});
 
-  useEffect(() => {
-    if (Platform.OS !== 'web') {
-      WebBrowser.warmUpAsync();
-    }
+export default function SignIn() {
+  const { signInWithPassword } = useSupabase();
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
 
-    return () => {
-      if (Platform.OS !== 'web') {
-        WebBrowser.coolDownAsync();
-      }
-    };
-  }, []);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
 
-  const extractParamsFromUrl = (url: string) => {
-    const params = new URLSearchParams(url.split('#')[1]);
-    const data = {
-      access_token: params.get('access_token'),
-      expires_in: parseInt(params.get('expires_in') || '0', 10),
-      refresh_token: params.get('refresh_token'),
-      token_type: params.get('token_type'),
-      provider_token: params.get('provider_token'),
-    };
-
-    return data;
-  };
-
-  const onSignInWithGoogle = async () => {
-    setLoading(true);
-
+  async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
-      const url = await getGoogleOAuthUrl();
-      if (!url) return;
+      await signInWithPassword(data.email, data.password);
 
-      const result = await WebBrowser.openAuthSessionAsync(
-        url,
-        `${Constants.expoConfig!.extra!.BUNDLE_ID}://home/`,
-        {
-          showInRecents: true,
-        },
-      );
-
-      if (result.type === 'success') {
-        const data = extractParamsFromUrl(result.url);
-
-        if (!data.access_token || !data.refresh_token) return;
-
-        setOAuthSession({
-          access_token: data.access_token,
-          refresh_token: data.refresh_token,
-        });
-
-        // You can optionally store Google's access token if you need it later
-        SecureStoreAdapter.setItem('google-access-token', JSON.stringify(data.provider_token));
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
+      form.reset();
+    } catch (error: Error | any) {
+      console.log(error.message);
     }
-  };
-
-  const onSignInWithApple = async () => {
-    setLoading(true);
-
-    try {
-      const url = await getAppleOAuthUrl();
-      if (!url) return;
-
-      const result = await WebBrowser.openAuthSessionAsync(
-        url,
-        `${Constants.expoConfig!.extra!.BUNDLE_ID}://home/`,
-        {
-          showInRecents: true,
-        },
-      );
-
-      if (result.type === 'success') {
-        const data = extractParamsFromUrl(result.url);
-
-        if (!data.access_token || !data.refresh_token) return;
-
-        setOAuthSession({
-          access_token: data.access_token,
-          refresh_token: data.refresh_token,
-        });
-
-        // You can optionally store Apple access token if you need it later
-        SecureStoreAdapter.setItem('apple-access-token', JSON.stringify(data.provider_token));
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }
 
   return (
-    <View className="flex-1 justify-center">
-      <Spinner visible={loading} />
-
-      <Pressable onPress={onSignInWithGoogle} disabled={loading} className="mb-1">
-        <Ionicons name="logo-google" size={16} />
-        <Text className="text-1.125">{loading ? 'Loading...' : 'Sign in with Google'}</Text>
-      </Pressable>
-
-      {isIphone && (
-        <Pressable onPress={onSignInWithApple} disabled={loading}>
-          <Ionicons name="logo-apple" size={16} />
-          <Text className="text-1.125">{loading ? 'Loading...' : 'Sign in with Apple'}</Text>
-        </Pressable>
-      )}
-
-      <Link href="/reset" asChild>
-        <Pressable>
-          <Text>Forgot password?</Text>
-        </Pressable>
-      </Link>
-
-      <Link href="/signup" asChild>
-        <Pressable>
-          <Text>Create Account</Text>
-        </Pressable>
-      </Link>
+    <View
+      className="flex-1 bg-background p-4"
+      // HACK: This is a workaround for the SafeAreaView className prop not working
+      style={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom,
+      }}>
+      <View className="flex-1">
+        <Text className="text-3 font-bodybold tracking-tight lg:text-5xl self-start pb-1">
+          Sign In
+        </Text>
+        <Text className="text-1.25 font-body self-start mb-5">to continue to Storytail</Text>
+        <Form {...form}>
+          <View className="gap-2">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormInput
+                  label="Email"
+                  placeholder="Email"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  autoCorrect={false}
+                  keyboardType="email-address"
+                  {...field}
+                />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormInput
+                  label="Password"
+                  placeholder="Password"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry
+                  {...field}
+                />
+              )}
+            />
+          </View>
+        </Form>
+      </View>
+      <View className="bottom-2">
+        <Button size="default" variant="default" onPress={form.handleSubmit(onSubmit)}>
+          {form.formState.isSubmitting ? <ActivityIndicator size="small" /> : 'Sign in'}
+        </Button>
+        <Text
+          className="font-body text-1 text-black text-center"
+          onPress={() => {
+            router.replace('/signup');
+          }}>
+          Don't have an account? <Text className="text-1.25">Sign up</Text>
+        </Text>
+      </View>
     </View>
   );
-};
-
-export default SignIn;
+}

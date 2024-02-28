@@ -15,8 +15,8 @@ import * as SplashScreen from 'expo-splash-screen';
 // import { verifyInstallation } from 'nativewind';
 import { useEffect } from 'react';
 
+import { SupabaseProvider } from '@/src/context/SupabaseContext';
 import { useColorScheme } from '@/src/hooks/useColorScheme';
-import { SupabaseProvider, useSupabase } from '@/src/lib/supabase/SupabaseContext';
 import '../src/styles/global.css';
 
 export {
@@ -33,7 +33,6 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout: React.FC = () => {
-  const colorScheme = useColorScheme();
   const [loaded, error] = useFonts({
     BellotaText_300Light,
     BellotaText_400Regular,
@@ -69,24 +68,11 @@ const RootLayout: React.FC = () => {
 };
 
 const InitialLayout: React.FC = () => {
-  const { loggedIn } = useSupabase();
-  const router = useRouter();
-  const segments = useSegments();
-
-  useEffect(() => {
-    const inAuthGroup = segments[0] === '(auth)';
-    // if (loggedIn && !inAuthGroup) {
-    //   router.replace('/user-library');
-    // } else if (!loggedIn) {
-    //   router.replace('/signin');
-    // }
-
-    router.replace('/user-library');
-    // router.replace('/creator/1');
-    // router.replace('/reader');
-  }, [loggedIn]);
-
-  return <Slot />;
+  return (
+    <SupabaseProvider>
+      <Slot />
+    </SupabaseProvider>
+  );
 };
 
 export default RootLayout;
