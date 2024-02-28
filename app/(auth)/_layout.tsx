@@ -1,45 +1,36 @@
-import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Stack } from 'expo-router';
+import React from 'react';
 
-const TabsPage: React.FC = () => {
-  const isSignedIn = true;
-
-  const modalOptions: NativeStackNavigationOptions = {
-    presentation: 'modal',
-    headerTransparent: true,
-    headerTitleStyle: {
-      fontFamily: 'BellotaText_700Bold',
-      fontSize: 20,
-    },
-  };
-
+const PublicLayout: React.FC = () => {
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} redirect={!isSignedIn} />
-      <Stack.Screen name="reader" options={{ headerShown: false }} redirect={!isSignedIn} />
-      <Stack.Screen name="creator" options={{ headerShown: false }} redirect={!isSignedIn} />
+    <Stack
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#513175',
+        },
+        headerTintColor: '#fff',
+        headerBackTitle: 'Back',
+      }}>
       <Stack.Screen
-        name="search-online-library"
-        options={{ ...modalOptions, headerTitle: 'Search' }}
-        redirect={!isSignedIn}
+        name="signin"
+        options={{
+          headerTitle: 'Sign In',
+        }}
       />
       <Stack.Screen
-        name="search-user-library"
-        options={{ ...modalOptions, headerTitle: 'Search' }}
-        redirect={!isSignedIn}
+        name="signup"
+        options={{
+          headerTitle: 'Sign Up',
+        }}
       />
       <Stack.Screen
-        name="notifications"
-        options={{ ...modalOptions, headerTitle: 'Notifications' }}
-        redirect={!isSignedIn}
-      />
-      <Stack.Screen
-        name="settings"
-        options={{ ...modalOptions, headerTitle: 'Settings' }}
-        redirect={!isSignedIn}
+        name="index"
+        options={{
+          headerShown: false,
+        }}
       />
     </Stack>
   );
 };
 
-export default TabsPage;
+export default PublicLayout;

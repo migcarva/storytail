@@ -1,9 +1,26 @@
 import { type ClassValue, clsx } from 'clsx';
 import { PressableStateCallbackType } from 'react-native';
-import { twMerge } from 'tailwind-merge';
+import { extendTailwindMerge, twMerge } from 'tailwind-merge';
+
+import colors, { purple, yellow } from './colors';
+
+const customTwMerge = extendTailwindMerge({
+  extend: {
+    theme: {
+      colors: [
+        'transparent',
+        'currentColor',
+        ...Object.keys(colors).map((key) => key),
+        {
+          white: Object.keys(white).map((key) => key),
+        },
+      ],
+    },
+  },
+});
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return customTwMerge(clsx(inputs));
 }
 
 export function isTextChildren(

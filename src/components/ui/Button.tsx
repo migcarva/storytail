@@ -5,20 +5,20 @@ import { Platform, Pressable, Text, View } from 'react-native';
 import * as Slot from '@/src/lib/rn-primitives/slot-native';
 import { cn, isTextChildren } from '@/src/utils/class';
 
-const buttonVariants = cva('flex-row items-center justify-center rounded-md', {
+const buttonVariants = cva('flex-row items-center justify-center rounded-full', {
   variants: {
     variant: {
-      default: 'bg-primary',
-      destructive: 'bg-destructive',
+      default: 'bg-purple',
+      destructive: 'bg-orange',
       outline: 'border border-input bg-background',
-      secondary: 'bg-secondary',
+      secondary: 'bg-blue',
       ghost: '',
       link: '',
     },
     size: {
-      default: 'h-10 px-2 py-2',
-      sm: 'h-9 rounded-md px-3',
-      lg: 'h-11 rounded-md px-8',
+      default: 'h-4 px-0.5 py-0.5',
+      sm: 'h-2.5 px-0.25',
+      lg: 'h-6 px-0.5',
     },
   },
   defaultVariants: {
@@ -30,17 +30,17 @@ const buttonVariants = cva('flex-row items-center justify-center rounded-md', {
 const buttonTextVariants = cva('font-medium font-body', {
   variants: {
     variant: {
-      default: 'text-primary-foreground',
-      destructive: 'text-destructive-foreground',
-      outline: 'text-foreground',
-      secondary: 'text-secondary-foreground',
-      ghost: 'text-foreground',
-      link: 'text-primary underline-offset-4 underline',
+      default: 'text-white text-purple',
+      destructive: 'text-black',
+      outline: 'text-black',
+      secondary: 'text-black',
+      ghost: 'text-black',
+      link: 'text-black underline-offset-4 underline',
     },
     size: {
       default: 'text-1.5 font-medium',
       sm: 'text-1 font-medium',
-      lg: 'text-2 font-medium',
+      lg: 'text-2 font-medium font-heading',
     },
   },
   defaultVariants: {
@@ -71,10 +71,12 @@ const Button = React.forwardRef<
     ref,
   ) => {
     const Root = Platform.OS === 'android' ? View : Slot.Pressable;
+    console.log(cn(buttonTextVariants({ variant, size, className: textClass })));
+
     return (
       <Root
         className={cn(
-          Platform.OS === 'android' && 'flex-row rounded-md overflow-hidden',
+          Platform.OS === 'android' && 'flex-row rounded-full overflow-hidden',
           Platform.OS === 'android' && androidRootClass,
         )}>
         <Pressable

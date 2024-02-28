@@ -71,9 +71,9 @@ export const SupabaseProvider: React.FC<{
   useEffect(() => {
     if (!initialized) return;
 
-    if (!session && segments !== '(public)') {
-      router.replace('/(public)');
-    } else if (session && segments !== '(auth)') {
+    if (!session && segments !== '(auth)') {
+      router.replace('/(auth)');
+    } else if (session && segments !== '(app)') {
       router.replace('/user-library');
     }
   }, [initialized, session, segments]);

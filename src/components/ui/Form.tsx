@@ -92,7 +92,7 @@ const FormLabel = React.forwardRef<
   return (
     <Label
       ref={ref}
-      className={cn('pb-0.5 text-1', error && 'text-red-900', className)}
+      className={cn('pb-0.5 text-1', error && 'text-black', !error && 'text-purple', className)}
       nativeID={formItemNativeID}
       {...props}
     />
@@ -110,7 +110,7 @@ const FormDescription = React.forwardRef<
     <Text
       ref={ref}
       nativeID={formDescriptionNativeID}
-      className={cn('text-1 text-black pt-0.5', className)}
+      className={cn('text-0.75 text-purple pt-0.5', className)}
       {...props}
     />
   );
@@ -132,7 +132,7 @@ const FormMessage = React.forwardRef<
     <Text
       ref={ref}
       nativeID={formMessageNativeID}
-      className={cn('text-0.75 font-bodylight text-red-900 pt-0.5', className)}
+      className={cn('text-0.875 font-bodylight text-purple pt-0.25', className)}
       {...props}>
       {body}
     </Text>

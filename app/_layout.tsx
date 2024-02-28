@@ -10,13 +10,12 @@ import {
   BellotaText_400Regular,
   BellotaText_700Bold,
 } from '@expo-google-fonts/bellota-text';
-import { Slot, useRouter, useSegments } from 'expo-router';
+import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 // import { verifyInstallation } from 'nativewind';
 import { useEffect } from 'react';
 
 import { SupabaseProvider } from '@/src/context/SupabaseContext';
-import { useColorScheme } from '@/src/hooks/useColorScheme';
 import '../src/styles/global.css';
 
 export {
