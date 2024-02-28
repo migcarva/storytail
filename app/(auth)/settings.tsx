@@ -5,7 +5,7 @@ import SignoutButton from '@/src/components/navs/SignoutButton';
 import { useSupabase } from '@/src/hooks/useSupabase';
 
 const Settings: React.FC = () => {
-  const { user, signOut } = useSupabase();
+  const { user } = useSupabase();
   console.log(user);
 
   return (
