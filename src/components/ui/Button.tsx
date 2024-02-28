@@ -27,20 +27,20 @@ const buttonVariants = cva('flex-row items-center justify-center rounded-full', 
   },
 });
 
-const buttonTextVariants = cva('font-medium font-body', {
+const buttonTextVariants = cva('text-black font-bodybold', {
   variants: {
     variant: {
-      default: 'text-white text-purple',
-      destructive: 'text-black',
-      outline: 'text-black',
-      secondary: 'text-black',
-      ghost: 'text-black',
-      link: 'text-black underline-offset-4 underline',
+      default: 'text-white',
+      destructive: '',
+      outline: '',
+      secondary: '',
+      ghost: '',
+      link: 'underline-offset-4 underline',
     },
     size: {
-      default: 'text-1.5 font-medium',
-      sm: 'text-1 font-medium',
-      lg: 'text-2 font-medium font-heading',
+      default: 'text-1.5 font-bodybold',
+      sm: 'text-1',
+      lg: 'text-2 font-heading',
     },
   },
   defaultVariants: {
@@ -71,7 +71,6 @@ const Button = React.forwardRef<
     ref,
   ) => {
     const Root = Platform.OS === 'android' ? View : Slot.Pressable;
-    console.log(cn(buttonTextVariants({ variant, size, className: textClass })));
 
     return (
       <Root

@@ -10,10 +10,7 @@ const Settings: React.FC = () => {
 
   return (
     <View className="flex flex-1 items-center justify-center bg-background">
-      <Text className="text-xl text-black">
-        {/* Welcome, {user?.firstName} {user?.lastName} 🎉 */}
-        Yo!
-      </Text>
+      <Text className="text-xl text-black">Yo!</Text>
       <SignoutButton />
     </View>
   );
