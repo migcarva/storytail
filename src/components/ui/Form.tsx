@@ -87,15 +87,10 @@ const FormLabel = React.forwardRef<
   React.ElementRef<typeof Label>,
   React.ComponentPropsWithoutRef<typeof Label>
 >(({ className, ...props }, ref) => {
-  const { error, formItemNativeID } = useFormField();
+  const { formItemNativeID } = useFormField();
 
   return (
-    <Label
-      ref={ref}
-      className={cn('pb-0.5 text-1', error && 'text-black', !error && 'text-purple', className)}
-      nativeID={formItemNativeID}
-      {...props}
-    />
+    <Label ref={ref} className={cn('pb-0.5', className)} nativeID={formItemNativeID} {...props} />
   );
 });
 FormLabel.displayName = 'FormLabel';

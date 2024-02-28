@@ -10,7 +10,7 @@ const buttonVariants = cva('flex-row items-center justify-center rounded-full', 
     variant: {
       default: 'bg-purple',
       destructive: 'bg-orange',
-      outline: 'border border-input bg-background',
+      outline: 'border-2 border-grey bg-background',
       secondary: 'bg-blue',
       ghost: '',
       link: '',

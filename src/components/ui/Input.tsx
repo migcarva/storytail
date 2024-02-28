@@ -11,7 +11,7 @@ const Input = React.forwardRef<
     <TextInput
       ref={ref}
       className={cn(
-        'flex h-3 w-full items-center rounded-md border border-grey bg-background px-1 text-1.25 text-black leading-[0px]',
+        'flex h-4 w-full items-center rounded-full bg-background px-1 text-1.25 text-black leading-[0px]',
         className,
       )}
       placeholderClassName={cn('font-body text-blue', placeholderClassName)}
