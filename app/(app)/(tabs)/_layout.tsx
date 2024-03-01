@@ -4,8 +4,8 @@ import NotificationsAndSettings from '@/src/components/navs/NotificationsAndSett
 import SearchOnlineLibraryButton from '@/src/components/navs/SearchOnlineLibraryButton';
 import SearchUserLibraryButton from '@/src/components/navs/SearchUserLibraryButton';
 import TabBarIcon from '@/src/components/navs/TabBarIcon';
+import { useIsOnlinePages } from '@/src/hooks';
 import { useClientOnlyValue } from '@/src/hooks/useClientOnlyValue';
-import useIsOnlinePages from '@/src/hooks/useIsOnlinePages';
 import colors from '@/src/utils/colors';
 
 const TabsPage: React.FC = () => {

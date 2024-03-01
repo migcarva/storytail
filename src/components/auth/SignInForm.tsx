@@ -6,7 +6,6 @@ import * as z from 'zod';
 
 import { Button, Form, FormField, FormInput } from '@/src/components/ui';
 import { useSupabase } from '@/src/hooks/useSupabase';
-import { useEffect } from 'react';
 
 const formSchema = z.object({
   email: z.string().email('Please enter a valid email address.'),

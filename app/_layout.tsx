@@ -10,6 +10,7 @@ import {
   BellotaText_400Regular,
   BellotaText_700Bold,
 } from '@expo-google-fonts/bellota-text';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 // import { verifyInstallation } from 'nativewind';
@@ -17,6 +18,7 @@ import { useEffect } from 'react';
 
 import { SupabaseProvider } from '@/src/context/SupabaseContext';
 import '../src/styles/global.css';
+import { queryClient } from '@/src/lib/api/queryClient';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -69,7 +71,9 @@ const RootLayout: React.FC = () => {
 const InitialLayout: React.FC = () => {
   return (
     <SupabaseProvider>
-      <Slot />
+      <QueryClientProvider client={queryClient}>
+        <Slot />
+      </QueryClientProvider>
     </SupabaseProvider>
   );
 };

@@ -1,9 +1,9 @@
 import { Session, User } from '@supabase/supabase-js';
 import { useRouter, useSegments } from 'expo-router';
 import { createContext, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 
 import { supabase } from '@/src/lib/supabase';
-import { Alert } from 'react-native';
 
 export const SupabaseContext = createContext<{
   user: User | null;
@@ -13,6 +13,10 @@ export const SupabaseContext = createContext<{
   signInWithPassword: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
+  updateProfile: (username: string, full_name: string) => Promise<void>;
+  getProfile: () => Promise<{
+    data: { username: string; updated_at: string; full_name: string } | null;
+  }>;
 }>({
   user: null,
   session: null,
@@ -21,6 +25,10 @@ export const SupabaseContext = createContext<{
   signInWithPassword: async () => {},
   signOut: async () => {},
   resetPassword: async () => {},
+  updateProfile: async () => {},
+  getProfile: async () => {
+    return { data: null, updated_at: null, full_name: null };
+  },
 });
 
 export const SupabaseProvider: React.FC<{
@@ -71,6 +79,32 @@ export const SupabaseProvider: React.FC<{
     }
   };
 
+  const updateProfile = async (username: string, full_name: string) => {
+    if (!session?.user) throw new Error('no user on the session!');
+
+    const updates = { id: session?.user.id, username, full_name, updated_at: new Date() };
+
+    const { error } = await supabase.from('profiles').upsert(updates);
+
+    if (error) {
+      throw error;
+    }
+  };
+
+  const getProfile = async () => {
+    const { data, error, status } = await supabase
+      .from('profiles')
+      .select(`username, full_name, updated_at`)
+      .eq('id', session?.user.id)
+      .single();
+
+    if (error && status !== 406) {
+      throw error;
+    }
+
+    return { data };
+  };
+
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
       setSession(session);
@@ -102,6 +136,8 @@ export const SupabaseProvider: React.FC<{
         signInWithPassword,
         signOut,
         resetPassword,
+        updateProfile,
+        getProfile,
       }}>
       {children}
     </SupabaseContext.Provider>

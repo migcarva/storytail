@@ -1,16 +1,20 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
+import UpdateProfileForm from '@/src/components/auth/UpdateProfileForm';
 import SignoutButton from '@/src/components/navs/SignoutButton';
-import { useSupabase } from '@/src/hooks/useSupabase';
+import useUserStore from '@/src/lib/stores/user';
 
 const Settings: React.FC = () => {
-  const { user } = useSupabase();
-  console.log(user);
+  const { username, fullName } = useUserStore();
+
+  const displaName = fullName || username || 'adventurer!';
 
   return (
-    <View className="flex flex-1 items-center justify-center bg-background">
-      <Text className="text-xl text-black">Yo!</Text>
+    <View className="flex flex-1 px-2 pt-6 bg-background">
+      <Text className="text-xl text-black">Hello, {displaName}</Text>
+
+      <UpdateProfileForm />
       <SignoutButton />
     </View>
   );

@@ -3,7 +3,7 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { Pressable, View } from 'react-native';
 
-import useIsOnlinePages from '@/src/hooks/useIsOnlinePages';
+import { useIsOnlinePages } from '@/src/hooks';
 import colors from '@/src/utils/colors';
 
 const NotificationsAndSettings: React.FC = () => {

@@ -191,3 +191,27 @@ export const book = {
     },
   ],
 };
+
+export const session = {
+  access_token: '',
+  expires_at: 1709252885,
+  expires_in: 3600,
+  refresh_token: '',
+  token_type: 'bearer',
+  user: {
+    app_metadata: { provider: 'email', providers: [Array] },
+    aud: 'authenticated',
+    confirmation_sent_at: '2024-02-28T22:42:08.970976Z',
+    confirmed_at: '2024-02-28T22:50:39.601144Z',
+    created_at: '2024-02-28T22:42:08.967426Z',
+    email: 'm@m',
+    email_confirmed_at: '2024-02-28T22:50:39.601144Z',
+    id: '6ee2d5dd-e9f0-495f-bc8b-5003428bb18c',
+    identities: [[Object]],
+    last_sign_in_at: '2024-02-28T23:26:58.575155Z',
+    phone: '',
+    role: 'authenticated',
+    updated_at: '2024-02-29T23:28:05.931837Z',
+    user_metadata: {},
+  },
+};

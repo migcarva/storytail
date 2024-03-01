@@ -6,6 +6,7 @@ import { View, Text } from 'react-native';
 import { Book } from '@/src/components/creator/CreatorBook';
 import CreatorNav, { CloseButton } from '@/src/components/creator/CreatorNav';
 import StepPage from '@/src/components/creator/StepPage';
+import { useStoryCreationOptions } from '@/src/hooks';
 import colors from '@/src/utils/colors';
 
 type SelectOption = {
@@ -40,6 +41,10 @@ const CreationStep: React.FC = () => {
 
   const [done, setDone] = useState(false);
 
+  const { purposes, ageGroups, isLoading, error } = useStoryCreationOptions();
+
+  console.log(ageGroups);
+
   const getStepProps = (step: number) => {
     let stepProps: StepProps<string, keyof OptionTypes>;
     switch (step) {
@@ -59,12 +64,11 @@ const CreationStep: React.FC = () => {
           value: ageGroup,
           setter: setAgeGroup,
           type: 'select',
-          question: "what's the target age group?",
-          options: [
-            { value: '1-4', text: '1-4 years old' },
-            { value: '5-8', text: '5-8 years old' },
-            { value: '9-12', text: '9-12 years old' },
-          ],
+          question: `Select ${to}'s age group?`,
+          options: ageGroups?.map((a) => ({
+            value: a.id.toString(),
+            text: `${a.description} (${a.min_age}-${a.max_age})`,
+          })),
         };
         break;
       case 3:
@@ -72,7 +76,7 @@ const CreationStep: React.FC = () => {
           value: prompt,
           setter: setPrompt,
           type: 'input',
-          question: "what's this story about?",
+          question: "What's this story about?",
           options: {
             placeholder: 'be criative',
           },
@@ -83,15 +87,8 @@ const CreationStep: React.FC = () => {
           value: purpose,
           setter: setPurpose,
           type: 'select',
-          question: "what's the purpose of the story?",
-          options: [
-            { value: 'surprise', text: 'surprise me' },
-            { value: 'creativity', text: 'inspire criativity' },
-            { value: 'empathy', text: 'foster empathy' },
-            { value: 'curiosity', text: 'stimulate curiosity' },
-            { value: 'lesson', text: 'teach a lesson' },
-            { value: 'confidence', text: 'boost confidence' },
-          ],
+          question: "What's the purpose of the story?",
+          options: purposes?.map((p) => ({ value: p.id.toString(), text: p.description })),
         };
         break;
     }
