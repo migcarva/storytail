@@ -43,8 +43,6 @@ const CreationStep: React.FC = () => {
 
   const { purposes, ageGroups, isLoading, error } = useStoryCreationOptions();
 
-  console.log(ageGroups);
-
   const getStepProps = (step: number) => {
     let stepProps: StepProps<string, keyof OptionTypes>;
     switch (step) {
