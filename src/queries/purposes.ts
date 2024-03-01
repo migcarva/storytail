@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { supabase } from '@/src/lib/supabase';
-import { QUERY_KEYS } from '@/src/queries/keys';
+import { API_KEYS, QUERY_KEYS } from '@/src/queries/keys';
 
 export type Purpose = {
   id: number;
@@ -16,7 +16,7 @@ export const usePurposesList = () => {
 };
 
 const fetchPurposes = async (): Promise<Purpose[]> => {
-  const { data, error } = await supabase.from(QUERY_KEYS.purpose).select('*');
+  const { data, error } = await supabase.from(API_KEYS.purpose).select('*');
 
   if (error) {
     throw new Error(error.message);
