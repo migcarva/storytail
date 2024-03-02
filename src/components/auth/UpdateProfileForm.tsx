@@ -4,8 +4,8 @@ import { ActivityIndicator, View, Text } from 'react-native';
 import * as z from 'zod';
 
 import { Button, Form, FormField, FormInput } from '@/src/components/ui';
+import { useProfile } from '@/src/hooks/useProfile';
 import { useAuthStore } from '@/src/services/auth';
-import { updateProfile, useGetProfile } from '@/src/services/profile';
 
 const formSchema = z.object({
   username: z.string(),
@@ -14,7 +14,7 @@ const formSchema = z.object({
 
 export default function UpdateProfileForm() {
   const { user } = useAuthStore();
-  const { data: profile, status, error } = useGetProfile({ userId: user!.id });
+  const { username, fullName, status, error, mutation } = useProfile(user!.id);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -23,8 +23,8 @@ export default function UpdateProfileForm() {
       full_name: '',
     },
     values: {
-      username: status === 'success' ? profile!.username : '',
-      full_name: status === 'success' ? profile!.full_name : '',
+      username: username || '',
+      full_name: fullName || '',
     },
   });
 
@@ -32,7 +32,7 @@ export default function UpdateProfileForm() {
     return (
       <View>
         <Text className="text-2 text-black font-heading">Error loading profiel</Text>
-        <Text className="text-1.25 text-black font-heading">{error.message}</Text>
+        <Text className="text-1.25 text-black font-heading">{error?.message}</Text>
       </View>
     );
   }
@@ -42,15 +42,13 @@ export default function UpdateProfileForm() {
   }
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    const options = {
-      username: data.username,
-      full_name: data.full_name,
-    };
-
     try {
-      updateProfile({
+      mutation.mutate({
         userId: user!.id,
-        options,
+        options: {
+          username: data.username,
+          full_name: data.full_name,
+        },
       });
       form.reset();
     } catch (error: Error | any) {

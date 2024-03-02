@@ -1,8 +1,8 @@
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Stack } from 'expo-router';
 
+import CloseButton from '@/src/components/navs/CloseButton';
 import GoBackButton from '@/src/components/navs/GoBackButton';
-import CloseButton from '@/src/components/navs/closeButton';
 import colors from '@/src/utils/colors';
 
 const SettingsPage: React.FC = () => {

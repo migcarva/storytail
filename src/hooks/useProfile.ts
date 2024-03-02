@@ -1,34 +1,38 @@
-import { updateProfile, useGetProfile, useUpdateProfile } from '@/src/services/profile';
+import { useMutation, useQuery } from '@tanstack/react-query';
+
+import { QUERY_KEYS } from '@/src/queries/keys';
+import { updateProfile, getProfile, UpdateProfileProps } from '@/src/services/profile';
 
 export const useProfile = (userId: string) => {
-  const { data: profile, error, isLoading } = useGetProfile({ userId });
   const {
-    data: updatedProfile,
-    error: updateError,
-    isLoading: updateIsLoading,
-  } = useUpdateProfile({ userId });
+    data: profile,
+    error,
+    status,
+  } = useQuery({
+    queryKey: [QUERY_KEYS.getProfile, userId],
+    queryFn: () => getProfile({ userId }),
+    meta: {
+      errorMessage: `Failed to FETCH profile of user with ID: ${userId}`,
+    },
+    gcTime: 1 * 1000, // 1 second
+  });
 
-  const requestProfileUpdate = async ({
-    username,
-    full_name,
-  }: {
-    username: string;
-    full_name: string;
-  }) => {
-    const options = {
-      username,
-      full_name,
-    };
-    await updateProfile({ userId, options });
-  };
+  const mutation = useMutation({
+    mutationFn: (params: UpdateProfileProps) => {
+      return updateProfile({ userId: params.userId, options: params.options });
+    },
+    meta: {
+      errorMessage: `Failed to UPDATE profile of user with ID: ${userId}`,
+    },
+  });
 
   return {
     username: profile?.username,
     fullName: profile?.full_name,
     id: profile?.id,
     updatedAt: profile?.updated_at,
-    requestProfileUpdate,
-    isLoading: isLoading,
-    error: error,
+    error,
+    status,
+    mutation,
   };
 };

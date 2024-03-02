@@ -7,7 +7,7 @@ type GetProfileProps = {
   userId: string;
 };
 
-type UpdateProfileProps = {
+export type UpdateProfileProps = {
   userId: string;
   options: {
     username: string;
@@ -25,15 +25,6 @@ export const useGetProfile = ({ userId }: GetProfileProps) => {
   });
 };
 
-export const useUpdateProfile = ({ userId, options }: UpdateProfileProps) => {
-  return useMutation({
-    mutationFn: () => updateProfile({ userId, options }),
-    meta: {
-      errorMessage: `Failed to UPDATE profile of user with ID: ${userId}`,
-    },
-  });
-};
-
 export const updateProfile = async ({ userId, options }: UpdateProfileProps) => {
   const updates = {
     id: userId,
@@ -42,13 +33,11 @@ export const updateProfile = async ({ userId, options }: UpdateProfileProps) => 
     updated_at: new Date(),
   };
 
-  const { data, error } = await supabase.from(API_KEYS.profiles).upsert(updates);
+  const { error } = await supabase.from(API_KEYS.profiles).upsert(updates);
 
   if (error) {
     throw error;
   }
-
-  return data;
 };
 
 export const getProfile = async ({ userId }: GetProfileProps) => {

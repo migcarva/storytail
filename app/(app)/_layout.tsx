@@ -1,7 +1,7 @@
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Stack } from 'expo-router';
 
-import CloseButton from '@/src/components/navs/closeButton';
+import CloseButton from '@/src/components/navs/CloseButton';
 
 const TabsPage: React.FC = () => {
   const isSignedIn = true;
