@@ -1,8 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import React from 'react';
-import { Pressable, Text, View } from 'react-native';
-import Spinner from 'react-native-loading-spinner-overlay';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 
 import SignoutButton from '@/src/components/navs/SignoutButton';
 import { useAuthStore } from '@/src/services/auth';
@@ -60,13 +59,8 @@ const Settings: React.FC = () => {
 
   if (status === 'pending') {
     return (
-      <View className="flex flex-1 px-2 pt-6 bg-background">
-        <Spinner
-          textContent="Loading..."
-          textStyle={{
-            color: colors.black,
-          }}
-        />
+      <View className="flex flex-1 justify-center items-center">
+        <ActivityIndicator size="large" />
       </View>
     );
   }

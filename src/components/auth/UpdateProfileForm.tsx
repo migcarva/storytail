@@ -5,7 +5,7 @@ import * as z from 'zod';
 
 import { Button, Form, FormField, FormInput } from '@/src/components/ui';
 import { useAuthStore } from '@/src/services/auth';
-import { useGetProfile } from '@/src/services/profile';
+import { updateProfile, useGetProfile } from '@/src/services/profile';
 
 const formSchema = z.object({
   username: z.string(),
@@ -38,18 +38,19 @@ export default function UpdateProfileForm() {
   }
 
   if (status === 'pending') {
-    return (
-      <View>
-        <Text className="text-2 text-black font-heading">Loading form</Text>
-      </View>
-    );
+    return <ActivityIndicator size="small" />;
   }
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
+    const options = {
+      username: data.username,
+      full_name: data.full_name,
+    };
+
     try {
-      handleProfileUpdate({
-        username: data.username,
-        full_name: data.full_name,
+      updateProfile({
+        userId: user!.id,
+        options,
       });
       form.reset();
     } catch (error: Error | any) {
@@ -59,7 +60,7 @@ export default function UpdateProfileForm() {
 
   return (
     <>
-      <View className="py-4">
+      <View className="flex-1">
         <Form {...form}>
           <View className="gap-1.5">
             <FormField
@@ -96,7 +97,7 @@ export default function UpdateProfileForm() {
             />
           </View>
         </Form>
-        <View className="pt-3 pb-2.5">
+        <View className="absolute w-full bottom-4">
           <Button size="default" variant="default" onPress={form.handleSubmit(onSubmit)}>
             {form.formState.isSubmitting ? <ActivityIndicator size="small" /> : 'Update profile'}
           </Button>

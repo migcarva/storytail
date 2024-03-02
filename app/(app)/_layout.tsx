@@ -1,6 +1,8 @@
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { Stack } from 'expo-router';
 
+import CloseButton from '@/src/components/navs/closeButton';
+
 const TabsPage: React.FC = () => {
   const isSignedIn = true;
 
@@ -11,6 +13,7 @@ const TabsPage: React.FC = () => {
       fontFamily: 'BellotaText_700Bold',
       fontSize: 20,
     },
+    headerLeft: () => <CloseButton />,
   };
 
   return (

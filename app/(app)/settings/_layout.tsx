@@ -1,15 +1,14 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
-import { Link, Stack } from 'expo-router';
-import { Pressable, Text, View } from 'react-native';
+import { Stack } from 'expo-router';
 
+import GoBackButton from '@/src/components/navs/GoBackButton';
+import CloseButton from '@/src/components/navs/closeButton';
 import colors from '@/src/utils/colors';
 
 const SettingsPage: React.FC = () => {
   const isSignedIn = true;
 
-  const modalOptions: NativeStackNavigationOptions = {
-    // presentation: 'modal',
+  const baseOptions: NativeStackNavigationOptions = {
     headerTransparent: true,
     headerTitleStyle: {
       fontFamily: 'BellotaText_700Bold',
@@ -20,7 +19,11 @@ const SettingsPage: React.FC = () => {
     },
     headerBackTitle: 'back',
     headerBackButtonMenuEnabled: false,
-    headerLeft: () => <BackButton />,
+  };
+
+  const modalOptions: NativeStackNavigationOptions = {
+    ...baseOptions,
+    headerLeft: () => <GoBackButton path="/settings" />,
   };
 
   return (
@@ -28,8 +31,9 @@ const SettingsPage: React.FC = () => {
       <Stack.Screen
         name="index"
         options={{
-          ...modalOptions,
+          ...baseOptions,
           headerTitle: 'Settings',
+          headerLeft: () => <CloseButton />,
         }}
         redirect={!isSignedIn}
       />
@@ -63,23 +67,3 @@ const SettingsPage: React.FC = () => {
 };
 
 export default SettingsPage;
-
-const BackButton = () => (
-  <Link href="/settings" asChild>
-    <Pressable>
-      {({ pressed }) => (
-        <View className="flex flex-row gap-0.5 items-center">
-          <Ionicons
-            name="chevron-back-outline" // Cast to `any` to bypass the type checking issue
-            size={16}
-            color={colors.black}
-            style={{ opacity: pressed ? 0.5 : 1 }}
-          />
-          <Text className="font-body text-1.25 text-black" style={{ opacity: pressed ? 0.5 : 1 }}>
-            back
-          </Text>
-        </View>
-      )}
-    </Pressable>
-  </Link>
-);

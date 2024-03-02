@@ -5,7 +5,7 @@ import { signOut } from '@/src/services/auth';
 
 const SignoutButton: React.FC = () => {
   return (
-    <Button variant="outline" size="sm" onPress={signOut}>
+    <Button variant="outline" onPress={signOut}>
       <View className="flex flex-row gap-0.5 justify-center items-center px-0.5">
         <Text className="text-1.25 text-black font-bodybold">Sign out</Text>
       </View>
