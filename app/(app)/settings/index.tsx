@@ -1,12 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import React from 'react';
-import { ActivityIndicator, Pressable, Text, View } from 'react-native';
+import { ActivityIndicator, Platform, Pressable, Text, View } from 'react-native';
 
 import SignoutButton from '@/src/components/navs/SignoutButton';
 import { useAuthStore } from '@/src/services/auth';
 import { useGetProfile } from '@/src/services/profile';
 import colors from '@/src/utils/colors';
+import { StatusBar } from 'expo-status-bar';
 
 const settingsList = [
   {
@@ -79,7 +80,7 @@ const Settings: React.FC = () => {
   return (
     <View className="flex flex-1 px-2 pt-6 bg-background gap-y-2">
       <View className="flex flex-row justify-between items-center pb-4">
-        <Text className="text-1.5 text-black font-bodylight">Hi, {displayName}</Text>
+        <Text className="text-1.5 text-black font-bodylight">Hello, {displayName}</Text>
       </View>
 
       <View className="flex">
@@ -103,6 +104,9 @@ const Settings: React.FC = () => {
       <View className="absolute bottom-4 w-full pl-4">
         <SignoutButton />
       </View>
+
+      {/* Use a light status bar on iOS to account for the black space above the modal */}
+      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>
   );
 };

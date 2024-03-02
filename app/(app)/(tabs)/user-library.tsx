@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
+import { Platform, Text, View } from 'react-native';
 
 import BooksCarousel from '@/src/components/books/BooksCarousel';
 import { userStories } from '@/src/utils/mocks';
@@ -12,7 +12,8 @@ const UserLibraryScreen: React.FC = () => {
         <BooksCarousel books={userStories} />
       </View>
 
-      <StatusBar style="light" />
+      {/* Use a light status bar on iOS to account for the black space above the modal */}
+      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>
   );
 };

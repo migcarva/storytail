@@ -13,7 +13,6 @@ const TabsPage: React.FC = () => {
       fontFamily: 'BellotaText_700Bold',
       fontSize: 20,
     },
-    headerLeft: () => <CloseButton />,
   };
 
   return (
@@ -23,17 +22,25 @@ const TabsPage: React.FC = () => {
       <Stack.Screen name="creator" options={{ headerShown: false }} redirect={!isSignedIn} />
       <Stack.Screen
         name="search-online-library"
-        options={{ ...modalOptions, headerTitle: 'Search' }}
+        options={{
+          ...modalOptions,
+          headerTitle: 'Search',
+          headerLeft: () => <CloseButton path="/online-library" />,
+        }}
         redirect={!isSignedIn}
       />
       <Stack.Screen
         name="search-user-library"
-        options={{ ...modalOptions, headerTitle: 'Search' }}
+        options={{ ...modalOptions, headerTitle: 'Search', headerLeft: () => <CloseButton /> }}
         redirect={!isSignedIn}
       />
       <Stack.Screen
         name="notifications"
-        options={{ ...modalOptions, headerTitle: 'Notifications' }}
+        options={{
+          ...modalOptions,
+          headerTitle: 'Notifications',
+          headerRight: () => <CloseButton />,
+        }}
         redirect={!isSignedIn}
       />
       <Stack.Screen

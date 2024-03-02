@@ -33,7 +33,7 @@ const SettingsPage: React.FC = () => {
         options={{
           ...baseOptions,
           headerTitle: 'Settings',
-          headerLeft: () => <CloseButton />,
+          headerRight: () => <CloseButton />,
         }}
         redirect={!isSignedIn}
       />
