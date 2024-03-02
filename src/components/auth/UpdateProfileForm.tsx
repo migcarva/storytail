@@ -42,7 +42,7 @@ export default function UpdateProfileForm() {
       form.reset();
       router.back();
     } catch (error: Error | any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 

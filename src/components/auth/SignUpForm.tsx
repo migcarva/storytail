@@ -42,7 +42,7 @@ export default function SignUpForm() {
       await signUp(data.email, data.password);
       form.reset();
     } catch (error: Error | any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 

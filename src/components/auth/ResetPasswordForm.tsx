@@ -27,7 +27,7 @@ export default function ResetPasswordForm() {
 
       form.reset();
     } catch (error: Error | any) {
-      console.log(error.message);
+      console.error(error.message);
     }
   }
 
