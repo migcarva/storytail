@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
-import { ActivityIndicator, View, Text } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import * as z from 'zod';
 
 import { Button, Form, FormField, FormInput } from '@/src/components/ui';
-import { useProfile } from '@/src/hooks/useProfile';
+import { useProfile } from '@/src/hooks';
 import { useAuthStore } from '@/src/services/auth';
 
 const formSchema = z.object({

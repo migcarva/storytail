@@ -5,7 +5,7 @@ import React from 'react';
 import { Platform, Pressable, Text, View } from 'react-native';
 
 import SignoutButton from '@/src/components/navs/SignoutButton';
-import { useProfile } from '@/src/hooks/useProfile';
+import { useProfile } from '@/src/hooks';
 import { useAuthStore } from '@/src/services/auth';
 import colors from '@/src/utils/colors';
 
