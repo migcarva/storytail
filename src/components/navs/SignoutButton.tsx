@@ -1,17 +1,15 @@
-import { Pressable, Text, View } from 'react-native';
+import { View, Text } from 'react-native';
 
+import { Button } from '@/src/components/ui/Button';
 import { signOut } from '@/src/services/auth';
 
 const SignoutButton: React.FC = () => {
   return (
-    <Pressable onPress={signOut} style={{ marginRight: 10 }}>
-      <View className="flex flex-row">
-        <Text className="text-xl text-black">
-          {/* Welcome, {user?.firstName} {user?.lastName} 🎉 */}
-          Sign out
-        </Text>
+    <Button variant="outline" size="sm" onPress={signOut}>
+      <View className="flex flex-row gap-0.5 justify-center items-center px-0.5">
+        <Text className="text-1.25 text-black font-bodybold">Sign out</Text>
       </View>
-    </Pressable>
+    </Button>
   );
 };
 

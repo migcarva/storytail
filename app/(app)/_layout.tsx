@@ -35,7 +35,7 @@ const TabsPage: React.FC = () => {
       />
       <Stack.Screen
         name="settings"
-        options={{ ...modalOptions, headerTitle: 'Settings' }}
+        options={{ ...modalOptions, headerShown: false }}
         redirect={!isSignedIn}
       />
     </Stack>

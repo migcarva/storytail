@@ -6,7 +6,7 @@ import SignoutButton from '@/src/components/navs/SignoutButton';
 import { useAuthStore } from '@/src/services/auth';
 import { useGetProfile } from '@/src/services/profile';
 
-const Settings: React.FC = () => {
+const ProfileManagement: React.FC = () => {
   const { user } = useAuthStore();
   const { data: profile, status, error } = useGetProfile({ userId: user!.id });
 
@@ -39,4 +39,4 @@ const Settings: React.FC = () => {
   );
 };
 
-export default Settings;
+export default ProfileManagement;
