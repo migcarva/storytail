@@ -17,7 +17,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
 import { SupabaseProvider } from '@/src/context/SupabaseContext';
-import '../src/styles/global.css';
+import '@/src/styles/global.css';
 import { queryClient } from '@/src/lib/api/queryClient';
 
 export {

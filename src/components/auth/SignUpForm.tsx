@@ -5,7 +5,7 @@ import { ActivityIndicator, Text, View } from 'react-native';
 import * as z from 'zod';
 
 import { Button, Form, FormField, FormInput } from '@/src/components/ui';
-import { useSupabase } from '@/src/hooks/useSupabase';
+import { signUp } from '@/src/services/auth';
 
 const formSchema = z
   .object({
@@ -26,7 +26,6 @@ const formSchema = z
   });
 
 export default function SignUpForm() {
-  const { signUp } = useSupabase();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({

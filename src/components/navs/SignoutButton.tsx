@@ -1,10 +1,8 @@
 import { Pressable, Text, View } from 'react-native';
 
-import { useSupabase } from '@/src/hooks/useSupabase';
+import { signOut } from '@/src/services/auth';
 
 const SignoutButton: React.FC = () => {
-  const { signOut } = useSupabase();
-
   return (
     <Pressable onPress={signOut} style={{ marginRight: 10 }}>
       <View className="flex flex-row">
