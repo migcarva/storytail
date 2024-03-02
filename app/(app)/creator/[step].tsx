@@ -6,7 +6,7 @@ import { View, Text } from 'react-native';
 import { Book } from '@/src/components/creator/CreatorBook';
 import CreatorNav, { CloseButton } from '@/src/components/creator/CreatorNav';
 import StepPage from '@/src/components/creator/StepPage';
-import { useStoryCreationOptions } from '@/src/hooks';
+import { AGE_GROUPS, STORY_PURPOSES_TYPES } from '@/src/lib/constants';
 import colors from '@/src/utils/colors';
 
 type SelectOption = {
@@ -35,13 +35,11 @@ type StepProps<T, K extends keyof OptionTypes> = {
 const CreationStep: React.FC = () => {
   const { step } = useLocalSearchParams();
   const [to, setTo] = useState('');
-  const [ageGroup, setAgeGroup] = useState('');
+  const [ageGroup, setAgeGroup] = useState('1');
   const [prompt, setPrompt] = useState('');
-  const [purpose, setPurpose] = useState('surprise');
+  const [purpose, setPurpose] = useState('1');
 
   const [done, setDone] = useState(false);
-
-  const { purposes, ageGroups, isLoading, error } = useStoryCreationOptions();
 
   const getStepProps = (step: number) => {
     let stepProps: StepProps<string, keyof OptionTypes>;
@@ -63,7 +61,7 @@ const CreationStep: React.FC = () => {
           setter: setAgeGroup,
           type: 'select',
           question: `Select ${to}'s age group?`,
-          options: ageGroups?.map((a) => ({
+          options: AGE_GROUPS.map((a) => ({
             value: a.id.toString(),
             text: `${a.description} (${a.min_age}-${a.max_age})`,
           })),
@@ -86,7 +84,10 @@ const CreationStep: React.FC = () => {
           setter: setPurpose,
           type: 'select',
           question: "What's the purpose of the story?",
-          options: purposes?.map((p) => ({ value: p.id.toString(), text: p.description })),
+          options: STORY_PURPOSES_TYPES?.map((p) => ({
+            value: p.id.toString(),
+            text: p.description,
+          })),
         };
         break;
     }

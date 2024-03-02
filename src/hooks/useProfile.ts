@@ -1,14 +1,14 @@
-import { useEffect } from 'react';
-
-import { updateProfile, useGetProfile, useProfileStore } from '@/src/services/profile';
+import { updateProfile, useGetProfile, useUpdateProfile } from '@/src/services/profile';
 
 export const useProfile = (userId: string) => {
-  const { username, setUsername, full_name, setFullName, updated_at, setUpdatedAt, id, setId } =
-    useProfileStore();
+  const { data: profile, error, isLoading } = useGetProfile({ userId });
+  const {
+    data: updatedProfile,
+    error: updateError,
+    isLoading: updateIsLoading,
+  } = useUpdateProfile({ userId });
 
-  const { data: profile } = useGetProfile({ userId });
-
-  const handleProfileUpdate = async ({
+  const requestProfileUpdate = async ({
     username,
     full_name,
   }: {
@@ -20,16 +20,15 @@ export const useProfile = (userId: string) => {
       full_name,
     };
     await updateProfile({ userId, options });
-    setUsername(username);
-    setFullName(full_name);
   };
 
-  useEffect(() => {
-    if (profile?.username) setUsername(profile.username);
-    if (profile?.full_name) setFullName(profile.full_name);
-    if (profile?.updated_at) setUpdatedAt(profile.updated_at);
-    if (profile?.id) setId(profile.id);
-  }, [profile]);
-
-  return { username, full_name, id, updated_at, handleProfileUpdate };
+  return {
+    username: profile?.username,
+    fullName: profile?.full_name,
+    id: profile?.id,
+    updatedAt: profile?.updated_at,
+    requestProfileUpdate,
+    isLoading: isLoading,
+    error: error,
+  };
 };

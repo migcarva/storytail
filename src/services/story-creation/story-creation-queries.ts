@@ -1,7 +1,8 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { supabase } from '@/src/lib/supabase';
 import { API_KEYS, QUERY_KEYS } from '@/src/queries/keys';
+import { Profile } from '@/src/types';
 
 type GetProfileProps = {
   userId: string;
@@ -19,18 +20,13 @@ export const useGetProfile = ({ userId }: GetProfileProps) => {
   return useQuery({
     queryKey: [QUERY_KEYS.getProfile, userId],
     queryFn: () => getProfile({ userId }),
-    meta: {
-      errorMessage: `Failed to FETCH profile of user with ID: ${userId}`,
-    },
   });
 };
 
 export const useUpdateProfile = ({ userId, options }: UpdateProfileProps) => {
-  return useMutation({
-    mutationFn: () => updateProfile({ userId, options }),
-    meta: {
-      errorMessage: `Failed to UPDATE profile of user with ID: ${userId}`,
-    },
+  return useQuery({
+    queryKey: [QUERY_KEYS.updateProfile, userId, options.username, options.full_name],
+    queryFn: () => updateProfile({ userId, options }),
   });
 };
 

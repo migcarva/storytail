@@ -1,11 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View, Text } from 'react-native';
 import * as z from 'zod';
 
 import { Button, Form, FormField, FormInput } from '@/src/components/ui';
-import { useProfile } from '@/src/hooks/useProfile';
 import { useAuthStore } from '@/src/services/auth';
+import { useGetProfile } from '@/src/services/profile';
 
 const formSchema = z.object({
   username: z.string(),
@@ -14,7 +14,7 @@ const formSchema = z.object({
 
 export default function UpdateProfileForm() {
   const { user } = useAuthStore();
-  const { username, full_name, handleProfileUpdate } = useProfile(user!.id);
+  const { data: profile, status, error } = useGetProfile({ userId: user!.id });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -23,10 +23,27 @@ export default function UpdateProfileForm() {
       full_name: '',
     },
     values: {
-      username: username || '',
-      full_name: full_name || '',
+      username: status === 'success' ? profile!.username : '',
+      full_name: status === 'success' ? profile!.full_name : '',
     },
   });
+
+  if (status === 'error') {
+    return (
+      <View>
+        <Text className="text-2 text-black font-heading">Error loading profiel</Text>
+        <Text className="text-1.25 text-black font-heading">{error.message}</Text>
+      </View>
+    );
+  }
+
+  if (status === 'pending') {
+    return (
+      <View>
+        <Text className="text-2 text-black font-heading">Loading form</Text>
+      </View>
+    );
+  }
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
