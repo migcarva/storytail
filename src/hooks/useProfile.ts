@@ -1,21 +1,25 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
-import { QUERY_KEYS } from '@/src/queries/keys';
-import { updateProfile, getProfile, UpdateProfileProps } from '@/src/services/profile';
+import {
+  updateProfile,
+  getProfile,
+  UpdateProfileProps,
+  useProfileStore,
+} from '@/src/services/profile';
 
 export const useProfile = (userId: string) => {
-  const {
-    data: profile,
-    error,
-    status,
-  } = useQuery({
-    queryKey: [QUERY_KEYS.getProfile, userId],
-    queryFn: () => getProfile({ userId }),
-    meta: {
-      errorMessage: `Failed to FETCH profile of user with ID: ${userId}`,
-    },
-    gcTime: 1 * 1000, // 1 second
-  });
+  const { username, setUsername, full_name, setFullName } = useProfileStore();
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const data = await getProfile({ userId });
+      setFullName(data?.full_name);
+      setUsername(data?.username);
+    };
+
+    fetchProfile();
+  }, []);
 
   const mutation = useMutation({
     mutationFn: (params: UpdateProfileProps) => {
@@ -24,15 +28,15 @@ export const useProfile = (userId: string) => {
     meta: {
       errorMessage: `Failed to UPDATE profile of user with ID: ${userId}`,
     },
+    onSuccess(data, variables, context) {
+      setFullName(variables.options.full_name);
+      setUsername(variables.options.username);
+    },
   });
 
   return {
-    username: profile?.username,
-    fullName: profile?.full_name,
-    id: profile?.id,
-    updatedAt: profile?.updated_at,
-    error,
-    status,
+    username,
+    full_name,
     mutation,
   };
 };

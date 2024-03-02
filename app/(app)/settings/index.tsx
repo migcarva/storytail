@@ -1,13 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { ActivityIndicator, Platform, Pressable, Text, View } from 'react-native';
 
 import SignoutButton from '@/src/components/navs/SignoutButton';
+import { useProfile } from '@/src/hooks/useProfile';
 import { useAuthStore } from '@/src/services/auth';
-import { useGetProfile } from '@/src/services/profile';
 import colors from '@/src/utils/colors';
-import { StatusBar } from 'expo-status-bar';
 
 const settingsList = [
   {
@@ -56,26 +56,8 @@ const settingsList = [
 
 const Settings: React.FC = () => {
   const { user } = useAuthStore();
-  const { data: profile, status, error } = useGetProfile({ userId: user!.id });
-
-  if (status === 'pending') {
-    return (
-      <View className="flex flex-1 justify-center items-center">
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
-
-  if (status === 'error') {
-    return (
-      <View className="flex flex-1 px-2 pt-6 bg-background">
-        <Text className="text-2 text-black font-heading">Error loading profiel</Text>
-        <Text className="text-1.25 text-black font-heading">{error.message}</Text>
-      </View>
-    );
-  }
-
-  const displayName = profile!.full_name || profile!.username || 'adventurer!';
+  const { username, full_name } = useProfile(user!.id);
+  const displayName = full_name || username || 'adventurer!';
 
   return (
     <View className="flex flex-1 px-2 pt-6 bg-background gap-y-2">

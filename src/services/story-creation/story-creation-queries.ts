@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 
 import { supabase } from '@/src/lib/supabase';
 import { API_KEYS, QUERY_KEYS } from '@/src/queries/keys';
-import { Profile } from '@/src/types';
 
 type GetProfileProps = {
   userId: string;

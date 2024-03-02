@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { ActivityIndicator, View, Text } from 'react-native';
 import * as z from 'zod';
@@ -13,33 +14,21 @@ const formSchema = z.object({
 });
 
 export default function UpdateProfileForm() {
+  const router = useRouter();
   const { user } = useAuthStore();
-  const { username, fullName, status, error, mutation } = useProfile(user!.id);
+  const { username, full_name, mutation } = useProfile(user!.id);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
       full_name: '',
+      username: '',
     },
     values: {
+      full_name: full_name || '',
       username: username || '',
-      full_name: fullName || '',
     },
   });
-
-  if (status === 'error') {
-    return (
-      <View>
-        <Text className="text-2 text-black font-heading">Error loading profiel</Text>
-        <Text className="text-1.25 text-black font-heading">{error?.message}</Text>
-      </View>
-    );
-  }
-
-  if (status === 'pending') {
-    return <ActivityIndicator size="small" />;
-  }
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
@@ -51,6 +40,7 @@ export default function UpdateProfileForm() {
         },
       });
       form.reset();
+      router.back();
     } catch (error: Error | any) {
       console.log(error.message);
     }
@@ -63,13 +53,13 @@ export default function UpdateProfileForm() {
           <View className="gap-1.5">
             <FormField
               control={form.control}
-              name="username"
+              name="full_name"
               render={({ field }) => (
                 <FormInput
-                  label="Username"
-                  placeholder="Username"
+                  label="Full name"
+                  placeholder="Your name"
                   autoCapitalize="none"
-                  autoComplete="username"
+                  autoComplete="name"
                   autoCorrect={false}
                   keyboardType="default"
                   className="bg-input rounded-lg"
@@ -79,13 +69,13 @@ export default function UpdateProfileForm() {
             />
             <FormField
               control={form.control}
-              name="full_name"
+              name="username"
               render={({ field }) => (
                 <FormInput
-                  label="Full name"
-                  placeholder="Your name"
+                  label="Username"
+                  placeholder="Username"
                   autoCapitalize="none"
-                  autoComplete="name"
+                  autoComplete="username"
                   autoCorrect={false}
                   keyboardType="default"
                   className="bg-input rounded-lg"

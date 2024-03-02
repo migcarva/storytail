@@ -4,5 +4,4 @@ import type {
 } from '@supabase/supabase-js';
 
 export type AuthUser = SupabaseAuthUser;
-
 export type AuthSession = SupabaseAuthSession;
