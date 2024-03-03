@@ -125,24 +125,6 @@ const CreationStep: React.FC = () => {
         };
         const data = await addNewStory({ user_id: user!.id, story: storyObj });
         console.log('USE EFFECT :: DATA', data);
-
-        const data = {
-          chapters: {
-            chapter1:
-              'Alan wakes up one morning feeling something missing. He looks around and notices a missing feather.',
-            chapter2:
-              'Determined to find his missing feather, Alan sets out on an adventure through the meadow.',
-            chapter3:
-              'Along the way, Alan meets new friends like a fluffy bunny and a colorful butterfly.',
-            chapter4:
-              'With the help of his new friends, Alan finally finds his missing feather and feels whole again.',
-          },
-          description:
-            'Alan is a fluffy blue chicken with bright yellow feathers and a determined look in his eye.',
-          summary:
-            'Alan the brave blue chicken goes on a grand adventure to find his missing feather.',
-          title: 'Alan the Brave Blue Chicken',
-        };
       }
     };
 
