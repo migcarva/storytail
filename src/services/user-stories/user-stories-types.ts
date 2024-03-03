@@ -13,3 +13,14 @@ export type Story = {
   created_at: string;
   updated_at: string;
 };
+
+export type Chapter = {
+  id: number;
+  story_id: string;
+  chapter_number: number;
+  title: string;
+  content: string;
+  image_url: string;
+  created_at: string;
+  updated_at: string;
+};

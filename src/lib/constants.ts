@@ -1,30 +1,30 @@
 export const AGE_GROUPS = [
   {
-    id: 1,
+    id: 0,
     description: 'Toddlers',
     min_age: 0,
     max_age: 2,
   },
   {
-    id: 2,
+    id: 1,
     description: 'Preschool',
     min_age: 3,
     max_age: 5,
   },
   {
-    id: 3,
+    id: 2,
     description: 'Early Readers',
     min_age: 6,
     max_age: 8,
   },
   {
-    id: 4,
+    id: 3,
     description: 'Middle Grade',
     min_age: 9,
     max_age: 12,
   },
   {
-    id: 5,
+    id: 4,
     description: 'Young Teen',
     min_age: 13,
     max_age: 15,
@@ -33,27 +33,27 @@ export const AGE_GROUPS = [
 
 export const STORY_PURPOSES_TYPES = [
   {
-    id: 1,
+    id: 0,
     description: 'Surprise me',
   },
   {
-    id: 2,
+    id: 1,
     description: 'Inspire Creativity',
   },
   {
-    id: 3,
+    id: 2,
     description: 'Foster Empathy',
   },
   {
-    id: 4,
+    id: 3,
     description: 'Stimulate Curiosity',
   },
   {
-    id: 5,
+    id: 4,
     description: 'Teach a Lesson',
   },
   {
-    id: 6,
+    id: 5,
     description: 'Boost Confidence',
   },
 ];
