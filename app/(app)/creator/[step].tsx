@@ -9,7 +9,7 @@ import StepPage from '@/src/components/creator/StepPage';
 import { AGE_GROUPS, STORY_PURPOSES_TYPES } from '@/src/lib/constants';
 import { useAuthStore } from '@/src/services/auth';
 import { generateStory } from '@/src/services/open-ai/open-ai.queries';
-import { addNewStory } from '@/src/services/user-stories';
+import { addChapters, addNewStory } from '@/src/services/user-stories';
 import colors from '@/src/utils/colors';
 
 type SelectOption = {
@@ -25,6 +25,10 @@ interface OptionTypes {
   input: InputConfig;
   select: SelectOption[];
   multiselect: SelectOption[];
+}
+
+interface StoryChapters {
+  [key: string]: string;
 }
 
 type StepProps<T, K extends keyof OptionTypes> = {
@@ -109,7 +113,7 @@ const CreationStep: React.FC = () => {
         purpose_id: parseInt(purpose, 10),
         prompt,
       });
-      console.log('USE EFFECT :: STORY', story);
+      // console.log('USE EFFECT :: STORY', story);
 
       if (story) {
         const storyObj = {
@@ -123,8 +127,24 @@ const CreationStep: React.FC = () => {
           age_group_id: parseInt(ageGroup, 10),
           purpose_id: parseInt(purpose, 10),
         };
-        const data = await addNewStory({ user_id: user!.id, story: storyObj });
-        console.log('USE EFFECT :: DATA', data);
+        const story_id = await addNewStory({ user_id: user!.id, story: storyObj });
+        console.log('story_id >>>>>>>>>', story_id);
+        if (story_id) {
+          const chaptersArray = Object.keys(story.chapters).map((key) => {
+            const chapterNumber = parseInt(key.replace('chapter', ''), 10); // Extract the chapter number
+            return {
+              chapter_number: chapterNumber,
+              content: (story.chapters as StoryChapters)[key],
+              title: 'chapter_title',
+              image_url: 'image_url',
+            };
+          });
+
+          addChapters({
+            story_id,
+            chapters: chaptersArray,
+          });
+        }
       }
     };
 
