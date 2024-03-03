@@ -37,6 +37,7 @@
     "expo-web-browser": "~12.8.2",
     "jwt-decode": "^4.0.0",
     "nativewind": "^4.0.36",
+    "openai": "^4.28.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.50.1",

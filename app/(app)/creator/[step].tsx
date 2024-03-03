@@ -7,6 +7,7 @@ import { Book } from '@/src/components/creator/CreatorBook';
 import CreatorNav, { CloseButton } from '@/src/components/creator/CreatorNav';
 import StepPage from '@/src/components/creator/StepPage';
 import { AGE_GROUPS, STORY_PURPOSES_TYPES } from '@/src/lib/constants';
+import { generateStory } from '@/src/services/open-ai/open-ai.queries';
 import colors from '@/src/utils/colors';
 
 type SelectOption = {
@@ -100,6 +101,12 @@ const CreationStep: React.FC = () => {
 
   useEffect(() => {
     if (stepNumber === 5) {
+      generateStory({
+        age_group_id: parseInt(ageGroup, 10),
+        purpose_id: parseInt(purpose, 10),
+        prompt,
+      });
+
       setTimeout(() => {
         setDone(true);
       }, 3000);
