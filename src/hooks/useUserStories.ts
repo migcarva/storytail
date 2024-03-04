@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { QUERY_KEYS } from '@/src/queries/keys';
+import { QUERY_KEYS } from '@/src/constants/keys';
 import { getStories } from '@/src/services/user-stories';
 
 export const useUserStories = ({ userId }: { userId: string }) => {
