@@ -18,7 +18,8 @@ export const SupabaseContext = createContext<{
 export const SupabaseProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const { user, setUser, session, setSession, initialized, setInitialized } = useAuthStore();
+  const { user, setUser, setUserId, session, setSession, initialized, setInitialized } =
+    useAuthStore();
   const segments = useSegments()[0];
   const router = useRouter();
 
@@ -26,6 +27,7 @@ export const SupabaseProvider: React.FC<{
     const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
       setSession(session);
       setUser(session ? session.user : null);
+      setUserId(session ? session.user.id : '');
       setInitialized(true);
     });
     return () => {

@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native';
 
 import ReaderNav, { CloseButton } from '@/src/components/reader/ReaderNav';
-import { book } from '@/src/utils/mocks';
+import { bookMock } from '@/src/utils';
 
 const Intro: React.FC = () => {
-  const { title } = book;
+  const { title } = bookMock;
   return (
     <View className="flex px-2 pt-6 h-full relative bg-purple">
       <View className="flex mb-4 flex-row justify-between ">

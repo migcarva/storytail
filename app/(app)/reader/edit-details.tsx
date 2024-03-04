@@ -1,5 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import { Platform, View, Text } from 'react-native';
+import { View, Text } from 'react-native';
+
+import { isIphone } from '@/src/utils';
 
 const EditDetails: React.FC = () => {
   return (
@@ -7,7 +9,7 @@ const EditDetails: React.FC = () => {
       <Text className="text-1 font-body">Edit details</Text>
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <StatusBar style={isIphone ? 'light' : 'auto'} />
     </View>
   );
 };

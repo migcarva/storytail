@@ -2,11 +2,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Platform, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 import SignoutButton from '@/src/components/navs/SignoutButton';
 import { useProfile } from '@/src/hooks';
 import { useAuthStore } from '@/src/services/auth';
+import { isIphone } from '@/src/utils';
 import colors from '@/src/utils/colors';
 
 const settingsList = [
@@ -55,8 +56,8 @@ const settingsList = [
 ];
 
 const Settings: React.FC = () => {
-  const { user } = useAuthStore();
-  const { username, full_name } = useProfile(user!.id);
+  const { userId } = useAuthStore();
+  const { username, full_name } = useProfile(userId);
   const displayName = full_name || username || 'adventurer!';
 
   return (
@@ -88,7 +89,7 @@ const Settings: React.FC = () => {
       </View>
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <StatusBar style={isIphone ? 'light' : 'auto'} />
     </View>
   );
 };

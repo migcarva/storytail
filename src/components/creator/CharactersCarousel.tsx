@@ -8,8 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
 
-import { withAnchorPoint } from '@/src/utils/anchor-points';
-import { blurhash } from '@/src/utils/images';
+import { withAnchorPoint, blurhash } from '@/src/utils';
 
 const PAGE_WIDTH = Dimensions.get('window').width;
 const PAGE_HEIGHT = Dimensions.get('window').height;

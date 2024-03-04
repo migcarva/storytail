@@ -1,7 +1,7 @@
 import { AgeGroups } from '@/src/constants/AgeGroups';
 import { Book } from '@/src/types';
 
-export const userStories = [
+export const userStoriesMock = [
   {
     id: 1,
     title: 'The little frog in the pond',
@@ -74,7 +74,7 @@ export const userStories = [
   },
 ] as Book[];
 
-export const userNotifications = {
+export const userNotificationsMock = {
   stories: [
     {
       id: 1,
@@ -165,7 +165,7 @@ export const userNotifications = {
   ],
 };
 
-export const book = {
+export const bookMock = {
   title: 'The Wild Adventures of Sarah and the Fox',
   summary: 'Sarah adventures into the wild with her beloved fox friend',
   created_at: 1715904000,
@@ -192,7 +192,7 @@ export const book = {
   ],
 };
 
-export const session = {
+export const sessionMock = {
   access_token: '',
   expires_at: 1709252885,
   expires_in: 3600,

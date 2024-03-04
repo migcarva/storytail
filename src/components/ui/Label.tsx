@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-import { cn } from '@/src/utils/class';
+import { cn } from '@/src/utils';
 
 const Label = React.forwardRef<
   React.ElementRef<typeof Text>,

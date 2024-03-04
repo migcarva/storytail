@@ -3,12 +3,12 @@ import { useState } from 'react';
 import { View, Text, ScrollView, SafeAreaView } from 'react-native';
 
 import SearchFrontFacingBook from '@/src/components/books/SearchFrontFacingBook';
-import { userStories } from '@/src/utils/mocks';
+import { userStoriesMock } from '@/src/utils';
 
 const FilteredBookList: React.FC = () => {
   const [group, setSelectedGroup] = useState(0);
   const [starsAsc, setStarsAsc] = useState(true);
-  const [filteredStories, setFilteredStories] = useState(userStories);
+  const [filteredStories, setFilteredStories] = useState(userStoriesMock);
 
   // useEffect(() => {
   //   if (group === 1) {
@@ -84,17 +84,17 @@ const FilteredBookList: React.FC = () => {
         </View>
       </View>
       <SafeAreaView>
-        {userStories.length > 0 && (
+        {userStoriesMock.length > 0 && (
           <ScrollView className="pt-3 mb-4">
             <View className="flex flex-row flex-wrap gap-2.5 justify-center">
-              {userStories.map((book) => (
+              {userStoriesMock.map((story) => (
                 <SearchFrontFacingBook
-                  id={book.id}
-                  title={book.title}
-                  stars={book.stars}
-                  ageGroup={book.ageGroup}
-                  background={book.background}
-                  key={book.id}
+                  id={story.id}
+                  title={story.title}
+                  stars={story.stars}
+                  ageGroup={story.ageGroup}
+                  background={story.background}
+                  key={story.id}
                 />
               ))}
               <View className="h-8" />

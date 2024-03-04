@@ -3,12 +3,11 @@ import { useLocalSearchParams } from 'expo-router';
 import { View, Text } from 'react-native';
 
 import ReaderNav from '@/src/components/reader/ReaderNav';
-import { blurhash } from '@/src/utils/images';
-import { book } from '@/src/utils/mocks';
+import { blurhash, bookMock } from '@/src/utils';
 
 const Chapter: React.FC = () => {
   const { chapter } = useLocalSearchParams();
-  const { chapters } = book;
+  const { chapters } = bookMock;
 
   if (!chapters || !chapter) return null;
 

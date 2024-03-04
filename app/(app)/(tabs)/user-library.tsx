@@ -1,19 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import { Platform, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
-import BooksCarousel from '@/src/components/books/BooksCarousel';
-import { userStories } from '@/src/utils/mocks';
+import StoriesCarousel from '@/src/components/library/StoriesCarousel';
+import { useUserStories } from '@/src/hooks';
+import { useAuthStore } from '@/src/services/auth';
+import { isIphone, userStoriesMock } from '@/src/utils';
 
 const UserLibraryScreen: React.FC = () => {
+  const { userId } = useAuthStore();
+  const { stories, error, status } = useUserStories({ userId });
+  console.log(stories);
   return (
     <View className="flex flex-1 items-center justify-center bg-purple">
       <Text className="text-white mt-6 mb-3 text-1.5 font-headingbold">your library</Text>
       <View className="flex flex-row gap-1 items-center justify-center bg-purple">
-        <BooksCarousel books={userStories} />
+        <StoriesCarousel stories={userStoriesMock} />
       </View>
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <StatusBar style={isIphone ? 'light' : 'auto'} />
     </View>
   );
 };

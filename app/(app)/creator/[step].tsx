@@ -40,7 +40,7 @@ type StepProps<T, K extends keyof OptionTypes> = {
 };
 
 const CreationStep: React.FC = () => {
-  const { user } = useAuthStore();
+  const { userId } = useAuthStore();
   const { step } = useLocalSearchParams();
   const [to, setTo] = useState('');
   const [ageGroup, setAgeGroup] = useState('0');
@@ -127,8 +127,7 @@ const CreationStep: React.FC = () => {
           age_group_id: parseInt(ageGroup, 10),
           purpose_id: parseInt(purpose, 10),
         };
-        const story_id = await addNewStory({ user_id: user!.id, story: storyObj });
-        console.log('story_id >>>>>>>>>', story_id);
+        const story_id = await addNewStory({ user_id: userId, story: storyObj });
         if (story_id) {
           const chaptersArray = Object.keys(story.chapters).map((key) => {
             const chapterNumber = parseInt(key.replace('chapter', ''), 10); // Extract the chapter number

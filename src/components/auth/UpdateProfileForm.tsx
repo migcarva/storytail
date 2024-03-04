@@ -15,8 +15,8 @@ const formSchema = z.object({
 
 export default function UpdateProfileForm() {
   const router = useRouter();
-  const { user } = useAuthStore();
-  const { username, full_name, mutation } = useProfile(user!.id);
+  const { userId } = useAuthStore();
+  const { username, full_name, mutation } = useProfile(userId);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

@@ -13,7 +13,7 @@ import { Text, View } from 'react-native';
 import { Input } from './Input';
 import { Label } from './Label';
 
-import { cn } from '@/src/utils/class';
+import { cn } from '@/src/utils';
 
 const Form = FormProvider;
 

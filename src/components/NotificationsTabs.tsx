@@ -2,11 +2,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 
-import { userNotifications } from '@/src/utils/mocks';
+import { userNotificationsMock } from '@/src/utils';
 
 const NotificationsTabs: React.FC = () => {
   const [activeTab, setActiveTab] = useState(1);
-  const notifications = userNotifications;
+  const notifications = userNotificationsMock;
 
   const selectedClass = 'border-b-2 border-black border-solid';
   const hasStoryNotifications = notifications.stories.find((s) => s.seen === false);

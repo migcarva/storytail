@@ -1,5 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import { Platform, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+
+import { isIphone } from '@/src/utils';
 
 const OnlineLibraryScreen: React.FC = () => {
   return (
@@ -7,7 +9,7 @@ const OnlineLibraryScreen: React.FC = () => {
       <Text className="text-xl text-black">Online Library</Text>
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'dark' : 'auto'} />
+      <StatusBar style={isIphone ? 'dark' : 'auto'} />
     </View>
   );
 };

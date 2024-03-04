@@ -4,11 +4,11 @@ import { ReactNode } from 'react';
 import { View, Text, Pressable } from 'react-native';
 
 import { CloseButton } from '@/src/components/reader/ReaderNav';
+import { bookMock } from '@/src/utils';
 import colors from '@/src/utils/colors';
-import { book } from '@/src/utils/mocks';
 
 const Intro: React.FC = () => {
-  const { title, summary, created_at, self_reads, reads, stars } = book;
+  const { title, summary, created_at, self_reads, reads, stars } = bookMock;
   return (
     <View className="flex px-2 pt-6 h-full relative">
       <View className="flex mb-4 flex-row justify-between ">

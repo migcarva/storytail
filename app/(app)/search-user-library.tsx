@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 
 import FilteredBookList from '@/src/components/FilteredBookList';
 import SearchInput from '@/src/components/SearchInput';
+import { isIphone } from '@/src/utils';
 
 const SearchUserLibrary: React.FC = () => {
   return (
@@ -12,7 +13,7 @@ const SearchUserLibrary: React.FC = () => {
       <FilteredBookList />
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+      <StatusBar style={isIphone ? 'light' : 'auto'} />
     </View>
   );
 };

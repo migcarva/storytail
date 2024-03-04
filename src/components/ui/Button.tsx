@@ -1,9 +1,9 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
-import { Platform, Pressable, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 import * as Slot from '@/src/lib/rn-primitives/slot-native';
-import { cn, isTextChildren } from '@/src/utils/class';
+import { cn, isTextChildren, isAndroid } from '@/src/utils';
 
 const buttonVariants = cva('flex-row items-center justify-center rounded-full', {
   variants: {
@@ -70,13 +70,13 @@ const Button = React.forwardRef<
     },
     ref,
   ) => {
-    const Root = Platform.OS === 'android' ? View : Slot.Pressable;
+    const Root = isAndroid ? View : Slot.Pressable;
 
     return (
       <Root
         className={cn(
-          Platform.OS === 'android' && 'flex-row rounded-full overflow-hidden',
-          Platform.OS === 'android' && androidRootClass,
+          isAndroid && 'flex-row rounded-full overflow-hidden',
+          isAndroid && androidRootClass,
         )}>
         <Pressable
           className={cn(

@@ -2,17 +2,11 @@ import { supabase } from '@/src/lib/supabase';
 import { API_KEYS } from '@/src/queries/keys';
 import type { Chapter, Story } from '@/src/services/user-stories/user-stories-types';
 
-type GetStoriesProps = {
-  userId: string;
-};
-
-export const getStories = async ({ userId }: GetStoriesProps) => {
+export const getStories = async ({ userId }: { userId: string }) => {
   const { data, error, status } = await supabase
     .from(API_KEYS.stories)
-    .select(
-      `id, user_id, prompt, title, summary, dedication, purpose_id, age_group_id, background_color, is_premium, is_published, created_At, updated_At`,
-    )
-    .eq('id', userId);
+    .select(`id, title, background_color`)
+    .eq('user_id', userId);
 
   if (error && status !== 406) {
     throw error;
@@ -21,12 +15,21 @@ export const getStories = async ({ userId }: GetStoriesProps) => {
   return data;
 };
 
-type AddNewStoryProps = {
-  user_id: string;
-  story: Partial<Story>;
+export const getStory = async ({ userId, storyId }: { userId: string; storyId: string }) => {
+  const { data, error, status } = await supabase
+    .from(API_KEYS.stories)
+    .select(`*`)
+    .eq('user_id', userId)
+    .eq('story_id', storyId);
+
+  if (error && status !== 406) {
+    throw error;
+  }
+
+  return data;
 };
 
-export const addNewStory = async ({ user_id, story }: AddNewStoryProps) => {
+export const addNewStory = async ({ user_id, story }: { user_id: string; story: Partial<Story> }) => {
   const { data, error, status } = await supabase
     .from(API_KEYS.stories)
     .insert([
@@ -45,10 +48,7 @@ export const addNewStory = async ({ user_id, story }: AddNewStoryProps) => {
         updated_at: new Date(),
       },
     ])
-    .select(
-      // `id, user_id, title, dedication, prompt, background_color, is_premium, is_published, age_group_id, purpose_id, created_at, updated_at`,
-      `id`,
-    );
+    .select();
 
   if (error && status !== 406) {
     throw error;
@@ -57,12 +57,13 @@ export const addNewStory = async ({ user_id, story }: AddNewStoryProps) => {
   return data && data[0].id;
 };
 
-type AddChaptersProps = {
+export const addChapters = async ({
+  story_id,
+  chapters,
+}: {
   story_id: string;
   chapters: Partial<Chapter>[];
-};
-
-export const addChapters = async ({ story_id, chapters }: AddChaptersProps) => {
+}) => {
   const chaptersArray = chapters.map((c) => ({
     story_id,
     chapter_number: c.chapter_number,
@@ -72,11 +73,10 @@ export const addChapters = async ({ story_id, chapters }: AddChaptersProps) => {
     created_at: new Date(),
     updated_at: new Date(),
   }));
-  console.log('chaptersArray >>>>>>>>>', chaptersArray);
   const { data, error, status } = await supabase
     .from(API_KEYS.chapters)
     .insert(chaptersArray)
-    .select('id');
+    .select();
 
   if (error && status !== 406) {
     throw error;
