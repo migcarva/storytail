@@ -15,8 +15,8 @@ const formSchema = z.object({
 
 export default function UpdateProfileForm() {
   const router = useRouter();
-  const { userId } = useAuthStore();
-  const { username, full_name, mutation } = useProfile(userId);
+  const { session } = useAuthStore();
+  const { username, full_name, mutation } = useProfile(session!.user.id);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,7 +33,7 @@ export default function UpdateProfileForm() {
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
       mutation.mutate({
-        userId: user!.id,
+        userId: session!.user.id,
         options: {
           username: data.username,
           full_name: data.full_name,

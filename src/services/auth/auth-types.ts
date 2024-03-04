@@ -1,7 +1,9 @@
 import type {
-  AuthSession as SupabaseAuthSession,
-  AuthUser as SupabaseAuthUser,
+  User as SupabaseUser,
+  Session as SupabaseSession,
+  AuthError as SupabaseAuthError,
 } from '@supabase/supabase-js';
 
-export type AuthUser = SupabaseAuthUser;
-export type AuthSession = SupabaseAuthSession;
+export type User = SupabaseUser;
+export type Session = SupabaseSession;
+export type AuthError = SupabaseAuthError;

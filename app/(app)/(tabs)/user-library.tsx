@@ -7,9 +7,9 @@ import { useAuthStore } from '@/src/services/auth';
 import { isIphone, userStoriesMock } from '@/src/utils';
 
 const UserLibraryScreen: React.FC = () => {
-  const { userId } = useAuthStore();
-  const { stories, error, status } = useUserStories({ userId });
-  console.log(stories);
+  const { session } = useAuthStore();
+  const { stories, error, status } = useUserStories({ userId: session!.user.id });
+  // console.log(stories);
   return (
     <View className="flex flex-1 items-center justify-center bg-purple">
       <Text className="text-white mt-6 mb-3 text-1.5 font-headingbold">your library</Text>

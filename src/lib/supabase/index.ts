@@ -11,6 +11,6 @@ export const supabase = createClient(supabaseUrl!, supabaseAnonKey!, {
     storage: SecureStoreAdapter,
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: false,
+    detectSessionInUrl: false, // Prevents Supabase from evaluating window.location.href, breaking mobile
   },
 });

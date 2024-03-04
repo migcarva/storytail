@@ -5,7 +5,7 @@ import { ActivityIndicator, Text, View } from 'react-native';
 import * as z from 'zod';
 
 import { Button, Form, FormField, FormInput } from '@/src/components/ui';
-import { signInWithPassword } from '@/src/services/auth';
+import { useAuthStore } from '@/src/services/auth';
 
 const formSchema = z.object({
   email: z.string().email('Please enter a valid email address.'),
@@ -17,6 +17,7 @@ const formSchema = z.object({
 
 export default function SignInForm() {
   const router = useRouter();
+  const { signInWithPassword } = useAuthStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

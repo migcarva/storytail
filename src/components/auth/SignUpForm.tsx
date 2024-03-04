@@ -5,7 +5,7 @@ import { ActivityIndicator, Text, View } from 'react-native';
 import * as z from 'zod';
 
 import { Button, Form, FormField, FormInput } from '@/src/components/ui';
-import { signUp } from '@/src/services/auth';
+import { useAuthStore } from '@/src/services/auth';
 
 const formSchema = z
   .object({
@@ -27,6 +27,7 @@ const formSchema = z
 
 export default function SignUpForm() {
   const router = useRouter();
+  const { signUp } = useAuthStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
