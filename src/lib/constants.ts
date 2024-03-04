@@ -68,3 +68,5 @@ export const REACTION_TYPES = [
   { id: 7, text: 'Top', emoji: '🏆' },
   { id: 8, text: 'Fire', emoji: '🔥' },
 ];
+
+export const BACKGROUND_OPTIONS = ['blue', 'yellow', 'orange', 'pink'];

@@ -1,78 +1,78 @@
-import { AgeGroups } from '@/src/constants/AgeGroups';
-import { Book } from '@/src/types';
+import { AGE_GROUPS } from '@/src/lib/constants';
+import { Story } from '@/src/services/user-stories/user-stories-types';
 
 export const userStoriesMock = [
   {
     id: 1,
     title: 'The little frog in the pond',
-    ageGroup: AgeGroups[1],
+    ageGroup: AGE_GROUPS[1].id,
     stars: 4,
     background: 'orange',
   },
   {
     id: 2,
     title: 'Adventures of the sleepy koala',
-    ageGroup: AgeGroups[2],
+    ageGroup: AGE_GROUPS[2].id,
     stars: 5,
     background: 'pink',
   },
   {
     id: 3,
     title: 'Mystery of the missing acorns',
-    ageGroup: AgeGroups[1],
+    ageGroup: AGE_GROUPS[1].id,
     stars: 3,
     background: 'blue',
   },
   {
     id: 4,
     title: 'The curious kitten',
-    ageGroup: AgeGroups[2],
+    ageGroup: AGE_GROUPS[2].id,
     stars: 4,
     background: 'yellow',
   },
   {
     id: 5,
     title: "Journey to the rainbow's end",
-    ageGroup: AgeGroups[3],
+    ageGroup: AGE_GROUPS[3].id,
     stars: 5,
     background: 'pink',
   },
   {
     id: 6,
     title: 'The brave little toaster',
-    ageGroup: AgeGroups[1],
+    ageGroup: AGE_GROUPS[1].id,
     stars: 4,
     background: 'orange',
   },
   {
     id: 7,
     title: "The wizard's apprentice",
-    ageGroup: AgeGroups[3],
+    ageGroup: AGE_GROUPS[3].id,
     stars: 5,
     background: 'yellow',
   },
   {
     id: 8,
     title: 'Underwater escapades',
-    ageGroup: AgeGroups[2],
+    ageGroup: AGE_GROUPS[2].id,
     stars: 4,
     background: 'pink',
   },
   {
     id: 9,
     title: 'The lost dinosaur',
-    ageGroup: AgeGroups[1],
+    ageGroup: AGE_GROUPS[1].id,
     stars: 3,
     background: 'blue',
   },
   {
     id: 10,
     title: 'The night sky explorer',
-    ageGroup: AgeGroups[3],
+    ageGroup: AGE_GROUPS[3].id,
     stars: 5,
     background: 'orange',
   },
-] as Book[];
+] as Story[];
 
 export const userNotificationsMock = {
   stories: [

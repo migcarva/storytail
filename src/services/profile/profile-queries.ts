@@ -1,5 +1,5 @@
 import { supabase } from '@/src/lib/supabase';
-import { API_KEYS } from '@/src/constants/keys';
+import { API_KEYS } from '@/src/lib/keys';
 
 type GetProfileProps = {
   userId: string;
