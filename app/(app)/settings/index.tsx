@@ -56,8 +56,8 @@ const settingsList = [
 ];
 
 const Settings: React.FC = () => {
-  const { userId } = useAuthStore();
-  const { username, full_name } = useProfile(userId);
+  const { session } = useAuthStore();
+  const { username, full_name } = useProfile(session!.user.id);
   const displayName = full_name || username || 'adventurer!';
 
   return (

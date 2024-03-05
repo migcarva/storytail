@@ -35,32 +35,20 @@ const SettingsPage: React.FC = () => {
           headerTitle: 'Settings',
           headerRight: () => <CloseButton />,
         }}
-        redirect={!isSignedIn}
       />
-      <Stack.Screen
-        name="profile"
-        options={{ ...modalOptions, headerTitle: 'Profile ' }}
-        redirect={!isSignedIn}
-      />
+      <Stack.Screen name="profile" options={{ ...modalOptions, headerTitle: 'Profile ' }} />
       <Stack.Screen
         name="subscription"
         options={{ ...modalOptions, headerTitle: 'Subscription' }}
-        redirect={!isSignedIn}
       />
       <Stack.Screen
         name="support"
         options={{ ...modalOptions, headerTitle: 'Support & Feedback' }}
-        redirect={!isSignedIn}
       />
-      <Stack.Screen
-        name="gifting"
-        options={{ ...modalOptions, headerTitle: 'Gift Storytail' }}
-        redirect={!isSignedIn}
-      />
+      <Stack.Screen name="gifting" options={{ ...modalOptions, headerTitle: 'Gift Storytail' }} />
       <Stack.Screen
         name="how-to-use"
         options={{ ...modalOptions, headerTitle: 'How to Storytail?' }}
-        redirect={!isSignedIn}
       />
     </Stack>
   );

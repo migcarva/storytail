@@ -14,7 +14,6 @@ const formSchema = z.object({
 });
 
 export default function UpdateProfileForm() {
-  const router = useRouter();
   const { session } = useAuthStore();
   const { username, full_name, mutation } = useProfile(session!.user.id);
 
@@ -40,57 +39,54 @@ export default function UpdateProfileForm() {
         },
       });
       form.reset();
-      router.back();
     } catch (error: Error | any) {
       console.error(error.message);
     }
   }
 
   return (
-    <>
-      <View className="flex-1">
-        <Form {...form}>
-          <View className="gap-1.5">
-            <FormField
-              control={form.control}
-              name="full_name"
-              render={({ field }) => (
-                <FormInput
-                  label="Full name"
-                  placeholder="Your name"
-                  autoCapitalize="none"
-                  autoComplete="name"
-                  autoCorrect={false}
-                  keyboardType="default"
-                  className="bg-input rounded-lg"
-                  {...field}
-                />
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="username"
-              render={({ field }) => (
-                <FormInput
-                  label="Username"
-                  placeholder="Username"
-                  autoCapitalize="none"
-                  autoComplete="username"
-                  autoCorrect={false}
-                  keyboardType="default"
-                  className="bg-input rounded-lg"
-                  {...field}
-                />
-              )}
-            />
-          </View>
-        </Form>
-        <View className="absolute w-full bottom-4">
-          <Button size="default" variant="default" onPress={form.handleSubmit(onSubmit)}>
-            {form.formState.isSubmitting ? <ActivityIndicator size="small" /> : 'Update profile'}
-          </Button>
+    <View className="flex-1">
+      <Form {...form}>
+        <View className="gap-1.5">
+          <FormField
+            control={form.control}
+            name="full_name"
+            render={({ field }) => (
+              <FormInput
+                label="Full name"
+                placeholder="Your name"
+                autoCapitalize="none"
+                autoComplete="name"
+                autoCorrect={false}
+                keyboardType="default"
+                className="bg-input rounded-lg"
+                {...field}
+              />
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormInput
+                label="Username"
+                placeholder="Username"
+                autoCapitalize="none"
+                autoComplete="username"
+                autoCorrect={false}
+                keyboardType="default"
+                className="bg-input rounded-lg"
+                {...field}
+              />
+            )}
+          />
         </View>
+      </Form>
+      <View className="absolute w-full bottom-4">
+        <Button size="default" variant="default" onPress={form.handleSubmit(onSubmit)}>
+          {form.formState.isSubmitting ? <ActivityIndicator size="small" /> : 'Update profile'}
+        </Button>
       </View>
-    </>
+    </View>
   );
 }
