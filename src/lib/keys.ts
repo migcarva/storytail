@@ -7,7 +7,13 @@ export const QUERY_KEYS = {
 };
 
 export const API_KEYS = {
-  stories: 'stories',
+  artCovers: 'art_covers',
   chapters: 'chapters',
+  characterImages: 'character_images',
+  feedbackReports: 'feeback_reports',
   profiles: 'profiles',
+  ratings: 'ratings',
+  reactions: 'reactions',
+  reads: 'reads',
+  stories: 'stories',
 };

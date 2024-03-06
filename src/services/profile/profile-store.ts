@@ -4,22 +4,22 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 import { API_KEYS } from '@/src/lib/keys';
 import { supabase } from '@/src/lib/supabase';
-import type { Profile } from '@/src/services/profile/profile-types';
+import type { DBProfile } from '@/src/types';
 
-export interface ProfileStore extends Profile {
-  setId: (args: Profile['id']) => void;
-  setUsername: (args: Profile['username']) => void;
-  setFullName: (args: Profile['full_name']) => void;
-  setAvatarUrl: (args: Profile['avatar_url']) => void;
-  setUpdatedAt: (args: Profile['updated_at']) => void;
+export interface ProfileStore extends DBProfile {
+  setId: (args: DBProfile['id']) => void;
+  setUsername: (args: DBProfile['username']) => void;
+  setFullName: (args: DBProfile['full_name']) => void;
+  setAvatarUrl: (args: DBProfile['avatar_url']) => void;
+  setUpdatedAt: (args: DBProfile['updated_at']) => void;
   updateProfile: (
     userId: string,
     options: { username: string; full_name: string },
-  ) => Promise<Profile>;
-  getProfile: (userId: string) => Promise<Profile | null>;
+  ) => Promise<DBProfile>;
+  getProfile: (userId: string) => Promise<DBProfile | null>;
 }
 
-const initialState: Pick<ProfileStore, keyof Profile> = {
+const initialState: Pick<ProfileStore, keyof DBProfile> = {
   id: '',
   username: '',
   full_name: '',

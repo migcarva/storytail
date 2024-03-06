@@ -57,7 +57,7 @@ export const parseStory = (text: string) => {
   const storyParts = {
     title: '',
     summary: '',
-    description: '',
+    mcDescription: '',
     chapters: {},
   };
 
@@ -67,7 +67,7 @@ export const parseStory = (text: string) => {
   if (matches) {
     storyParts.title = matches[1].trim();
     storyParts.summary = matches[2].trim();
-    storyParts.description = matches[3].trim();
+    storyParts.mcDescription = matches[3].trim();
 
     // The chapters need to be extracted from the remaining text
     const chaptersText = matches[4];

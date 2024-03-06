@@ -49,7 +49,7 @@ const FrontFacingBook: React.FC<
         {title && <Title title={title} />}
 
         <View className="absolute bottom-0.5">
-          {!isPlaceholder && ratingValue >= 0 && <Rating rating={ratingValue} />}
+          {!isPlaceholder && ratingValue > 0 && <Rating rating={ratingValue} />}
         </View>
       </View>
       <View className="bg-lightgrey absolute w-0.625 h-[316px] l-0.25" />

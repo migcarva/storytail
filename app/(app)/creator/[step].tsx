@@ -118,6 +118,8 @@ const CreationStep: React.FC = () => {
         prompt,
       });
 
+      console.log(generatedStory);
+
       if (generatedStory && userId) {
         const storyObj = {
           prompt,
@@ -127,6 +129,7 @@ const CreationStep: React.FC = () => {
           background_color: randomiseBackgroundColor(),
           is_premium: false,
           is_published: false,
+          is_ready: false,
           age_group_id: parseInt(ageGroup, 10),
           purpose_id: parseInt(purpose, 10),
         };
