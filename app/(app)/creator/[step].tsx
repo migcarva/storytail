@@ -21,7 +21,6 @@ const CreationStep: React.FC = () => {
   const { step: stepParam } = useLocalSearchParams();
 
   const step = getStepFromSearchParams(stepParam);
-  console.log('step >>> ', step);
 
   const {
     dedication,
@@ -112,7 +111,6 @@ const CreationStep: React.FC = () => {
     if (newGeneratedStory) {
       setGeneratedStory(newGeneratedStory);
     }
-    console.log('done generating >>>>', newGeneratedStory);
   };
 
   const preSaveStory = async () => {
@@ -134,7 +132,6 @@ const CreationStep: React.FC = () => {
     if (session?.user.id) {
       await addStory(session.user.id, storyObj);
     }
-    console.log('done saving >>>>');
   };
 
   const preSaveChapters = () => {
@@ -151,7 +148,6 @@ const CreationStep: React.FC = () => {
     });
     addChapters(session.user.id, story.id, chaptersArray);
     setIsGenerateed(true);
-    console.log('done chapters >>>>');
   };
 
   useEffect(() => {
@@ -159,21 +155,15 @@ const CreationStep: React.FC = () => {
     // necessary form state to perform a story generation
     if (step === 'story_generation') {
       if (!generatedStory) {
-        console.log('starting generation');
         // story not yet generated
         requestStoryGeneration();
       } else if (!story?.id) {
-        console.log('starting saving');
-        console.log('gen story >>>', generatedStory);
         // story not yet on the DB
         preSaveStory();
       } else if (chapters.length === 0) {
-        console.log('starting ssaving chapters');
-        console.log('story >>>', story);
         // chapter not yet on the DB
         preSaveChapters();
       } else if (isGenerated) {
-        console.log('chapters >>>', chapters);
         // we have all the conditions to advance to the next step
         router.replace('/creator/main-character');
       }
