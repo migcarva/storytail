@@ -60,7 +60,7 @@ const StoriesCarousel: React.FC<{
   const handlePress = (index: number) => {
     setActiveItem(index); // todo use a persisted store!
     if (index === summariesWithNew.length - 1) {
-      router.replace('/creator/1');
+      router.replace('/creator/dedication');
     } else {
       router.replace('/reader');
     }
@@ -73,7 +73,7 @@ const StoriesCarousel: React.FC<{
       data={summariesWithNew}
       renderItem={({ index, animationValue, item }) => (
         <Link
-          href={index === summariesWithNew.length - 1 ? '/creator/1' : '/reader'}
+          href={index === summariesWithNew.length - 1 ? '/creator/dedication' : '/reader'}
           asChild
           className="my-2">
           <Pressable onPress={() => handlePress(index)}>

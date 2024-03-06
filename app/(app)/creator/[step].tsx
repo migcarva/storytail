@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { router, useLocalSearchParams } from 'expo-router';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text } from 'react-native';
 
 import { Book } from '@/src/components/creator/CreatorBook';
@@ -9,96 +9,88 @@ import StepPage from '@/src/components/creator/StepPage';
 import { AGE_GROUPS, STORY_PURPOSES_TYPES } from '@/src/lib/constants';
 import { useAuthStore } from '@/src/services/auth';
 import { generateStory } from '@/src/services/open-ai/open-ai.queries';
+import { useStoryCreationStore } from '@/src/services/story-creation';
+import { getStepFromSearchParams } from '@/src/services/story-creation/story-creation-utils';
+import { OptionTypes, StepProps, StoryChapters, StoryCreationStep } from '@/src/types';
 import colors from '@/src/utils/colors';
-import { useUserStoriesStore } from '@/src/services/user-stories';
 import { randomiseBackgroundColor } from '@/src/utils/story';
-
-type SelectOption = {
-  value: string;
-  text: string;
-};
-
-type InputConfig = {
-  placeholder?: string;
-};
-
-interface OptionTypes {
-  input: InputConfig;
-  select: SelectOption[];
-  multiselect: SelectOption[];
-}
-
-interface StoryChapters {
-  [key: string]: string;
-}
-
-type StepProps<T, K extends keyof OptionTypes> = {
-  setter: Dispatch<SetStateAction<T>>;
-  value: T;
-  question: string;
-  type: K;
-  options?: OptionTypes[K];
-};
 
 const CreationStep: React.FC = () => {
   const { session } = useAuthStore();
-  const { addStory, addChapters } = useUserStoriesStore();
+  const [isGenerated, setIsGenerateed] = useState(false);
+  const { step: stepParam } = useLocalSearchParams();
 
-  const { step } = useLocalSearchParams();
-  const [to, setTo] = useState('');
-  const [ageGroup, setAgeGroup] = useState('0');
-  const [prompt, setPrompt] = useState('');
-  const [purpose, setPurpose] = useState('0');
+  const step = getStepFromSearchParams(stepParam);
+  console.log('step >>> ', step);
 
-  const [done, setDone] = useState(false);
+  const {
+    dedication,
+    setDedication,
+    age_group_id,
+    setAgeGroupId,
+    prompt,
+    setPrompt,
+    purpose_id,
+    setPurposeId,
+    generatedStory,
+    setGeneratedStory,
+    story,
+    chapters,
+    addStory,
+    addChapters,
+  } = useStoryCreationStore();
 
-  const getStepProps = (step: number) => {
+  const getStepProps = (step: StoryCreationStep) => {
     let stepProps: StepProps<string, keyof OptionTypes>;
     switch (step) {
-      case 1:
+      case 'dedication':
         stepProps = {
-          value: to,
-          setter: setTo,
           type: 'input',
+          value: dedication,
+          setter: setDedication,
           question: 'This story is dedicated to',
           options: {
             placeholder: "your kid's name",
           },
+          nextStep: 'age_group',
         };
         break;
-      case 2:
+      case 'age_group':
         stepProps = {
-          value: ageGroup,
-          setter: setAgeGroup,
           type: 'select',
-          question: `Select ${to}'s age group?`,
+          value: age_group_id,
+          setter: setAgeGroupId,
+          question: `Select ${dedication}'s age group?`,
           options: AGE_GROUPS.map((a) => ({
             value: a.id.toString(),
             text: `${a.description} (${a.min_age}-${a.max_age})`,
           })),
+          nextStep: 'prompt',
         };
         break;
-      case 3:
+      case 'prompt':
         stepProps = {
+          type: 'input',
           value: prompt,
           setter: setPrompt,
-          type: 'input',
           question: "What's this story about?",
           options: {
             placeholder: 'be criative',
           },
+          nextStep: 'purpose',
         };
         break;
-      case 4:
+      case 'purpose':
         stepProps = {
-          value: purpose,
-          setter: setPurpose,
           type: 'select',
+          value: purpose_id,
+          setter: setPurposeId,
           question: "What's the purpose of the story?",
           options: STORY_PURPOSES_TYPES?.map((p) => ({
             value: p.id.toString(),
             text: p.description,
           })),
+          nextStep: 'story_generation',
         };
         break;
     }
@@ -106,77 +98,97 @@ const CreationStep: React.FC = () => {
     return stepProps!;
   };
 
-  const stepNumber: number = Number(step);
-  const stepProps = getStepProps(stepNumber);
+  const stepProps = getStepProps(step as StoryCreationStep);
 
-  useEffect(() => {
-    const requestStoryGeneration = async () => {
-      const userId = session?.user.id;
-      const generatedStory = await generateStory({
-        age_group_id: parseInt(ageGroup, 10),
-        purpose_id: parseInt(purpose, 10),
-        prompt,
-      });
+  const requestStoryGeneration = async () => {
+    const storyAlreadyGenerated = generatedStory !== null;
+    if (storyAlreadyGenerated) return generatedStory;
 
-      console.log(generatedStory);
+    const newGeneratedStory = await generateStory({
+      age_group_id: parseInt(age_group_id, 10),
+      purpose_id: parseInt(purpose_id, 10),
+      prompt,
+    });
+    if (newGeneratedStory) {
+      setGeneratedStory(newGeneratedStory);
+    }
+    console.log('done generating >>>>', newGeneratedStory);
+  };
 
-      if (generatedStory && userId) {
-        const storyObj = {
-          prompt,
-          title: generatedStory.title,
-          summary: generatedStory.summary,
-          dedication: to,
-          background_color: randomiseBackgroundColor(),
-          is_premium: false,
-          is_published: false,
-          is_ready: false,
-          age_group_id: parseInt(ageGroup, 10),
-          purpose_id: parseInt(purpose, 10),
-        };
+  const preSaveStory = async () => {
+    if (generatedStory === null) return;
 
-        const story = await addStory(userId, storyObj);
-
-        if (story.id) {
-          const chaptersArray = Object.keys(generatedStory.chapters).map((key) => {
-            const chapterNumber = parseInt(key.replace('chapter', ''), 10); // Extract the chapter number
-            return {
-              chapter_number: chapterNumber,
-              content: (generatedStory.chapters as StoryChapters)[key],
-              title: 'chapter_title',
-              image_url: 'image_url',
-            };
-          });
-
-          addChapters(userId, story.id, chaptersArray);
-        }
-      }
+    const storyObj = {
+      prompt,
+      dedication,
+      title: generatedStory.title,
+      summary: generatedStory.summary,
+      background_color: randomiseBackgroundColor(),
+      is_premium: false,
+      is_published: false,
+      is_ready: false,
+      age_group_id: parseInt(age_group_id, 10),
+      purpose_id: parseInt(purpose_id, 10),
     };
 
-    if (stepNumber === 5) {
-      requestStoryGeneration();
-      setTimeout(() => {
-        setDone(true);
-      }, 3000);
+    if (session?.user.id) {
+      await addStory(session.user.id, storyObj);
     }
-  }, [stepNumber]);
+    console.log('done saving >>>>');
+  };
+
+  const preSaveChapters = () => {
+    if (generatedStory === null || !session?.user.id || !story?.id) return;
+
+    const chaptersArray = Object.keys(generatedStory.chapters).map((key) => {
+      const chapterNumber = parseInt(key.replace('chapter', ''), 10); // Extract the chapter number
+      return {
+        chapter_number: chapterNumber,
+        content: (generatedStory.chapters as StoryChapters)[key],
+        title: 'chapter_title',
+        image_url: 'image_url',
+      };
+    });
+    addChapters(session.user.id, story.id, chaptersArray);
+    setIsGenerateed(true);
+    console.log('done chapters >>>>');
+  };
 
   useEffect(() => {
-    if (done) {
-      setTimeout(() => {
+    // if the current step is story_generation, this mean we already have all the
+    // necessary form state to perform a story generation
+    if (step === 'story_generation') {
+      if (!generatedStory) {
+        console.log('starting generation');
+        // story not yet generated
+        requestStoryGeneration();
+      } else if (!story?.id) {
+        console.log('starting saving');
+        console.log('gen story >>>', generatedStory);
+        // story not yet on the DB
+        preSaveStory();
+      } else if (chapters.length === 0) {
+        console.log('starting ssaving chapters');
+        console.log('story >>>', story);
+        // chapter not yet on the DB
+        preSaveChapters();
+      } else if (isGenerated) {
+        console.log('chapters >>>', chapters);
+        // we have all the conditions to advance to the next step
         router.replace('/creator/main-character');
-      }, 2000);
+      }
     }
-  }, [done]);
+  }, [step, generatedStory, story, chapters]);
 
-  if (stepNumber === 5) {
+  if (step === 'story_generation') {
     return (
       <View className="flex px-2 pt-6 h-full relative bg-purple">
         <View className="flex mb-6 flex-row justify-between " />
         <Book className="-rotate-8 mt-3">
           <View className="flex justify-center items-center gap-4">
             <Ionicons
-              name={done ? 'checkmark-done-outline' : 'finger-print-outline'}
-              color={colors.black}
+              name={isGenerated ? 'checkmark-done-outline' : 'finger-print-outline'}
+              color={isGenerated ? colors.blue : colors.black}
               size={64}
             />
             <Text className="text-2 font-headingbold text-center pb-0.5 px-4">
@@ -200,11 +212,11 @@ const CreationStep: React.FC = () => {
           setter={stepProps.setter}
           question={stepProps.question}
           options={stepProps.options}
+          nextStep={stepProps.nextStep}
         />
       </View>
       <View className="flex justify-end items-end bottom-4 absolute left-2">
-        {/* -1 because is the intro page. chapter 0 is the first entry */}
-        <CreatorNav step={stepNumber} isDisabled={!stepProps.value} />
+        <CreatorNav step={step} isDisabled={!stepProps.value} />
       </View>
     </View>
   );

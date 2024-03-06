@@ -15,14 +15,13 @@ import type {
 } from '@/src/types';
 
 interface StoryCreationState {
-  step: number;
   isReady: boolean;
 
   // local state
   prompt: string;
   dedication: string;
-  age_group_id: number;
-  purpose_id: number;
+  age_group_id: string; // although we are storing numbers on the DB
+  purpose_id: string; // although we are storing numbers on the DB
 
   // output of open AI
   generatedStory: GeneratedStory | null;
@@ -35,7 +34,6 @@ interface StoryCreationState {
 }
 
 export interface StoryCreationStore extends StoryCreationState {
-  setStep: (args: StoryCreationState['step']) => void;
   setReady: (args: StoryCreationState['isReady']) => void;
 
   setPrompt: (args: StoryCreationState['prompt']) => void;
@@ -50,6 +48,8 @@ export interface StoryCreationStore extends StoryCreationState {
   setChapters: (args: StoryCreationState['chapters']) => void;
   setCharacters: (args: StoryCreationState['characters']) => void;
 
+  reset: () => void;
+
   addStory: (userId: string, story: NewStory) => Promise<Story>;
   addChapters: (
     userId: string,
@@ -63,13 +63,12 @@ export interface StoryCreationStore extends StoryCreationState {
 }
 
 const initialState: Pick<StoryCreationStore, keyof StoryCreationState> = {
-  step: 0,
   isReady: false, // this is set to true when the users clicks "show it to me" or finishes reviewing it
 
   prompt: '',
   dedication: '',
-  age_group_id: 0,
-  purpose_id: 0,
+  age_group_id: '0', // although we are storing numbers on the DB
+  purpose_id: '0', // although we are storing numbers on the DB
 
   generatedStory: null,
   generatedCharacters: [],
@@ -89,7 +88,6 @@ export const useStoryCreationStore = create<StoryCreationStore>()(
     (set) => ({
       ...initialState,
 
-      setStep: (step) => set(() => ({ step })),
       setReady: (isReady) => set(() => ({ isReady })),
 
       setPrompt: (prompt) => set(() => ({ prompt })),
@@ -103,6 +101,8 @@ export const useStoryCreationStore = create<StoryCreationStore>()(
       setStory: (story) => set(() => ({ story })),
       setChapters: (chapters) => set(() => ({ chapters })),
       setCharacters: (characters) => set(() => ({ characters })),
+
+      reset: () => set(() => ({ ...initialState })),
 
       addStory: async (userId, story) => {
         if (!userId) return Promise.reject(new Error('User id is required'));
@@ -132,6 +132,8 @@ export const useStoryCreationStore = create<StoryCreationStore>()(
           return Promise.reject(error);
         }
 
+        set({ story: data ? data[0] : null });
+
         return Promise.resolve(data ? data[0] : null);
       },
       addChapters: async (userId, storyId, chapters) => {
@@ -158,7 +160,9 @@ export const useStoryCreationStore = create<StoryCreationStore>()(
           return Promise.reject(error);
         }
 
-        return Promise.resolve(data ?? null);
+        set({ chapters: data ? data : [] });
+
+        return Promise.resolve(data ?? []);
       },
       addCharacterImages: async (storyId, characters) => {
         if (!storyId) return Promise.reject(new Error('Story id is required'));
@@ -180,7 +184,9 @@ export const useStoryCreationStore = create<StoryCreationStore>()(
           return Promise.reject(error);
         }
 
-        return Promise.resolve(data ?? null);
+        set({ characters: data ? data : [] });
+
+        return Promise.resolve(data ?? []);
       },
     }),
     storageOptions,

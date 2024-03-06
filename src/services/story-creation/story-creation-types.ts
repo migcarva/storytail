@@ -42,3 +42,42 @@ export type GeneratedCharacter = {
   image_url: string;
   is_selected: boolean;
 };
+
+export type StoryCreationStep =
+  | 'dedication'
+  | 'age_group'
+  | 'prompt'
+  | 'purpose'
+  | 'story_generation'
+  | 'character_selection'
+  | 'story_illustration'
+  | 'in_review'
+  | 'ready';
+
+export type SelectOption = {
+  value: string;
+  text: string;
+};
+
+export type InputConfig = {
+  placeholder?: string;
+};
+
+export interface OptionTypes {
+  input: InputConfig;
+  select: SelectOption[];
+  multiselect: SelectOption[];
+}
+
+export type StepProps<T, K extends keyof OptionTypes> = {
+  setter: (arg: T) => void;
+  value: T;
+  question: string;
+  type: K;
+  options?: OptionTypes[K];
+  nextStep: StoryCreationStep;
+};
+
+export interface StoryChapters {
+  [key: string]: string;
+}

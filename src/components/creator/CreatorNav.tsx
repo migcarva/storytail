@@ -2,17 +2,21 @@ import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import { View, Pressable } from 'react-native';
 
+import { useStoryCreationStore } from '@/src/services/story-creation';
+import { stepStateMachine } from '@/src/services/story-creation/story-creation-utils';
+import { StoryCreationStep } from '@/src/types';
 import colors from '@/src/utils/colors';
 
 const CreatorNav: React.FC<{
-  step: number;
+  step: StoryCreationStep;
   isDisabled?: boolean;
 }> = ({ step, isDisabled }) => {
+  const { nextStep, prevStep } = stepStateMachine(step);
   return (
     <View className="flex flex-row justify-end w-full">
       <View className="flex flex-row gap-2">
-        {step > 1 && <PrevButton step={step - 1} />}
-        <NextButton step={step + 1} disabled={!!isDisabled} />
+        {step !== 'age_group' && <PrevButton step={prevStep} />}
+        <NextButton step={nextStep} disabled={!!isDisabled} />
       </View>
     </View>
   );
@@ -23,8 +27,10 @@ export default CreatorNav;
 export const CloseButton: React.FC<{
   isDark?: boolean;
 }> = ({ isDark = false }) => {
+  const { reset } = useStoryCreationStore();
+
   return (
-    <Link href="/user-library" asChild>
+    <Link href="/user-library" onPress={reset} asChild>
       <Pressable>
         {({ pressed }) => (
           <Ionicons
@@ -40,9 +46,11 @@ export const CloseButton: React.FC<{
 };
 
 const NextButton: React.FC<{
-  step: number;
+  step: StoryCreationStep | null;
   disabled: boolean;
 }> = ({ step, disabled }) => {
+  if (step === null) return null;
+
   return (
     <Link href={`/creator/${step}`} asChild>
       <Pressable disabled={disabled}>
@@ -60,10 +68,12 @@ const NextButton: React.FC<{
 };
 
 const PrevButton: React.FC<{
-  step: number;
+  step: StoryCreationStep | null;
 }> = ({ step }) => {
+  if (step === null) return null;
+
   return (
-    <Link href={`/creator/${step < 0 ? 'intro' : step}`} asChild>
+    <Link href={`/creator/${step}`} asChild>
       <Pressable>
         {({ pressed }) => (
           <Ionicons

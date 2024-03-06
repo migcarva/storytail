@@ -1,32 +1,9 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Dispatch, SetStateAction } from 'react';
 import { View, Text, TextInput, Pressable } from 'react-native';
 
+import { OptionTypes, SelectOption, StepProps } from '@/app/(app)/creator/[step]';
 import { Book } from '@/src/components/creator/CreatorBook';
 import colors from '@/src/utils/colors';
-
-type SelectOption = {
-  value: string;
-  text: string;
-};
-
-type InputConfig = {
-  placeholder?: string;
-};
-
-interface OptionTypes {
-  input: InputConfig;
-  select: SelectOption[];
-  multiselect: SelectOption[];
-}
-
-type StepProps<T, K extends keyof OptionTypes> = {
-  setter: Dispatch<SetStateAction<T>>;
-  value: T;
-  question: string;
-  type: K;
-  options?: OptionTypes[K];
-};
 
 const StepPage: React.FC<StepProps<string, keyof OptionTypes>> = ({
   type,

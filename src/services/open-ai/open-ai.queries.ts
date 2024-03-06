@@ -2,6 +2,7 @@ import OpenAI from 'openai';
 
 import { AGE_GROUPS, STORY_PURPOSES_TYPES } from '@/src/lib/constants';
 import { generateInstruction, parseStory } from '@/src/services/open-ai/open-ai.utils';
+import { GeneratedStory } from '@/src/types';
 
 const openai = new OpenAI({
   apiKey: process.env.EXPO_PUBLIC_OPEN_AI_KEY,
@@ -16,7 +17,7 @@ export async function generateStory({
   age_group_id: number;
   purpose_id: number;
   prompt: string;
-}) {
+}): Promise<GeneratedStory> {
   const ageRange = `${AGE_GROUPS[age_group_id].min_age}-${AGE_GROUPS[age_group_id].max_age}`;
   const purpose = STORY_PURPOSES_TYPES[purpose_id].description;
   const finalPrompt = generateInstruction({ ageRange, purpose, prompt });

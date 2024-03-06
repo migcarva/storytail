@@ -1,3 +1,5 @@
+import { GeneratedStory } from '@/src/types';
+
 export const generateInstruction = ({
   ageRange,
   prompt,
@@ -53,7 +55,7 @@ export const generateReplyInstructions = (ageGroup: string) => {
   return `${intro} ${title} ${summary} ${mainCharacter} ${chapters}. ${chapterInstructions}`;
 };
 
-export const parseStory = (text: string) => {
+export const parseStory = (text: string): GeneratedStory => {
   const storyParts = {
     title: '',
     summary: '',
