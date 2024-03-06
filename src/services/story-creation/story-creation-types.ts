@@ -40,7 +40,6 @@ export type GeneratedChapter = {
 
 export type GeneratedCharacter = {
   image_url: string;
-  is_selected: boolean;
 };
 
 export type StoryCreationStep =

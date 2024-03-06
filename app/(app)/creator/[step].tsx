@@ -8,7 +8,7 @@ import CreatorNav, { CloseButton } from '@/src/components/creator/CreatorNav';
 import StepPage from '@/src/components/creator/StepPage';
 import { AGE_GROUPS, STORY_PURPOSES_TYPES } from '@/src/lib/constants';
 import { useAuthStore } from '@/src/services/auth';
-import { generateStory } from '@/src/services/open-ai/open-ai.queries';
+import { generateCharacterImages, generateStory } from '@/src/services/open-ai/open-ai.queries';
 import { useStoryCreationStore } from '@/src/services/story-creation';
 import { getStepFromSearchParams } from '@/src/services/story-creation/story-creation-utils';
 import { OptionTypes, StepProps, StoryChapters, StoryCreationStep } from '@/src/types';
@@ -37,6 +37,8 @@ const CreationStep: React.FC = () => {
     chapters,
     addStory,
     addChapters,
+    reset,
+    addCharacterImages,
   } = useStoryCreationStore();
 
   const getStepProps = (step: StoryCreationStep) => {
@@ -134,7 +136,7 @@ const CreationStep: React.FC = () => {
     }
   };
 
-  const preSaveChapters = () => {
+  const preSaveChapters = async () => {
     if (generatedStory === null || !session?.user.id || !story?.id) return;
 
     const chaptersArray = Object.keys(generatedStory.chapters).map((key) => {
@@ -146,7 +148,25 @@ const CreationStep: React.FC = () => {
         image_url: 'image_url',
       };
     });
-    addChapters(session.user.id, story.id, chaptersArray);
+    await addChapters(session.user.id, story.id, chaptersArray);
+  };
+
+  const requestCharacterGeneration = async () => {
+    if (!generatedStory?.mcDescription || !session?.user.id || !story?.id) return;
+
+    const ageGroup = AGE_GROUPS[parseInt(age_group_id, 10)];
+
+    const options = {
+      description: generatedStory?.mcDescription,
+      ageGroup: `${ageGroup.min_age}-${ageGroup.max_age}`,
+    };
+
+    const images = await generateCharacterImages(options);
+
+    if (images.length > 0) {
+      addCharacterImages(story.id, images);
+    }
+
     setIsGenerateed(true);
   };
 
@@ -163,12 +183,22 @@ const CreationStep: React.FC = () => {
       } else if (chapters.length === 0) {
         // chapter not yet on the DB
         preSaveChapters();
+      } else if (chapters.length > 0) {
+        // we have all the chapters saves on the DB
+        requestCharacterGeneration();
       } else if (isGenerated) {
         // we have all the conditions to advance to the next step
         router.replace('/creator/main-character');
       }
     }
   }, [step, generatedStory, story, chapters]);
+
+  useEffect(() => {
+    // on unmount, reset the form!
+    return () => {
+      reset();
+    };
+  }, []);
 
   if (step === 'story_generation') {
     return (

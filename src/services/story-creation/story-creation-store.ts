@@ -56,10 +56,8 @@ export interface StoryCreationStore extends StoryCreationState {
     storyId: number,
     chapters: Partial<DBChapter>[],
   ) => Promise<DBChapter[] | null>;
-  addCharacterImages: (
-    storyId: number,
-    characters: GeneratedCharacter[],
-  ) => Promise<DBCharacterImage[] | null>;
+  addCharacterImages: (storyId: number, characters: string[]) => Promise<DBCharacterImage[] | null>;
+  selectCharacter: (characterId: string) => Promise<DBCharacterImage | null>;
 }
 
 const initialState: Pick<StoryCreationStore, keyof StoryCreationState> = {
@@ -168,11 +166,11 @@ export const useStoryCreationStore = create<StoryCreationStore>()(
         if (!storyId) return Promise.reject(new Error('Story id is required'));
         if (!characters) return Promise.reject(new Error('A list of characters is required'));
 
-        const charactersArray = characters.map((c) => ({
+        const charactersArray = characters.map((character) => ({
           story_id: storyId,
-          image_url: c.image_url,
-          selected: c.is_selected,
-          updated_at: new Date(),
+          image_url: character,
+          selected: false,
+          created_at: new Date(),
         }));
 
         const { data, error, status } = await supabase
@@ -187,6 +185,21 @@ export const useStoryCreationStore = create<StoryCreationStore>()(
         set({ characters: data ? data : [] });
 
         return Promise.resolve(data ?? []);
+      },
+      selectCharacter: async (characterId) => {
+        if (!characterId) return Promise.reject(new Error('Character id is required'));
+
+        const { data, error, status } = await supabase
+          .from(API_KEYS.characterImages)
+          .update({ selected: true })
+          .eq('id', characterId)
+          .select();
+
+        if (error && status !== 406) {
+          return Promise.reject(error);
+        }
+
+        return Promise.resolve(data ? data[0] : null);
       },
     }),
     storageOptions,
