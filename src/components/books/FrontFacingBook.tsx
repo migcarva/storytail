@@ -1,9 +1,19 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Text, View } from 'react-native';
 
-import { Book } from '@/src/types';
+import { AGE_GROUPS } from '@/src/lib/constants';
+import { useAuthStore } from '@/src/services/auth';
+import { StorySummary } from '@/src/types';
 
-const FrontFacingBook: React.FC<Book> = ({ title, stars, ageGroup, background }) => {
+const FrontFacingBook: React.FC<Partial<StorySummary>> = ({
+  title,
+  ratings,
+  // reads,
+  // comments,
+  age_group_id,
+  background_color,
+}) => {
+  const { session } = useAuthStore();
   const bgStyles = {
     yellow: 'bg-yellow',
     orange: 'bg-orange',
@@ -11,10 +21,12 @@ const FrontFacingBook: React.FC<Book> = ({ title, stars, ageGroup, background })
     blue: 'bg-blue',
   };
 
+  const ownRating = ratings?.find((r) => r.user_id === session?.user.id);
+
   return (
     <View className="relative">
       <View
-        className={`w-[214px] h-[316px] items-center justify-center bg-background px-2 py-2.5 rounded-tr-0.5 rounded-br-0.5 ${bgStyles[background as keyof typeof bgStyles]}`}
+        className={`w-[214px] h-[316px] items-center justify-center bg-background px-2 py-2.5 rounded-tr-0.5 rounded-br-0.5 ${bgStyles[background_color as keyof typeof bgStyles]}`}
         style={{
           shadowColor: 'black',
           shadowOpacity: 0.32,
@@ -24,13 +36,13 @@ const FrontFacingBook: React.FC<Book> = ({ title, stars, ageGroup, background })
             height: 64,
           },
         }}>
-        <View className="absolute top-0.5">
-          <AgeGroup ageGroup={ageGroup} />
+        {/* <View className="absolute top-0.5">
+          {age_group_id && <AgeGroup age_group_id={age_group_id} />}
         </View>
-        <Title title={title} />
+        {title && <Title title={title} />}
         <View className="absolute bottom-0.5">
-          <Rating stars={stars} />
-        </View>
+          {ownRating && <Rating rating={ownRating?.rating} />}
+        </View> */}
       </View>
       <View className="bg-lightgrey absolute w-0.625 h-[316px] l-0.25" />
       <View className="bg-grey absolute w-0.25 h-[316px]" />
@@ -54,26 +66,28 @@ const Title: React.FC<{
 };
 
 const AgeGroup: React.FC<{
-  ageGroup: string;
-}> = ({ ageGroup }) => {
-  if (ageGroup.length === 0) return null;
+  age_group_id: number;
+}> = ({ age_group_id }) => {
+  if (!age_group_id) return null;
+
+  const ageGroupText = `${AGE_GROUPS[age_group_id].min_age}-${AGE_GROUPS[age_group_id].max_age}`;
 
   return (
     <View className="flex justify-center items-center flex-nowrap flex-col">
       <Ionicons name="book-outline" size={16} className="text-black" style={{}} />
-      <Text className="text-1 text-black font-body">{ageGroup}</Text>
+      <Text className="text-1 text-black font-body">{ageGroupText}</Text>
     </View>
   );
 };
 
 const Rating: React.FC<{
-  stars: number;
-}> = ({ stars }) => {
-  if (stars === 0) return null;
+  rating: number;
+}> = ({ rating }) => {
+  if (rating === 0) return null;
 
   return (
     <View className="flex justify-center items-center flex-nowrap flex-row">
-      {Array.from({ length: stars }, (_, index) => (
+      {Array.from({ length: rating }, (_, index) => (
         <Ionicons key={index} name="star-outline" size={16} className="text-black" style={{}} />
       ))}
     </View>

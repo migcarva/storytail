@@ -10,7 +10,7 @@ import Animated, {
 import Carousel from 'react-native-reanimated-carousel';
 
 import FrontFacingBook from '@/src/components/books/FrontFacingBook';
-import type { Book } from '@/src/types';
+import type { StorySummary } from '@/src/types';
 import { withAnchorPoint } from '@/src/utils';
 import colors from '@/src/utils/colors';
 
@@ -37,26 +37,28 @@ const baseOptions = {
 } as const;
 
 const StoriesCarousel: React.FC<{
-  stories: Book[];
-}> = ({ stories }) => {
+  summaries: StorySummary[];
+}> = ({ summaries }) => {
   // adds one last "book" to the array
   // the last books allows for new story creation
-  const storiesWithNew = [
-    ...stories,
+  const summariesWithNew = [
+    ...summaries,
     {
       id: 0,
-      title: stories.length === 0 ? 'create your first story' : 'create a new story',
-      stars: 0,
-      ageGroup: '',
-      background: colors.white,
+      user_id: '',
+      title: summaries.length === 0 ? 'create your first story' : 'create a new story',
+      background_color: colors.white,
+      age_group_id: 0,
+      reads: [],
+      ratings: [],
     },
   ];
-  const [activeItem, setActiveItem] = useState<number>(storiesWithNew.length - 1);
+  const [activeItem, setActiveItem] = useState<number>(summariesWithNew.length - 1);
   const router = useRouter();
 
   const handlePress = (index: number) => {
     setActiveItem(index); // todo use a persisted store!
-    if (index === storiesWithNew.length - 1) {
+    if (index === summariesWithNew.length - 1) {
       router.replace('/creator/1');
     } else {
       router.replace('/reader');
@@ -67,14 +69,14 @@ const StoriesCarousel: React.FC<{
     <Carousel
       {...baseOptions}
       defaultIndex={activeItem}
-      data={storiesWithNew}
+      data={summariesWithNew}
       renderItem={({ index, animationValue, item }) => (
         <Link
-          href={index === storiesWithNew.length - 1 ? '/creator/1' : '/reader'}
+          href={index === summariesWithNew.length - 1 ? '/creator/1' : '/reader'}
           asChild
           className="my-2">
           <Pressable onPress={() => handlePress(index)}>
-            <Book animationValue={animationValue} key={index} index={index} book={item} />
+            <Book animationValue={animationValue} key={index} index={index} story={item} />
           </Pressable>
         </Link>
       )}
@@ -87,8 +89,8 @@ export default StoriesCarousel;
 const Book: React.FC<{
   index: number;
   animationValue: SharedValue<number>;
-  book: Book;
-}> = ({ index, animationValue, book }) => {
+  story: StorySummary;
+}> = ({ index, animationValue, story }) => {
   const WIDTH = PAGE_WIDTH / 1.5;
   const HEIGHT = PAGE_HEIGHT / 1.5;
 
@@ -129,11 +131,12 @@ const Book: React.FC<{
         cardStyle,
       ]}>
       <FrontFacingBook
-        id={book.id}
-        title={book.title}
-        stars={book.stars}
-        ageGroup={book.ageGroup}
-        background={book.background}
+        id={story.id}
+        title={story.title}
+        ratings={story.ratings}
+        reads={story.reads}
+        age_group_id={story.age_group_id}
+        background_color={story.background_color}
       />
     </Animated.View>
   );
