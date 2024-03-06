@@ -4,27 +4,24 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 
 import { API_KEYS } from '@/src/lib/keys';
 import { supabase } from '@/src/lib/supabase';
-import type { DBChapter, Story, StorySummary } from '@/src/types';
+import type { DBChapter, NewStory, Story, StorySummary } from '@/src/types';
 
 interface UserStoriesState {
   stories: Story[]; // use this to store full stories details (after fetching individual stories)
   storiesSummaries: StorySummary[]; // use this for story listings
-  story: Story | null; // going to be deprecated
 }
 
 export interface UserStoriesStore extends UserStoriesState {
   setStories: (args: UserStoriesState['stories']) => void;
   setStoriesSummaries: (args: UserStoriesState['storiesSummaries']) => void;
-  setStory: (args: UserStoriesState['story']) => void; // to be deprecated
 
   getStories: (userId: string) => Promise<Story[]>;
   getStoriesSummaries: (userId: string) => Promise<StorySummary[]>;
-  getStory: (userId: string, storyId: number) => Promise<Story | null>;
 
-  addStory: (userId: string, story: Partial<Story>) => Promise<Story>;
+  addStory: (userId: string, story: NewStory) => Promise<Story>;
   addChapters: (
     userId: string,
-    storyId: string,
+    storyId: number,
     chapters: Partial<DBChapter>[],
   ) => Promise<DBChapter[] | null>;
 }
@@ -32,7 +29,6 @@ export interface UserStoriesStore extends UserStoriesState {
 const initialState: Pick<UserStoriesStore, keyof UserStoriesState> = {
   stories: [],
   storiesSummaries: [],
-  story: null,
 };
 
 const storageOptions = {
@@ -46,7 +42,6 @@ export const useUserStoriesStore = create<UserStoriesStore>()(
       ...initialState,
       setStories: (stories) => set(() => ({ stories })),
       setStoriesSummaries: (storiesSummaries) => set(() => ({ storiesSummaries })),
-      setStory: (story) => set(() => ({ story })),
       getStories: async (userId) => {
         if (!userId) return Promise.reject(new Error('User id is required'));
 
@@ -87,27 +82,6 @@ export const useUserStoriesStore = create<UserStoriesStore>()(
         set({ storiesSummaries: stories ?? [] });
 
         return Promise.resolve(stories ? stories : []);
-      },
-      getStory: async (userId, storyId) => {
-        if (!userId) return Promise.reject(new Error('User id is required'));
-        if (!storyId) return Promise.reject(new Error('Story id is required'));
-        const {
-          data: story,
-          error,
-          status,
-        } = await supabase
-          .from(API_KEYS.stories)
-          .select(`*`)
-          .eq('user_id', userId)
-          .eq('id', storyId);
-
-        if (error && status !== 406 && !story) {
-          return Promise.reject(error);
-        }
-
-        set({ story: story ? story[0] : null });
-
-        return Promise.resolve(story ? story[0] : null);
       },
       addStory: async (userId, story) => {
         if (!userId) return Promise.reject(new Error('User id is required'));

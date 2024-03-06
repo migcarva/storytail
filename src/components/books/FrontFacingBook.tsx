@@ -5,13 +5,18 @@ import { AGE_GROUPS } from '@/src/lib/constants';
 import { useAuthStore } from '@/src/services/auth';
 import { StorySummary } from '@/src/types';
 
-const FrontFacingBook: React.FC<Partial<StorySummary>> = ({
+const FrontFacingBook: React.FC<
+  {
+    isPlaceholder: boolean;
+  } & Partial<StorySummary>
+> = ({
   title,
   ratings,
   // reads,
   // comments,
   age_group_id,
   background_color,
+  isPlaceholder,
 }) => {
   const { session } = useAuthStore();
   const bgStyles = {
@@ -22,6 +27,7 @@ const FrontFacingBook: React.FC<Partial<StorySummary>> = ({
   };
 
   const ownRating = ratings?.find((r) => r.user_id === session?.user.id);
+  const ratingValue = ownRating?.rating || 0;
 
   return (
     <View className="relative">
@@ -36,13 +42,15 @@ const FrontFacingBook: React.FC<Partial<StorySummary>> = ({
             height: 64,
           },
         }}>
-        {/* <View className="absolute top-0.5">
-          {age_group_id && <AgeGroup age_group_id={age_group_id} />}
+        <View className="absolute top-0.5">
+          {!isPlaceholder && age_group_id !== undefined && <AgeGroup age_group_id={age_group_id} />}
         </View>
+
         {title && <Title title={title} />}
+
         <View className="absolute bottom-0.5">
-          {ownRating && <Rating rating={ownRating?.rating} />}
-        </View> */}
+          {!isPlaceholder && ratingValue >= 0 && <Rating rating={ratingValue} />}
+        </View>
       </View>
       <View className="bg-lightgrey absolute w-0.625 h-[316px] l-0.25" />
       <View className="bg-grey absolute w-0.25 h-[316px]" />
@@ -68,9 +76,8 @@ const Title: React.FC<{
 const AgeGroup: React.FC<{
   age_group_id: number;
 }> = ({ age_group_id }) => {
-  if (!age_group_id) return null;
-
-  const ageGroupText = `${AGE_GROUPS[age_group_id].min_age}-${AGE_GROUPS[age_group_id].max_age}`;
+  const ageGroup = AGE_GROUPS[age_group_id];
+  const ageGroupText = `${ageGroup.min_age}-${ageGroup.max_age}`;
 
   return (
     <View className="flex justify-center items-center flex-nowrap flex-col">
@@ -83,7 +90,7 @@ const AgeGroup: React.FC<{
 const Rating: React.FC<{
   rating: number;
 }> = ({ rating }) => {
-  if (rating === 0) return null;
+  if (rating === 0) return <Text className="text-1 text-black font-body">no rating yet</Text>;
 
   return (
     <View className="flex justify-center items-center flex-nowrap flex-row">

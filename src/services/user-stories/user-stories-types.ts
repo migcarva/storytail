@@ -29,6 +29,18 @@ export type Story = {
   reactions: DBReaction[];
 };
 
+export type NewStory = {
+  title: string;
+  summary: string;
+  prompt: string;
+  dedication: string;
+  background_color: string;
+  age_group_id: number;
+  purpose_id: number;
+  is_premium: boolean;
+  is_published: boolean;
+};
+
 export type DBStory = {
   id: number;
   user_id: string;

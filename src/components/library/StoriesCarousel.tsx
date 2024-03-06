@@ -53,6 +53,7 @@ const StoriesCarousel: React.FC<{
       ratings: [],
     },
   ];
+
   const [activeItem, setActiveItem] = useState<number>(summariesWithNew.length - 1);
   const router = useRouter();
 
@@ -76,7 +77,13 @@ const StoriesCarousel: React.FC<{
           asChild
           className="my-2">
           <Pressable onPress={() => handlePress(index)}>
-            <Book animationValue={animationValue} key={index} index={index} story={item} />
+            <Book
+              animationValue={animationValue}
+              key={index}
+              index={index}
+              story={item}
+              isPlaceholder={index === summariesWithNew.length - 1}
+            />
           </Pressable>
         </Link>
       )}
@@ -90,7 +97,8 @@ const Book: React.FC<{
   index: number;
   animationValue: SharedValue<number>;
   story: StorySummary;
-}> = ({ index, animationValue, story }) => {
+  isPlaceholder: boolean;
+}> = ({ index, animationValue, story, isPlaceholder }) => {
   const WIDTH = PAGE_WIDTH / 1.5;
   const HEIGHT = PAGE_HEIGHT / 1.5;
 
@@ -137,6 +145,7 @@ const Book: React.FC<{
         reads={story.reads}
         age_group_id={story.age_group_id}
         background_color={story.background_color}
+        isPlaceholder={isPlaceholder}
       />
     </Animated.View>
   );
