@@ -1,5 +1,5 @@
-import { Image } from 'expo-image';
-import { Dimensions, View } from 'react-native';
+// import { Image } from 'expo-image';
+import { Dimensions, View, Image as RNImage } from 'react-native';
 import Animated, {
   Extrapolation,
   SharedValue,
@@ -8,13 +8,14 @@ import Animated, {
 } from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
 
-import { withAnchorPoint, blurhash } from '@/src/utils';
+import { DBCharacterImage } from '@/src/types';
+import { withAnchorPoint } from '@/src/utils';
 
 const PAGE_WIDTH = Dimensions.get('window').width;
 const PAGE_HEIGHT = Dimensions.get('window').height;
 
 const CharactersCarousel: React.FC<{
-  charactersUrl: string[];
+  charactersUrl: DBCharacterImage[];
 }> = ({ charactersUrl }) => {
   const baseOptions = {
     style: {
@@ -41,7 +42,12 @@ const CharactersCarousel: React.FC<{
       defaultIndex={1}
       data={charactersUrl}
       renderItem={({ index, animationValue, item }) => (
-        <Card animationValue={animationValue} key={index} index={index} characterUrl={item} />
+        <Card
+          animationValue={animationValue}
+          key={index}
+          index={index}
+          characterUrl={item.image_url}
+        />
       )}
     />
   );
@@ -83,9 +89,17 @@ const Card: React.FC<{
         },
         cardStyle,
       ]}
-      className="border border-solid border-black w-[300px] h-[300px] rounded-1">
-      <View className="border border-solid border-black w-[300px] h-[300px] rounded-1">
-        <Image source={characterUrl} placeholder={blurhash} contentFit="cover" transition={1000} />
+      className=" w-[300px] h-[300px]">
+      <View className="flex-1 border border-solid border-black justify-center items-center rounded-1 overflow-hidden">
+        {/* TODO: understand why expo-image is not working! */}
+        {/* <Image
+          className="flex-1 w-[300px] h-[300px] justify-center items-center rounded-1 object-cover"
+          source={{ uri: characterUrl }}
+          placeholder={blurhash}
+          contentFit="cover"
+          transition={1000}
+        /> */}
+        <RNImage className="flex-1 w-[300px] h-[300px]" source={{ uri: characterUrl }} />
       </View>
     </Animated.View>
   );

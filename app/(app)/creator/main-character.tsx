@@ -4,11 +4,11 @@ import { View, Text, Pressable } from 'react-native';
 
 import CharactersCarousel from '@/src/components/creator/CharactersCarousel';
 import { CloseButton } from '@/src/components/creator/CreatorNav';
+import { useStoryCreationStore } from '@/src/services/story-creation';
 import colors from '@/src/utils/colors';
 
-import '@/src/assets/images/character.png';
-
 const MainCharacterSelection: React.FC = () => {
+  const { characters } = useStoryCreationStore();
   return (
     <View className="flex px-2 pt-6 h-full relative bg-white">
       <View className="flex mb-4 flex-row justify-between ">
@@ -20,7 +20,7 @@ const MainCharacterSelection: React.FC = () => {
         </Text>
       </View>
       <View className="flex pb-1 relative -translate-x-2">
-        <CharactersCarousel charactersUrl={['111', '111', '1111']} />
+        <CharactersCarousel charactersUrl={characters} />
       </View>
       <View className="flex w-full items-center">
         <Text className="text-1.25 text-black text-center font-heading w-[300px]">

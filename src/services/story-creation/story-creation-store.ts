@@ -76,132 +76,127 @@ const initialState: Pick<StoryCreationStore, keyof StoryCreationState> = {
   characters: [],
 };
 
-const storageOptions = {
-  name: 'User-Stories-Store',
-  storage: createJSONStorage(() => AsyncStorage),
-};
+// const storageOptions = {
+//   name: 'User-Stories-Store',
+//   storage: createJSONStorage(() => AsyncStorage),
+// };
 
-export const useStoryCreationStore = create<StoryCreationStore>()(
-  persist(
-    (set) => ({
-      ...initialState,
+export const useStoryCreationStore = create<StoryCreationStore>((set) => ({
+  ...initialState,
 
-      setReady: (isReady) => set(() => ({ isReady })),
+  setReady: (isReady) => set(() => ({ isReady })),
 
-      setPrompt: (prompt) => set(() => ({ prompt })),
-      setDedication: (dedication) => set(() => ({ dedication })),
-      setAgeGroupId: (age_group_id) => set(() => ({ age_group_id })),
-      setPurposeId: (purpose_id) => set(() => ({ purpose_id })),
+  setPrompt: (prompt) => set(() => ({ prompt })),
+  setDedication: (dedication) => set(() => ({ dedication })),
+  setAgeGroupId: (age_group_id) => set(() => ({ age_group_id })),
+  setPurposeId: (purpose_id) => set(() => ({ purpose_id })),
 
-      setGeneratedStory: (generatedStory) => set(() => ({ generatedStory })),
-      setGeneratedCharacters: (generatedCharacters) => set(() => ({ generatedCharacters })),
+  setGeneratedStory: (generatedStory) => set(() => ({ generatedStory })),
+  setGeneratedCharacters: (generatedCharacters) => set(() => ({ generatedCharacters })),
 
-      setStory: (story) => set(() => ({ story })),
-      setChapters: (chapters) => set(() => ({ chapters })),
-      setCharacters: (characters) => set(() => ({ characters })),
+  setStory: (story) => set(() => ({ story })),
+  setChapters: (chapters) => set(() => ({ chapters })),
+  setCharacters: (characters) => set(() => ({ characters })),
 
-      reset: () => set(() => ({ ...initialState })),
+  reset: () => set(() => ({ ...initialState })),
 
-      addStory: async (userId, story) => {
-        if (!userId) return Promise.reject(new Error('User id is required'));
-        if (!story) return Promise.reject(new Error('Story object is required'));
+  addStory: async (userId, story) => {
+    if (!userId) return Promise.reject(new Error('User id is required'));
+    if (!story) return Promise.reject(new Error('Story object is required'));
 
-        const { data, error, status } = await supabase
-          .from(API_KEYS.stories)
-          .insert([
-            {
-              user_id: userId,
-              title: story.title,
-              summary: story.summary,
-              dedication: story.dedication,
-              prompt: story.prompt,
-              background_color: story.background_color,
-              is_premium: false,
-              is_published: false,
-              age_group_id: story.age_group_id,
-              purpose_id: story.purpose_id,
-              created_at: new Date(),
-              updated_at: new Date(),
-            },
-          ])
-          .select();
-
-        if (error && status !== 406) {
-          return Promise.reject(error);
-        }
-
-        set({ story: data ? data[0] : null });
-
-        return Promise.resolve(data ? data[0] : null);
-      },
-      addChapters: async (userId, storyId, chapters) => {
-        if (!userId) return Promise.reject(new Error('User id is required'));
-        if (!storyId) return Promise.reject(new Error('Story id is required'));
-        if (!chapters) return Promise.reject(new Error('A list of chapters is required'));
-
-        const chaptersArray = chapters.map((c) => ({
-          story_id: storyId,
-          chapter_number: c.chapter_number,
-          title: c.title,
-          content: c.content,
-          image_url: c.image_url,
+    const { data, error, status } = await supabase
+      .from(API_KEYS.stories)
+      .insert([
+        {
+          user_id: userId,
+          title: story.title,
+          summary: story.summary,
+          dedication: story.dedication,
+          prompt: story.prompt,
+          background_color: story.background_color,
+          is_premium: false,
+          is_published: false,
+          age_group_id: story.age_group_id,
+          purpose_id: story.purpose_id,
           created_at: new Date(),
           updated_at: new Date(),
-        }));
+        },
+      ])
+      .select();
 
-        const { data, error, status } = await supabase
-          .from(API_KEYS.chapters)
-          .insert(chaptersArray)
-          .select();
+    if (error && status !== 406) {
+      return Promise.reject(error);
+    }
 
-        if (error && status !== 406) {
-          return Promise.reject(error);
-        }
+    set({ story: data ? data[0] : null });
 
-        set({ chapters: data ? data : [] });
+    return Promise.resolve(data ? data[0] : null);
+  },
+  addChapters: async (userId, storyId, chapters) => {
+    if (!userId) return Promise.reject(new Error('User id is required'));
+    if (!storyId) return Promise.reject(new Error('Story id is required'));
+    if (!chapters) return Promise.reject(new Error('A list of chapters is required'));
 
-        return Promise.resolve(data ?? []);
-      },
-      addCharacterImages: async (storyId, characters) => {
-        if (!storyId) return Promise.reject(new Error('Story id is required'));
-        if (!characters) return Promise.reject(new Error('A list of characters is required'));
+    const chaptersArray = chapters.map((c) => ({
+      story_id: storyId,
+      chapter_number: c.chapter_number,
+      title: c.title,
+      content: c.content,
+      image_url: c.image_url,
+      created_at: new Date(),
+      updated_at: new Date(),
+    }));
 
-        const charactersArray = characters.map((character) => ({
-          story_id: storyId,
-          image_url: character,
-          selected: false,
-          created_at: new Date(),
-        }));
+    const { data, error, status } = await supabase
+      .from(API_KEYS.chapters)
+      .insert(chaptersArray)
+      .select();
 
-        const { data, error, status } = await supabase
-          .from(API_KEYS.characterImages)
-          .insert(charactersArray)
-          .select();
+    if (error && status !== 406) {
+      return Promise.reject(error);
+    }
 
-        if (error && status !== 406) {
-          return Promise.reject(error);
-        }
+    set({ chapters: data ? data : [] });
 
-        set({ characters: data ? data : [] });
+    return Promise.resolve(data ?? []);
+  },
+  addCharacterImages: async (storyId, characters) => {
+    if (!storyId) return Promise.reject(new Error('Story id is required'));
+    if (!characters) return Promise.reject(new Error('A list of characters is required'));
 
-        return Promise.resolve(data ?? []);
-      },
-      selectCharacter: async (characterId) => {
-        if (!characterId) return Promise.reject(new Error('Character id is required'));
+    const charactersArray = characters.map((character) => ({
+      story_id: storyId,
+      image_url: character,
+      selected: false,
+      created_at: new Date(),
+    }));
 
-        const { data, error, status } = await supabase
-          .from(API_KEYS.characterImages)
-          .update({ selected: true })
-          .eq('id', characterId)
-          .select();
+    const { data, error, status } = await supabase
+      .from(API_KEYS.characterImages)
+      .insert(charactersArray)
+      .select();
 
-        if (error && status !== 406) {
-          return Promise.reject(error);
-        }
+    if (error && status !== 406) {
+      return Promise.reject(error);
+    }
 
-        return Promise.resolve(data ? data[0] : null);
-      },
-    }),
-    storageOptions,
-  ),
-);
+    set({ characters: data ? data : [] });
+
+    return Promise.resolve(data ?? []);
+  },
+  selectCharacter: async (characterId) => {
+    if (!characterId) return Promise.reject(new Error('Character id is required'));
+
+    const { data, error, status } = await supabase
+      .from(API_KEYS.characterImages)
+      .update({ selected: true })
+      .eq('id', characterId)
+      .select();
+
+    if (error && status !== 406) {
+      return Promise.reject(error);
+    }
+
+    return Promise.resolve(data ? data[0] : null);
+  },
+}));

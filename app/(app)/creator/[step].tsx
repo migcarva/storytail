@@ -14,6 +14,7 @@ import { getStepFromSearchParams } from '@/src/services/story-creation/story-cre
 import { OptionTypes, StepProps, StoryChapters, StoryCreationStep } from '@/src/types';
 import colors from '@/src/utils/colors';
 import { randomiseBackgroundColor } from '@/src/utils/story';
+import { getRandomArtStylesForSelectedAge } from '@/src/services/open-ai/open-ai.utils';
 
 const CreationStep: React.FC = () => {
   const { session } = useAuthStore();
@@ -37,7 +38,7 @@ const CreationStep: React.FC = () => {
     chapters,
     addStory,
     addChapters,
-    reset,
+    characters,
     addCharacterImages,
   } = useStoryCreationStore();
 
@@ -155,13 +156,11 @@ const CreationStep: React.FC = () => {
     if (!generatedStory?.mcDescription || !session?.user.id || !story?.id) return;
 
     const ageGroup = AGE_GROUPS[parseInt(age_group_id, 10)];
-
-    const options = {
+    const images = await generateCharacterImages({
       description: generatedStory?.mcDescription,
       ageGroup: `${ageGroup.min_age}-${ageGroup.max_age}`,
-    };
-
-    const images = await generateCharacterImages(options);
+      artStyles: getRandomArtStylesForSelectedAge(parseInt(age_group_id, 10)),
+    });
 
     if (images.length > 0) {
       addCharacterImages(story.id, images);
@@ -175,30 +174,28 @@ const CreationStep: React.FC = () => {
     // necessary form state to perform a story generation
     if (step === 'story_generation') {
       if (!generatedStory) {
+        console.log('starting story generation');
         // story not yet generated
         requestStoryGeneration();
       } else if (!story?.id) {
+        console.log('Saving story to DB');
         // story not yet on the DB
         preSaveStory();
       } else if (chapters.length === 0) {
+        console.log('Saving chapters to DB');
         // chapter not yet on the DB
         preSaveChapters();
-      } else if (chapters.length > 0) {
-        // we have all the chapters saves on the DB
+      } else if (chapters.length > 0 && characters.length === 0) {
+        console.log('starting characters generation');
+        // we have all the chapters saved on the DB
         requestCharacterGeneration();
-      } else if (isGenerated) {
+      } else if (isGenerated && characters.length > 0) {
+        console.log('Moving to character selection');
         // we have all the conditions to advance to the next step
         router.replace('/creator/main-character');
       }
     }
-  }, [step, generatedStory, story, chapters]);
-
-  useEffect(() => {
-    // on unmount, reset the form!
-    return () => {
-      reset();
-    };
-  }, []);
+  }, [step, generatedStory, story, chapters, characters]);
 
   if (step === 'story_generation') {
     return (

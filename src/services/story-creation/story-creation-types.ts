@@ -80,3 +80,8 @@ export type StepProps<T, K extends keyof OptionTypes> = {
 export interface StoryChapters {
   [key: string]: string;
 }
+
+export type ArtStyle = {
+  title: string;
+  description: string;
+};

@@ -1,8 +1,12 @@
 import OpenAI from 'openai';
 
 import { AGE_GROUPS, STORY_PURPOSES_TYPES } from '@/src/lib/constants';
-import { generateInstruction, parseStory } from '@/src/services/open-ai/open-ai.utils';
-import { GeneratedStory } from '@/src/types';
+import {
+  generateInstruction,
+  getRandomArtStylesForSelectedAge,
+  parseStory,
+} from '@/src/services/open-ai/open-ai.utils';
+import { ArtStyle, GeneratedStory } from '@/src/types';
 
 const openai = new OpenAI({
   apiKey: process.env.EXPO_PUBLIC_OPEN_AI_KEY,
@@ -40,16 +44,31 @@ export async function generateStory({
 export async function generateCharacterImages({
   description,
   ageGroup,
+  artStyles,
 }: {
   description: string;
   ageGroup: string;
+  artStyles: ArtStyle[];
 }): Promise<string[]> {
-  const instructions = `Generate illustrations for the main character of a ${ageGroup} years old kid's story. The character descriptions is: ${description}. Randomize the style.`;
+  const baseInstruction = `Create an illustration of the main character for a story intended for ${ageGroup} years old children. The background should be plain and light. Avoid any extraneous details`;
+  const cDescription = `Character description: ${description}.`;
   try {
     const responses = await Promise.all([
-      openai.images.generate({ model: 'dall-e-3', prompt: instructions, n: 1 }),
-      openai.images.generate({ model: 'dall-e-3', prompt: instructions, n: 1 }),
-      openai.images.generate({ model: 'dall-e-3', prompt: instructions, n: 1 }),
+      openai.images.generate({
+        model: 'dall-e-3',
+        prompt: `${baseInstruction} ${cDescription} ${artStyles[0].description}`,
+        n: 1,
+      }),
+      openai.images.generate({
+        model: 'dall-e-3',
+        prompt: `${baseInstruction} ${cDescription} ${artStyles[1].description}`,
+        n: 1,
+      }),
+      openai.images.generate({
+        model: 'dall-e-3',
+        prompt: `${baseInstruction} ${cDescription} ${artStyles[2].description}`,
+        n: 1,
+      }),
     ]);
 
     // Assuming the API response includes a way to get the image URL or binary data

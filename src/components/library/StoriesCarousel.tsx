@@ -1,4 +1,4 @@
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { Dimensions, Pressable } from 'react-native';
 import Animated, {
@@ -58,7 +58,7 @@ const StoriesCarousel: React.FC<{
   const router = useRouter();
 
   const handlePress = (index: number) => {
-    setActiveItem(index); // todo use a persisted store!
+    setActiveItem(index); // TODO: use a persisted store!
     if (index === summariesWithNew.length - 1) {
       router.replace('/creator/dedication');
     } else {
@@ -72,20 +72,15 @@ const StoriesCarousel: React.FC<{
       defaultIndex={activeItem}
       data={summariesWithNew}
       renderItem={({ index, animationValue, item }) => (
-        <Link
-          href={index === summariesWithNew.length - 1 ? '/creator/dedication' : '/reader'}
-          asChild
-          className="my-2">
-          <Pressable onPress={() => handlePress(index)}>
-            <Book
-              animationValue={animationValue}
-              key={index}
-              index={index}
-              story={item}
-              isPlaceholder={index === summariesWithNew.length - 1}
-            />
-          </Pressable>
-        </Link>
+        <Pressable className="my-2" onPress={() => handlePress(index)}>
+          <Book
+            animationValue={animationValue}
+            key={index}
+            index={index}
+            story={item}
+            isPlaceholder={index === summariesWithNew.length - 1}
+          />
+        </Pressable>
       )}
     />
   );

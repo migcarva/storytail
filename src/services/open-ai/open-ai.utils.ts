@@ -1,4 +1,5 @@
-import { GeneratedStory } from '@/src/types';
+import { ART_STYLES } from '@/src/lib/constants';
+import { ArtStyle, GeneratedStory } from '@/src/types';
 
 export const generateInstruction = ({
   ageRange,
@@ -88,4 +89,17 @@ export const parseStory = (text: string): GeneratedStory => {
   }
 
   return storyParts;
+};
+
+export const getRandomArtStylesForSelectedAge = (ageGroupId: number): ArtStyle[] => {
+  const ageGroupArtStyles = ART_STYLES[ageGroupId];
+
+  const selectedArtStyles: { title: string; description: string }[] = [];
+
+  while (selectedArtStyles.length < 3) {
+    const randomArtStyle = ageGroupArtStyles[Math.floor(Math.random() * ageGroupArtStyles.length)];
+    if (!selectedArtStyles.includes(randomArtStyle)) selectedArtStyles.push(randomArtStyle);
+  }
+
+  return selectedArtStyles;
 };
