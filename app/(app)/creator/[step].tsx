@@ -8,13 +8,16 @@ import CreatorNav, { CloseButton } from '@/src/components/creator/CreatorNav';
 import StepPage from '@/src/components/creator/StepPage';
 import { AGE_GROUPS, STORY_PURPOSES_TYPES } from '@/src/lib/constants';
 import { useAuthStore } from '@/src/services/auth';
-import { generateCharacterImages, generateStory } from '@/src/services/open-ai/open-ai.queries';
+import {
+  generateCharacterImages,
+  generateStory,
+  getRandomArtStylesForSelectedAge,
+} from '@/src/services/open-ai';
 import { useStoryCreationStore } from '@/src/services/story-creation';
 import { getStepFromSearchParams } from '@/src/services/story-creation/story-creation-utils';
 import { OptionTypes, StepProps, StoryChapters, StoryCreationStep } from '@/src/types';
 import colors from '@/src/utils/colors';
 import { randomiseBackgroundColor } from '@/src/utils/story';
-import { getRandomArtStylesForSelectedAge } from '@/src/services/open-ai/open-ai.utils';
 
 const CreationStep: React.FC = () => {
   const { session } = useAuthStore();
@@ -174,23 +177,18 @@ const CreationStep: React.FC = () => {
     // necessary form state to perform a story generation
     if (step === 'story_generation') {
       if (!generatedStory) {
-        console.log('starting story generation');
         // story not yet generated
         requestStoryGeneration();
       } else if (!story?.id) {
-        console.log('Saving story to DB');
         // story not yet on the DB
         preSaveStory();
       } else if (chapters.length === 0) {
-        console.log('Saving chapters to DB');
         // chapter not yet on the DB
         preSaveChapters();
       } else if (chapters.length > 0 && characters.length === 0) {
-        console.log('starting characters generation');
         // we have all the chapters saved on the DB
         requestCharacterGeneration();
       } else if (isGenerated && characters.length > 0) {
-        console.log('Moving to character selection');
         // we have all the conditions to advance to the next step
         router.replace('/creator/main-character');
       }
@@ -209,6 +207,7 @@ const CreationStep: React.FC = () => {
               size={64}
             />
             <Text className="text-2 font-headingbold text-center pb-0.5 px-4">
+              {/* TODO: this can show some status update? depending on the step? */}
               We're generating your amazing story
             </Text>
           </View>

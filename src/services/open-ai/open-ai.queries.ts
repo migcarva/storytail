@@ -1,11 +1,7 @@
 import OpenAI from 'openai';
 
 import { AGE_GROUPS, STORY_PURPOSES_TYPES } from '@/src/lib/constants';
-import {
-  generateInstruction,
-  getRandomArtStylesForSelectedAge,
-  parseStory,
-} from '@/src/services/open-ai/open-ai.utils';
+import { generateInstruction, parseStory } from '@/src/services/open-ai/open-ai.utils';
 import { ArtStyle, GeneratedStory } from '@/src/types';
 
 const openai = new OpenAI({

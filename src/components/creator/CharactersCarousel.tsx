@@ -1,5 +1,6 @@
 // import { Image } from 'expo-image';
-import { Dimensions, View, Image as RNImage } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Dimensions, View, Image as RNImage, Pressable } from 'react-native';
 import Animated, {
   Extrapolation,
   SharedValue,
@@ -8,33 +9,42 @@ import Animated, {
 } from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
 
+import { useStoryCreationStore } from '@/src/services/story-creation';
 import { DBCharacterImage } from '@/src/types';
 import { withAnchorPoint } from '@/src/utils';
 
 const PAGE_WIDTH = Dimensions.get('window').width;
 const PAGE_HEIGHT = Dimensions.get('window').height;
 
+const baseOptions = {
+  style: {
+    width: PAGE_WIDTH,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  withAnimation: {
+    type: 'spring',
+    config: {
+      damping: 16,
+    },
+  },
+  vertical: false,
+  width: PAGE_WIDTH * 0.5, // change this value to change the dimension of each item on the carouse;
+  height: PAGE_HEIGHT * 0.4,
+  autoPlay: false,
+  loop: false,
+} as const;
+
 const CharactersCarousel: React.FC<{
   charactersUrl: DBCharacterImage[];
 }> = ({ charactersUrl }) => {
-  const baseOptions = {
-    style: {
-      width: PAGE_WIDTH,
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    withAnimation: {
-      type: 'spring',
-      config: {
-        damping: 16,
-      },
-    },
-    vertical: false,
-    width: PAGE_WIDTH * 0.5, // change this value to change the dimension of each item on the carouse;
-    height: PAGE_HEIGHT * 0.4,
-    autoPlay: false,
-    loop: false,
-  } as const;
+  const router = useRouter();
+  const { selectCharacter } = useStoryCreationStore();
+
+  const handlePress = (id: string) => {
+    selectCharacter(id);
+    router.replace('/creator/generating');
+  };
 
   return (
     <Carousel
@@ -42,12 +52,14 @@ const CharactersCarousel: React.FC<{
       defaultIndex={1}
       data={charactersUrl}
       renderItem={({ index, animationValue, item }) => (
-        <Card
-          animationValue={animationValue}
-          key={index}
-          index={index}
-          characterUrl={item.image_url}
-        />
+        <Pressable className="my-2" onPress={() => handlePress(item.id)}>
+          <Card
+            animationValue={animationValue}
+            key={index}
+            index={index}
+            characterUrl={item.image_url}
+          />
+        </Pressable>
       )}
     />
   );
