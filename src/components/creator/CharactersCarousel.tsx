@@ -1,6 +1,6 @@
 // import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
-import { Dimensions, View, Image as RNImage, Pressable } from 'react-native';
+import { Dimensions, View, Text, Image as RNImage, Pressable } from 'react-native';
 import Animated, {
   Extrapolation,
   SharedValue,
@@ -9,8 +9,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import Carousel from 'react-native-reanimated-carousel';
 
+import { ART_STYLES } from '@/src/lib/constants';
 import { useStoryCreationStore } from '@/src/services/story-creation';
-import { DBCharacterImage } from '@/src/types';
+import { ArtStyle, DBCharacterImage } from '@/src/types';
 import { withAnchorPoint } from '@/src/utils';
 
 const PAGE_WIDTH = Dimensions.get('window').width;
@@ -35,11 +36,9 @@ const baseOptions = {
   loop: false,
 } as const;
 
-const CharactersCarousel: React.FC<{
-  charactersUrl: DBCharacterImage[];
-}> = ({ charactersUrl }) => {
+const CharactersCarousel: React.FC = () => {
   const router = useRouter();
-  const { selectCharacter } = useStoryCreationStore();
+  const { selectCharacter, characters } = useStoryCreationStore();
 
   const handlePress = (id: string) => {
     selectCharacter(id);
@@ -50,15 +49,10 @@ const CharactersCarousel: React.FC<{
     <Carousel
       {...baseOptions}
       defaultIndex={1}
-      data={charactersUrl}
+      data={characters}
       renderItem={({ index, animationValue, item }) => (
         <Pressable className="my-2" onPress={() => handlePress(item.id)}>
-          <Card
-            animationValue={animationValue}
-            key={index}
-            index={index}
-            characterUrl={item.image_url}
-          />
+          <Card animationValue={animationValue} key={index} index={index} item={item} />
         </Pressable>
       )}
     />
@@ -70,10 +64,15 @@ export default CharactersCarousel;
 const Card: React.FC<{
   index: number;
   animationValue: SharedValue<number>;
-  characterUrl: string;
-}> = ({ index, animationValue, characterUrl }) => {
+  item: DBCharacterImage;
+}> = ({ index, animationValue, item }) => {
+  const { age_group_id } = useStoryCreationStore();
   const WIDTH = PAGE_WIDTH / 1.5;
   const HEIGHT = PAGE_HEIGHT / 1.5;
+
+  const artStyle = ART_STYLES[parseInt(age_group_id, 10)].find(
+    (style: ArtStyle) => style.id === item.art_Style_id,
+  );
 
   const cardStyle = useAnimatedStyle(() => {
     const scale = interpolate(
@@ -111,7 +110,8 @@ const Card: React.FC<{
           contentFit="cover"
           transition={1000}
         /> */}
-        <RNImage className="flex-1 w-[300px] h-[300px]" source={{ uri: characterUrl }} />
+        <RNImage className="flex-1 w-[300px] h-[300px]" source={{ uri: item.image_url }} />
+        <Text className="text-1 text-black text-center">{artStyle?.title}</Text>
       </View>
     </Animated.View>
   );

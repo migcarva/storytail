@@ -40,6 +40,7 @@ export type GeneratedChapter = {
 
 export type GeneratedCharacter = {
   image_url: string;
+  art_style_id: string;
 };
 
 export type StoryCreationStep =
@@ -82,6 +83,14 @@ export interface StoryChapters {
 }
 
 export type ArtStyle = {
+  id: number;
   title: string;
   description: string;
+};
+
+export type AgeGroup = {
+  id: number;
+  description: string;
+  min_age: number;
+  max_age: number;
 };

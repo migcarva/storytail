@@ -15,7 +15,7 @@ import {
 } from '@/src/services/open-ai';
 import { useStoryCreationStore } from '@/src/services/story-creation';
 import { getStepFromSearchParams } from '@/src/services/story-creation/story-creation-utils';
-import { OptionTypes, StepProps, StoryChapters, StoryCreationStep } from '@/src/types';
+import { OptionTypes, StepProps, StoryCreationStep } from '@/src/types';
 import colors from '@/src/utils/colors';
 import { randomiseBackgroundColor } from '@/src/utils/story';
 
@@ -40,7 +40,6 @@ const CreationStep: React.FC = () => {
     story,
     chapters,
     addStory,
-    addChapters,
     characters,
     addCharacterImages,
   } = useStoryCreationStore();
@@ -140,33 +139,25 @@ const CreationStep: React.FC = () => {
     }
   };
 
-  const preSaveChapters = async () => {
-    if (generatedStory === null || !session?.user.id || !story?.id) return;
-
-    const chaptersArray = Object.keys(generatedStory.chapters).map((key) => {
-      const chapterNumber = parseInt(key.replace('chapter', ''), 10); // Extract the chapter number
-      return {
-        chapter_number: chapterNumber,
-        content: (generatedStory.chapters as StoryChapters)[key],
-        title: 'chapter_title',
-        image_url: 'image_url',
-      };
-    });
-    await addChapters(session.user.id, story.id, chaptersArray);
-  };
-
   const requestCharacterGeneration = async () => {
     if (!generatedStory?.mcDescription || !session?.user.id || !story?.id) return;
 
     const ageGroup = AGE_GROUPS[parseInt(age_group_id, 10)];
+    const artStyles = getRandomArtStylesForSelectedAge(parseInt(age_group_id, 10));
+
     const images = await generateCharacterImages({
       description: generatedStory?.mcDescription,
       ageGroup: `${ageGroup.min_age}-${ageGroup.max_age}`,
-      artStyles: getRandomArtStylesForSelectedAge(parseInt(age_group_id, 10)),
+      artStyles,
     });
 
-    if (images.length > 0) {
-      addCharacterImages(story.id, images);
+    const imagesArray = images.map((image, index) => ({
+      image_url: image,
+      art_style_id: artStyles[index].id,
+    }));
+
+    if (imagesArray.length > 0) {
+      addCharacterImages(story.id, imagesArray);
     }
 
     setIsGenerateed(true);
@@ -182,10 +173,7 @@ const CreationStep: React.FC = () => {
       } else if (!story?.id) {
         // story not yet on the DB
         preSaveStory();
-      } else if (chapters.length === 0) {
-        // chapter not yet on the DB
-        preSaveChapters();
-      } else if (chapters.length > 0 && characters.length === 0) {
+      } else if (story.id && characters.length === 0) {
         // we have all the chapters saved on the DB
         requestCharacterGeneration();
       } else if (isGenerated && characters.length > 0) {
@@ -193,7 +181,7 @@ const CreationStep: React.FC = () => {
         router.replace('/creator/main-character');
       }
     }
-  }, [step, generatedStory, story, chapters, characters]);
+  }, [step, generatedStory, story, chapters, characters, isGenerated]);
 
   if (step === 'story_generation') {
     return (

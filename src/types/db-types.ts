@@ -10,6 +10,7 @@ export type DBCharacterImage = {
   id: string;
   story_id: number;
   image_url: string;
+  art_Style_id: number;
   selected: boolean;
   created_at: string;
 };

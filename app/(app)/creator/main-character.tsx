@@ -8,7 +8,6 @@ import { useStoryCreationStore } from '@/src/services/story-creation';
 import colors from '@/src/utils/colors';
 
 const MainCharacterSelection: React.FC = () => {
-  const { characters } = useStoryCreationStore();
   return (
     <View className="flex px-2 pt-6 h-full relative bg-white">
       <View className="flex mb-4 flex-row justify-between ">
@@ -20,7 +19,7 @@ const MainCharacterSelection: React.FC = () => {
         </Text>
       </View>
       <View className="flex pb-1 relative -translate-x-2">
-        <CharactersCarousel charactersUrl={characters} />
+        <CharactersCarousel />
       </View>
       <View className="flex w-full items-center">
         <Text className="text-1.25 text-black text-center font-heading w-[300px]">

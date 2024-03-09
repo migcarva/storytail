@@ -1,8 +1,15 @@
+import * as FileSystem from 'expo-file-system';
 import OpenAI from 'openai';
 
-import { AGE_GROUPS, STORY_PURPOSES_TYPES } from '@/src/lib/constants';
+import { AGE_GROUPS, ART_STYLES, STORY_PURPOSES_TYPES } from '@/src/lib/constants';
 import { generateInstruction, parseStory } from '@/src/services/open-ai/open-ai.utils';
-import { ArtStyle, GeneratedStory } from '@/src/types';
+import {
+  AgeGroup,
+  ArtStyle,
+  DBCharacterImage,
+  GeneratedChapter,
+  GeneratedStory,
+} from '@/src/types';
 
 const openai = new OpenAI({
   apiKey: process.env.EXPO_PUBLIC_OPEN_AI_KEY,
@@ -54,16 +61,19 @@ export async function generateCharacterImages({
         model: 'dall-e-3',
         prompt: `${baseInstruction} ${cDescription} ${artStyles[0].description}`,
         n: 1,
+        // response_format: 'b64_json',
       }),
       openai.images.generate({
         model: 'dall-e-3',
         prompt: `${baseInstruction} ${cDescription} ${artStyles[1].description}`,
         n: 1,
+        // response_format: 'b64_json',
       }),
       openai.images.generate({
         model: 'dall-e-3',
         prompt: `${baseInstruction} ${cDescription} ${artStyles[2].description}`,
         n: 1,
+        // response_format: 'b64_json',
       }),
     ]);
 
@@ -78,4 +88,77 @@ export async function generateCharacterImages({
     console.error('Error generating images:', error);
     throw new Error('Failed to generate images');
   }
+}
+
+export async function generateChapterIllustrations({
+  chapters,
+  ageGroup,
+  selectedCharacter,
+}: {
+  chapters: GeneratedChapter[];
+  ageGroup: AgeGroup;
+  selectedCharacter: DBCharacterImage;
+}): Promise<string[]> {
+  const artStyle = ART_STYLES[ageGroup.id].find((s) => s.id === selectedCharacter.art_Style_id);
+
+  if (!artStyle) return Promise.reject(new Error('Art Style not provided!'));
+
+  const baseInstruction = `Illustrate the chapter of a story intended for ${ageGroup} years old children.`;
+  const artStyleInstructions = `Follow this art style: ${artStyle.description}`;
+
+  try {
+    let pointerPosition = 0;
+    const generatedIllustrations = [];
+
+    while (pointerPosition < chapters.length - 1) {
+      const cDescription = `Chapter description: ${chapters[pointerPosition].content}.`;
+      const fileName = `${selectedCharacter.story_id}-${selectedCharacter.id}`;
+      const localUri = FileSystem.cacheDirectory + fileName;
+      const { uri } = await FileSystem.downloadAsync(selectedCharacter.image_url, localUri);
+
+      const file = await openai.files.create({
+        file: uri,
+        purpose: 'fine-tune',
+      });
+
+      await openai.images.edit({
+        image: uri,
+        prompt: `${baseInstruction} ${artStyleInstructions} ${cDescription}`,
+      });
+    }
+  } catch (error) {
+    console.error('Error generating chapters images:', error);
+    Promise.reject(new Error('Failed to generate chapters images'));
+  }
+
+  // try {
+  //   const responses = await Promise.all([
+  //     openai.images.generate({
+  //       model: 'dall-e-3',
+  //       prompt: `${baseInstruction} ${cDescription} ${artStyles[0].description}`,
+  //       n: 1,
+  //     }),
+  //     openai.images.generate({
+  //       model: 'dall-e-3',
+  //       prompt: `${baseInstruction} ${cDescription} ${artStyles[1].description}`,
+  //       n: 1,
+  //     }),
+  //     openai.images.generate({
+  //       model: 'dall-e-3',
+  //       prompt: `${baseInstruction} ${cDescription} ${artStyles[2].description}`,
+  //       n: 1,
+  //     }),
+  //   ]);
+
+  //   // Assuming the API response includes a way to get the image URL or binary data
+  //   return responses
+  //     .map((response) => {
+  //       const imageUrl = response.data[0].url; // Adjust according to actual API response
+  //       if (imageUrl) return imageUrl;
+  //     })
+  //     .filter((imageUrl) => imageUrl) as string[];
+  // } catch (error) {
+  //   console.error('Error generating images:', error);
+  //   throw new Error('Failed to generate images');
+  // }
 }
